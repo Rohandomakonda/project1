@@ -2,19 +2,16 @@ import React from "react";
 import './App.css';
 import Button from "./components/Button";
 import Form from "./pages/Page1";
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // Import Router
 
 function App() {
   return (
-    <div>
-       <Routes>
-      <Route path="/addevent" element={<Form />} />
-      {/* The button will be displayed outside the Routes, but you can still navigate */}
-      
-    </Routes>
-    <Button />
-    </div>
-   
+    <Router> {/* Wrap your routes with BrowserRouter */}
+      <Routes>
+        <Route path="/addevent" element={<Form />} />
+      </Routes>
+      <Button />
+    </Router>
   );
 }
 
