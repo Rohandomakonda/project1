@@ -6,6 +6,7 @@ function Button() {
 
   const handleClick = () => {
     navigate("/addevent"); // Redirects to the '/addevent' path when the button is clicked
+    console.log("clicked");
   };
 
   return (
