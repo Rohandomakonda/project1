@@ -1,0 +1,64 @@
+/* Ensure the navbar stays at the top of the page */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Navbar container */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #007BFF;
+    padding: 1rem 2rem;
+    position: fixed;  /* Sticks the navbar at the top */
+    top: 0;
+    left: 0;
+    width: 100%;  /* Ensure the navbar spans the entire width */
+    z-index: 1000; /* Ensure it's above other content */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Navbar logo */
+.navbar-logo a {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Navbar links */
+.navbar-links {
+    list-style-type: none;
+    display: flex;
+    gap: 2rem;
+}
+
+/* Navbar links items */
+.navbar-links li {
+    font-size: 1rem;
+}
+
+/* Navbar links anchor */
+.navbar-links li a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+/* Hover effect on navbar links */
+.navbar-links li a:hover {
+    color: #e0e0e0;
+}
+
+/* Responsive Navbar */
+@media (max-width: 768px) {
+    .navbar-links {
+        display: none;
+    }
+
+    .navbar-logo a {
+        font-size: 1.2rem;
+    }
+}

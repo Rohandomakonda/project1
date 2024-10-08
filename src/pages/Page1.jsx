@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"
- 
+import "./Page1.styles.css"
 function Form(){
     const [details,setFunction]=React.useState({
        description : "",
@@ -9,7 +9,7 @@ function Form(){
        time: "",
        venue: "",
     });
-    function handleSubmit(){
+    const navigate = useNavigate();
       //database update
       const handleSubmit = (e) => {
 
@@ -20,13 +20,13 @@ function Form(){
             console.log(resp.data);
           })
           .catch((error) => {
-            console.log(error);
+            alert(error);
           });
-        console.log("handleSubmitted");
-
+        alert("Submitted");
+        navigate("/");
       };
 
-    }
+
     function change(event){
         const {name,value}=event.target;
         setFunction(prevValue=>{
@@ -36,7 +36,7 @@ function Form(){
                     date: prevValue.date,
                     time: prevValue.time,
                     venue: prevValue.venue,
-                   
+
                 }
             }
             else if(name==="date"){
@@ -45,7 +45,7 @@ function Form(){
                     date: value,
                     time: prevValue.time,
                     venue: prevValue.venue,
-                   
+
                 }
             }
             else if(name==="time"){
@@ -54,7 +54,7 @@ function Form(){
                     date: prevValue.date,
                     time: value,
                     venue: prevValue.venue,
-                    
+
                 }
             }
            else if(name==="venue"){
@@ -63,39 +63,40 @@ function Form(){
                     date: prevValue.date,
                     time: prevValue.time,
                     venue: value,
-                  
+
                 }
             }
         });
     }
- 
+
 
 
     return (
         <form onSubmit={handleSubmit}>
-          <input method="POST"
-            onChange={change} 
-            placeholder="description" 
-            name="description" 
-            value={details.description} 
+
+          <input
+            onChange={change}
+            placeholder="description"
+            name="description"
+            value={details.description}
           />
-          <input method="POST"
-            onChange={change} 
-            placeholder="date" 
-            name="date" 
-            value={details.date} 
+          <input
+            onChange={change}
+            placeholder="date"
+            name="date"
+            value={details.date}
           />
-          <input method="POST"
-            onChange={change} 
-            placeholder="time" 
-            name="time" 
-            value={details.time} 
+          <input
+            onChange={change}
+            placeholder="time"
+            name="time"
+            value={details.time}
           />
-          <input method="POST"
-            onChange={change} 
-            placeholder="venue" 
-            name="venue" 
-            value={details.venue} 
+          <input
+            onChange={change}
+            placeholder="venue"
+            name="venue"
+            value={details.venue}
           />
           <button type="submit">Submit</button>
         </form>
@@ -104,3 +105,4 @@ function Form(){
 export default Form;
 
 //description time place duration
+
