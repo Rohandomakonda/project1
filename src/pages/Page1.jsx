@@ -30,8 +30,19 @@ function Form(){
     function change(event){
         const {name,value}=event.target;
         setFunction(prevValue=>{
-            if(name==="description"){
+            if(name==="title"){
                 return{
+                title:value,
+                description: prevValue.description,
+                date: prevValue.date,
+                time: prevValue.time,
+                venue: prevValue.venue,
+
+                }
+             }
+            else if(name==="description"){
+                return{
+                    title:prevValue.title,
                     description: value,
                     date: prevValue.date,
                     time: prevValue.time,
@@ -41,6 +52,7 @@ function Form(){
             }
             else if(name==="date"){
                 return{
+                    title:prevValue.title,
                     description: prevValue.description,
                     date: value,
                     time: prevValue.time,
@@ -50,6 +62,7 @@ function Form(){
             }
             else if(name==="time"){
                 return{
+                    title:prevValue.title,
                     description: prevValue.description,
                     date: prevValue.date,
                     time: value,
@@ -59,6 +72,7 @@ function Form(){
             }
            else if(name==="venue"){
                 return{
+                    title:prevValue.title,
                     description: prevValue.description,
                     date: prevValue.date,
                     time: prevValue.time,
@@ -74,6 +88,12 @@ function Form(){
     return (
         <form onSubmit={handleSubmit}>
 
+          <input
+               onChange={change}
+                      placeholder="Title"
+                      name="title"
+                      value={details.title}
+          />
           <input
             onChange={change}
             placeholder="description"
