@@ -26,7 +26,7 @@ function View() {
         alert("Event deleted successfully");
       })
       .catch((error) => {
-        alert(error);
+        alert("handleDelete "+error);
       });
   }
 
