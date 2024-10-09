@@ -1,0 +1,70 @@
+/* Overall page styling */
+body {
+    background-color: #f4f7f6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.events-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping to the next row if there are too many events */
+  justify-content: space-between; /* Add space between the event cards */
+  gap: 20px; /* Add some spacing between the event cards */
+  padding: 20px; /* Padding around the container */
+}
+
+/* Event card styling */
+.event-card {
+  background-color: white; /* White background for the event card */
+  color: #333; /* Dark text color for contrast */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  padding: 20px; /* Padding inside the card */
+  margin: 20px; /* Space around the card */
+  max-width: 400px; /* Limit the width of the card */
+  text-align: left; /* Left-aligned text */
+  transition: transform 0.2s; /* Smooth transition for hover effect */
+}
+
+/* Hover effect on the event card */
+.event-card:hover {
+  transform: scale(1.02); /* Slight zoom on hover */
+}
+
+/* Styling for the event title */
+.event-title {
+  color: #2a9d8f; /* Teal color for the title */
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+/* Description styling */
+.event-description {
+  color: #555;
+  font-size: 1em;
+  margin-bottom: 10px;
+}
+
+/* Date and time styling */
+.event-date, .event-time, .event-venue {
+  color: #777;
+  font-size: 0.9em;
+  margin-bottom: 5px;
+}
+
+/* Delete button styling */
+.event-delete-button {
+  background-color: #e63946; /* Red background for the delete button */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s; /* Smooth transition for hover */
+}
+
+/* Hover effect for delete button */
+.event-delete-button:hover {
+  background-color: #d62828; /* Darker red on hover */
+}
