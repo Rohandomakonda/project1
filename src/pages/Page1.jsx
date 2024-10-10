@@ -14,7 +14,7 @@ function Form() {
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault(); //prevents default submitting
         axios
             .post("http://localhost:8080/addevent", details)
             .then((resp) => {
@@ -79,7 +79,7 @@ function Form() {
                     required
                     className="form-input"
                 />
-                <button type="submit" className="submit-button">Submit</button>
+                <button type="submit" className="submit-button">Add Event</button>
             </form>
         </div>
     );
