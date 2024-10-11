@@ -65,6 +65,7 @@ body {
 /* Date, time, and venue styling */
 .event-date,
 .event-time,
+.event-club,
 .event-venue {
     color: #777; /* Lighter gray for date, time, and venue */
     font-size: 0.9em;

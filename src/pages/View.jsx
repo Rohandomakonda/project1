@@ -39,12 +39,13 @@ function View() {
     return (
       event.title.toLowerCase().includes(lowerSearchTerm) ||
       event.description.toLowerCase().includes(lowerSearchTerm) ||
-      event.venue.toLowerCase().includes(lowerSearchTerm)
+      event.venue.toLowerCase().includes(lowerSearchTerm)||
+      event.club.toLowerCase().includes(lowerSearchTerm)
     );
   });
 
   return (
-    <div className="viewdiv">
+    <div>
         <div><h2>Ongoing events..</h2> </div>
 
         <div style={{ position: "relative" }}>
@@ -52,7 +53,7 @@ function View() {
                         type="text"
                         placeholder="Search events"
                         name="search"
-                        className="search-bar" // Apply the class for styling
+                        className="search-bar"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)} // Update search term on input change
                     />
@@ -69,6 +70,7 @@ function View() {
               date={event.date}
               time={event.time}
               venue={event.venue}
+              club={event.club}
               delete={handleDelete}
             />
           ))

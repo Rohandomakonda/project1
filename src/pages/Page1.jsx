@@ -10,6 +10,7 @@ function Form() {
         date: "",
         time: "",
         venue: "",
+        club: ""
     });
     const navigate = useNavigate();
 
@@ -87,12 +88,35 @@ function Form() {
                     required
                     className="form-input"
                 />
+{/*                 <input */}
+{/*                    type="text" */}
+{/*                     onChange={change} */}
+{/*                     placeholder="Venue" */}
+{/*                     name="venue" */}
+{/*                     value={details.venue} */}
+{/*                     required */}
+{/*                     className="form-input" */}
+{/*                 /> */}
+            <select
+            className="form-select"
+            onChange={change}
+            name="venue"
+            id="venue"
+            >
+            <option value="">Select Venue</option>
+            <option value="Department of Computer Science and Engineering">CSE dept</option>
+            <option value="New Academic Building (NAB)">NAB</option>
+            <option value="Electronic & ICT Academy">E&ICT Building</option>
+            <option value="Department Of Electrical & Electronic Engineering">Electrical Dept</option>
+            <option value="Dr. B.R. Ambedkar Learning centre">ALC</option>
+            <option value="XGMH+JM8 Auditorium">Auditorium</option>
+            </select>
                 <input
                    type="text"
                     onChange={change}
-                    placeholder="Venue"
-                    name="venue"
-                    value={details.venue}
+                    placeholder="Club presenting"
+                    name="club"
+                    value={details.club}
                     required
                     className="form-input"
                 />
