@@ -40,6 +40,7 @@ function Form() {
             <h1 className="form-title">Add Event</h1>
             <form onSubmit={handleSubmit} className="event-form">
                 <input
+                   type="text"
                     onChange={change}
                     placeholder="Title"
                     name="title"
@@ -48,6 +49,7 @@ function Form() {
                     className="form-input"
                 />
                 <textarea
+                   type="text"
                     onChange={change}
                     placeholder="Description"
                     name="description"
@@ -56,14 +58,16 @@ function Form() {
                     className="form-textarea"
                 />
                 <input
+                    type="date"
                     onChange={change}
-                    placeholder="Date (YYYY-MM-DD)"
+                    placeholder="Date (DD-MM-YYYY)"
                     name="date"
                     value={details.date}
                     required
                     className="form-input"
                 />
                 <input
+                   type="time"
                     onChange={change}
                     placeholder="Time (HH:MM AM/PM)"
                     name="time"
@@ -72,6 +76,7 @@ function Form() {
                     className="form-input"
                 />
                 <input
+                   type="text"
                     onChange={change}
                     placeholder="Venue"
                     name="venue"
