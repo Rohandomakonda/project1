@@ -1,0 +1,26 @@
+.viewdiv{
+    margin-top : 100px;
+
+}
+/* Search bar styling */
+.search-container {
+    display: flex;
+    align-items: center;
+    margin: 20px;
+    z-index : 999;
+}
+
+.search-container input {
+    padding: 10px 40px 10px 20px; /* Leave space for the icon */
+    border: 1px solid #000;
+    border-radius: 5px;
+    width: 300px; /* Adjust width as needed */
+}
+
+.search-icon {
+    position: relative;
+    left: -30px; /* Adjust this to position icon correctly */
+    color: #888;
+    font-size: 20px; /* Icon size */
+    pointer-events: none; /* Prevent click on the icon */
+}

@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
+import java.sql.Time;
+
 @Data
 @Entity
 @NoArgsConstructor
@@ -17,9 +20,10 @@ public class Event {
     private int id;
     private String title;
     private String description;
-    private String date;
-    private String time;
+    private Date date;
+    private Time time;
     private String venue;
+
 
 
 

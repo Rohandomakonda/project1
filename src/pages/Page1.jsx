@@ -14,9 +14,20 @@ function Form() {
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
-        e.preventDefault(); //prevents default submitting
+        e.preventDefault(); // Prevents default submitting
+
+        // Convert date and time strings to Date and Time objects in the required format
+        const formattedDate = new Date(details.date); // Creates a JavaScript Date object
+        const formattedTime = details.time + ":00"; // Add seconds to ensure format is HH:MM:SS
+
+        const Details = {
+            ...details,
+            date: formattedDate.toISOString().split("T")[0], // Format to YYYY-MM-DD
+            time: formattedTime // Time in HH:MM:SS
+        };
+
         axios
-            .post("http://localhost:8080/addevent", details)
+            .post("http://localhost:8080/addevent", Details)
             .then((resp) => {
                 console.log(resp.data);
                 alert("Event submitted successfully!");
@@ -26,6 +37,7 @@ function Form() {
                 alert("Error submitting event: " + error);
             });
     };
+
 
     const change = (event) => {
         const { name, value } = event.target;
@@ -49,7 +61,7 @@ function Form() {
                     className="form-input"
                 />
                 <textarea
-                   type="text"
+                    type="text"
                     onChange={change}
                     placeholder="Description"
                     name="description"
@@ -67,7 +79,7 @@ function Form() {
                     className="form-input"
                 />
                 <input
-                   type="time"
+                    type="time"
                     onChange={change}
                     placeholder="Time (HH:MM AM/PM)"
                     name="time"

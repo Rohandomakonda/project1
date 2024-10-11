@@ -3,6 +3,7 @@ import Event from "./Event";
 import axios from "axios";
 import "./Event.styles.css"; // Import the CSS file for styling
 import SearchIcon from '@mui/icons-material/Search';
+import "./View.styles.css";
 
 function View() {
   const [events, setEvents] = useState([]);
@@ -35,7 +36,6 @@ function View() {
   // Filter events based on search term with priority (title > description > venue)
   const filteredEvents = events.filter((event) => {
     const lowerSearchTerm = searchTerm.toLowerCase();
-
     return (
       event.title.toLowerCase().includes(lowerSearchTerm) ||
       event.description.toLowerCase().includes(lowerSearchTerm) ||
@@ -44,34 +44,20 @@ function View() {
   });
 
   return (
-    <div>
-      <div style={{ position: "relative", display: "inline-block" }}>
-        <input
-          type="text"
-          placeholder="Search events"
-          name="search"
-          style={{
-            display: "block",
-            margin: "20px",
-            padding: "10px 20px", // Space for icon
-            border: "1px solid black",
-            borderRadius: "5px",
-            width: "300px", // Adjust width as needed
-          }}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)} // Update search term on input change
-        />
-        <SearchIcon
-          style={{
-            position: "absolute",
-            left: "10px",
-            top: "50%",
-            transform: "translateY(-50%)",
-            color: "#888", // Adjust color as needed
-            fontSize: "20px" // Ensure the icon size is appropriate
-          }}
-        />
-      </div>
+    <div className="viewdiv">
+        <div><h2>Ongoing events..</h2> </div>
+
+        <div style={{ position: "relative" }}>
+                    <input
+                        type="text"
+                        placeholder="Search events"
+                        name="search"
+                        className="search-bar" // Apply the class for styling
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)} // Update search term on input change
+                    />
+       <SearchIcon className="search-icon" />
+       </div>
       <div className="events-container">
         {filteredEvents.length > 0 ? (
           filteredEvents.map((event) => (

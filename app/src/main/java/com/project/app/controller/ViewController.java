@@ -21,10 +21,14 @@ public class ViewController {
     public List<Event> getAllEvents(){
         return viewservice.getAllEvents();
     }
-    
+
+    @GetMapping("/ongoingevents")
+    public List<Event> getOngoingEvents(){
+       return viewservice.getongoingEvents();
+    }
     @DeleteMapping("/event/{id}")
     public ResponseEntity<List<Event>> deleteEvent(@PathVariable int id){
-        System.out.println("id is "+id);
+//        System.out.println("id is "+id);
         Event event = viewservice.getEventById(id);
         if(event != null){
             viewservice.deleteEvent(id);
