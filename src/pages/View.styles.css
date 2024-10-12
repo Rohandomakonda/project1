@@ -1,26 +1,39 @@
-.viewdiv{
-    margin-top : 100px;
-
+/* Ensure the body and the main container are centered */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
 }
-/* Search bar styling */
+
+.viewdiv {
+  margin-top: 100px;
+}
+
+/* Search bar and icon container */
 .search-container {
-    display: flex;
-    align-items: center;
-    margin: 20px;
-    z-index : 999;
+  position: relative;
+  width: 250px; /* Adjust width as necessary */
+  margin-bottom: 20px;
+  text-align: center; /* Center the search bar */
 }
 
-.search-container input {
-    padding: 10px 40px 10px 20px; /* Leave space for the icon */
-    border: 1px solid #000;
-    border-radius: 5px;
-    width: 300px; /* Adjust width as needed */
+.search-bar {
+  width: 100%;
+  padding: 10px;
+  padding-right: 40px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
 }
 
 .search-icon {
-    position: relative;
-    left: -30px; /* Adjust this to position icon correctly */
-    color: #888;
-    font-size: 20px; /* Icon size */
-    pointer-events: none; /* Prevent click on the icon */
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  cursor: pointer;
 }
