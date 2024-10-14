@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class ViewSerivce {
 
-    @Autowired 
+    @Autowired
     FormRepo formRepo;
 
     public List<Event> getAllEvents() {
@@ -38,9 +38,6 @@ public class ViewSerivce {
         return formRepo.findAll();
     }
 
-    public List<Event> getPublicEvents(){
-        return formRepo.findByisPublicTrue();
-    }
     public Event getEventById(int id) {
         return formRepo.findById(id).orElse(new Event());
     }
@@ -50,23 +47,30 @@ public class ViewSerivce {
     }
 
     public List<Event> getongoingEvents() {
-        //Business logic
-        List<Event> all_events =  formRepo.findAll();
-        LocalDate currentDate = LocalDate.now();
-        LocalTime currentTime = LocalTime.now();
-        List<Event> ongoing = new ArrayList<>();
-        for(Event event : all_events){
-            Date eventdate = event.getDate();
-            Time eventtime = event.getTime();
-            LocalDate eventLocalDate = eventdate.toLocalDate();
-            if(currentDate.isEqual(eventLocalDate) && (currentTime.isBefore(eventtime.toLocalTime()))){
-               ongoing.add(event);
+
+            // Retrieve all events
+            List<Event> all_events = formRepo.findAll();
+            LocalDate currentDate = LocalDate.now();
+            LocalTime currentTime = LocalTime.now();
+            List<Event> ongoing = new ArrayList<>();
+
+            for (Event event : all_events) {
+                Date eventDate = event.getDate();
+                Time eventTime = event.getTime();
+                LocalDate eventLocalDate = eventDate.toLocalDate();
+                LocalTime eventLocalTime = eventTime.toLocalTime();
+
+                // Check if the event is today and the current time is before or during the event
+                if (currentDate.isEqual(eventLocalDate) && !currentTime.isAfter(eventLocalTime)) {
+                    ongoing.add(event);
+                }
             }
 
+            return ongoing;
 
+    }
 
-        }
-
-        return ongoing;
+    public List<Event> getPublicEvents(){
+        return formRepo.findByisPublicTrue();
     }
 }

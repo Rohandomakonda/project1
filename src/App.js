@@ -1,10 +1,10 @@
 import React from "react";
 import './App.css';
-import View from "./pages/View";
-import Form from "./pages/Page1";
+import View from "./pages/View_Page/View";
+import Form from "./pages/Add_Event_Page/Page1";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar.component.jsx";
-import Home from "./pages/Home.component.jsx";
+import Navbar from "./components/Navbar/Navbar.component.jsx";
+import Home from "./pages/Home_Page/Home.component.jsx";
 
 function App() {
   return (

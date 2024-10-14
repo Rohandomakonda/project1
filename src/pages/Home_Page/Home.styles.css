@@ -1,0 +1,66 @@
+/* General page styling */
+body {
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  background-color: #f4f4f4;
+}
+
+/* Ensure the public events section stays below the navbar */
+.public-events {
+  padding-top: 100px; /* Adjust based on the height of your navbar */
+  margin: 100px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading styles */
+.public-events h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 28px;
+}
+
+/* Event container styling */
+.event {
+  background-color: #f9f9f9;
+  margin: 20px 0;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Button styling */
+button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .public-events {
+    padding: 10px;
+  }
+
+  .public-events h1 {
+    font-size: 24px;
+  }
+
+  button {
+    width: 100%;
+  }
+}

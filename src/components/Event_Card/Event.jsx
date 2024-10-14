@@ -10,7 +10,7 @@ function Event(props){
   }
 
   function generateGoogleMapsLink(venue){
-    const baseURL = "https://www.google.com/maps/search/?api=1&query=NITWARANGAL";
+    const baseURL = "https://www.google.com/maps/search/?api=1&query=NITWARANGAL+";
     return baseURL + encodeURIComponent(venue);
   }
 
@@ -22,10 +22,11 @@ function Event(props){
       <p className="event-description">{props.description}</p>
       <p className="event-date">Date : {props.date} </p>
       <p className="event-time">Time : {props.time}</p>
+      <p className="event-description">Venue : {props.venue_description}</p>
       <a className="event-venue"
          href = {generateGoogleMapsLink(props.venue)}
          target = "_blank"
-      >Venue : {props.venue}</a>
+      >{props.venue}</a>
       <p className="event-club">Club : {props.club}</p>
       <button className="event-delete-button" onClick={Handle}><DeleteIcon /></button>
     </div>

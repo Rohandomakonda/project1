@@ -1,9 +1,9 @@
 import React from 'react'
-import Event from "./Event";
+import Event from "../../components/Event_Card/Event";
 import axios from "axios";
 import {useState,useEffect} from "react";
 import {useNavigate} from "react-router-dom";
-
+import "./Home.styles.css";
 
 function Home(){
 const [publicEvents,setpublicEvents] = useState([]);
@@ -29,7 +29,6 @@ const handleClick=()=>{
     }
     return(
         <div className="public-events">
-           <h1>Hello</h1>
            <h1>Public events</h1>
             {publicEvents.map((event) => (
             <Event

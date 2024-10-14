@@ -10,6 +10,7 @@ function Form() {
         date: "",
         time: "",
         venue: "",
+        venueDescription:"",
         club: "",
         isPublic: true
     });
@@ -88,17 +89,17 @@ function Form() {
                     name="time"
                     value={details.time}
                     required
+                    className="form-calendar"
+                />
+                <input
+                   type="text"
+                    onChange={change}
+                    placeholder="Venue-description"
+                    name="venueDescription"
+                    value={details.venueDescription}
+                    required
                     className="form-input"
                 />
-{/*                 <input */}
-{/*                    type="text" */}
-{/*                     onChange={change} */}
-{/*                     placeholder="Venue" */}
-{/*                     name="venue" */}
-{/*                     value={details.venue} */}
-{/*                     required */}
-{/*                     className="form-input" */}
-{/*                 /> */}
             <select
             className="form-select"
             onChange={change}
@@ -114,7 +115,7 @@ function Form() {
 {/*             <option value="XGMH+JM8 Auditorium">Auditorium</option> */}
             </select>
 
-           <select onChange={change} name="isPublic">
+           <select className="form-select" onChange={change} name="isPublic">
                <option value="" >Select Event Type</option>
                <option value="false">Private</option>
                <option value="true">Public</option>

@@ -1,4 +1,5 @@
 package com.project.app.model;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,9 +16,10 @@ import java.sql.Time;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Event {
+public class Recruitment {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //auto-generates id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String title;
     private String description;
@@ -26,7 +28,5 @@ public class Event {
     private String venue;
     private String club;
     private String venueDescription;
-    @JsonProperty("isPublic")
-    private boolean isPublic;
-
+    private String formLink;
 }
