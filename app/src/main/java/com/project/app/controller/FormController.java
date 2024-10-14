@@ -15,7 +15,8 @@ public class FormController {
 
     @PostMapping("/addevent")
     public List<Event> addEvent(@RequestBody Event event){
-        System.out.println("added event");
+
+        System.out.println("added event "+event.isPublic());
         service.addEvent(event);
         return service.show();
     }

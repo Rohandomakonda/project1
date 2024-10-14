@@ -13,7 +13,11 @@ function Navbar() {
         <li><Link to="/about">About</Link></li>
         <li><Link to="/viewevents">View Events</Link></li>
         <li><Link to="/addevent">Add Events</Link></li>
-        <li><Link to="/contact">Contact</Link></li>
+        <li><Link to="/recruitments">Recruitments</Link></li>
+      </ul>
+      <ul className="navbar-profile">
+        <li><Link to="/profile">profile</Link></li>
+
       </ul>
     </nav>
   );

@@ -1,4 +1,5 @@
 package com.project.app.model;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,8 +25,7 @@ public class Event {
     private Time time;
     private String venue;
     private String club;
-
-
-
+    @JsonProperty("isPublic")
+    private boolean isPublic;
 
 }

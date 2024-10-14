@@ -27,6 +27,11 @@ public class ViewController {
        return viewservice.getongoingEvents();
     }
 
+    @GetMapping("/public/events")
+    public List<Event> getPublicEvents(){
+        return viewservice.getPublicEvents();
+    }
+
     @DeleteMapping("/event/{id}")
     public ResponseEntity<List<Event>> deleteEvent(@PathVariable int id){
 

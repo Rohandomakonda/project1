@@ -15,6 +15,7 @@ function View() {
       .get("http://localhost:8080/viewevents")
       .then((resp) => {
         setEvents(resp.data); // Set the fetched events into state
+        console.log(resp.data);
       })
       .catch((error) => {
         alert(error);

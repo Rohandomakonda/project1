@@ -4,14 +4,7 @@ import View from "./pages/View";
 import Form from "./pages/Page1";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar.component.jsx";
-function Home() {
-  return (
-    <>
-      {/*<Button />*/}
-      {/* Other components for the home page */}
-    </>
-  );
-}
+import Home from "./pages/Home.component.jsx";
 
 function App() {
   return (

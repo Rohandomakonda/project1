@@ -49,4 +49,26 @@ body {
     border-radius: 5px; /* Rounded corners on hover */
 }
 
+.navbar-profile {
+    list-style-type: none; /* Remove bullet points */
+    display: flex; /* Flexbox for horizontal alignment */
+    margin-left: auto;
+    gap: 100px; /* Space between links */
+}
+
+/* Link styling */
+.navbar-profile li a {
+    color: white; /* White text color */
+    text-decoration: none; /* No underline */
+    padding: 10px 15px; /* Padding around links */
+    border-radius: 5px; /* Rounded corners for hover effect */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+/* Hover effect for links */
+.navbar-profile li a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+}
+
 

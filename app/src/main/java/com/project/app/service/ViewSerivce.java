@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class ViewSerivce {
 
-    @Autowired
+    @Autowired 
     FormRepo formRepo;
 
     public List<Event> getAllEvents() {
@@ -38,6 +38,9 @@ public class ViewSerivce {
         return formRepo.findAll();
     }
 
+    public List<Event> getPublicEvents(){
+        return formRepo.findByisPublicTrue();
+    }
     public Event getEventById(int id) {
         return formRepo.findById(id).orElse(new Event());
     }
@@ -56,7 +59,7 @@ public class ViewSerivce {
             Date eventdate = event.getDate();
             Time eventtime = event.getTime();
             LocalDate eventLocalDate = eventdate.toLocalDate();
-            if(currentDate.isEqual(eventLocalDate) && (currentTime.isBefore(eventtime.toLocalTime())|| Duration.between())){
+            if(currentDate.isEqual(eventLocalDate) && (currentTime.isBefore(eventtime.toLocalTime()))){
                ongoing.add(event);
             }
 

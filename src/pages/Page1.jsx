@@ -10,7 +10,8 @@ function Form() {
         date: "",
         time: "",
         venue: "",
-        club: ""
+        club: "",
+        isPublic: true
     });
     const navigate = useNavigate();
 
@@ -26,7 +27,7 @@ function Form() {
             date: formattedDate.toISOString().split("T")[0], // Format to YYYY-MM-DD
             time: formattedTime // Time in HH:MM:SS
         };
-
+        console.log(details); // Check the values before sending them to the backend
         axios
             .post("http://localhost:8080/addevent", Details)
             .then((resp) => {
@@ -40,13 +41,14 @@ function Form() {
     };
 
 
-    const change = (event) => {
-        const { name, value } = event.target;
-        setDetails((prevDetails) => ({
-            ...prevDetails,
-            [name]: value,
-        }));
-    };
+   const change = (event) => {
+       const { name, value } = event.target;
+
+       setDetails((prevDetails) => ({
+           ...prevDetails,
+           [name]: name === "isPublic" ? value === "true" : value, // Convert isPublic to boolean
+       }));
+   };
 
     return (
         <div className="form-container">
@@ -109,8 +111,15 @@ function Form() {
             <option value="Electronic & ICT Academy">E&ICT Building</option>
             <option value="Department Of Electrical & Electronic Engineering">Electrical Dept</option>
             <option value="Dr. B.R. Ambedkar Learning centre">ALC</option>
-            <option value="XGMH+JM8 Auditorium">Auditorium</option>
+{/*             <option value="XGMH+JM8 Auditorium">Auditorium</option> */}
             </select>
+
+           <select onChange={change} name="isPublic">
+               <option value="" >Select Event Type</option>
+               <option value="false">Private</option>
+               <option value="true">Public</option>
+           </select>
+
                 <input
                    type="text"
                     onChange={change}
