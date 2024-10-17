@@ -22,17 +22,18 @@ function Update() {
   useEffect(() => {
     axios.get(`http://localhost:8080/getEvent/${id}`)
       .then((response) => {
-        const event = response.data;
-        setDetails({
-          title: event.title,
-          description: event.description,
-          date: event.date,
-          time: event.time,
-          venue: event.venue,
-          venueDescription: event.venueDescription,
-          club: event.club,
-          isPublic: event.isPublic,
-        });
+//         const event = response.data;
+//         setDetails({
+//           title: event.title,
+//           description: event.description,
+//           date: event.date,
+//           time: event.time,
+//           venue: event.venue,
+//           venueDescription: event.venueDescription,
+//           club: event.club,
+//           isPublic: event.isPublic,
+//         });
+    setDetails(response.data);
       })
       .catch((error) => {
         console.error("Error fetching event details:", error);
@@ -52,7 +53,7 @@ function Update() {
       time: formattedTime,
     };
 
-    axios.put(`http://localhost:8080/event/${id}`, updatedDetails)
+    axios.put(`http://localhost:8080/updateEvent/${id}`, updatedDetails)
       .then((resp) => {
         console.log(resp.data);
         alert("Event updated successfully!");

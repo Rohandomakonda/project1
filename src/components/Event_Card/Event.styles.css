@@ -1,90 +1,71 @@
-/* Overall page styling */
-body {
-    background-color: #f4f7f6; /* Light gray background */
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; /* Align items at the top */
-    height: 100vh;
-    margin: 0; /* Remove default margin */
-    padding-top: 70px; /* Space for the navbar */
-
+.card-container {
+  perspective: 1000px; /* Adds perspective for 3D effect */
+  cursor: pointer; /* Adds a pointer cursor to indicate clickability */
 }
 
-/* Container for events */
-.events-container {
-    display: flex;
-    flex-wrap: wrap; /* Allow wrapping to the next row */
-    justify-content: space-between; /* Space between the event cards */
-    gap: 20px; /* Spacing between the cards */
-    padding: 20px; /* Padding around the container */
-    max-width: 1200px; /* Optional max width */
-    margin: 0 auto; /* Center the container */
+.card {
+  width: 300px;
+  height: 400px;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  position: relative;
 }
 
-/* Event card styling */
-.event-card {
-    background-color: #ffffff; /* White background for the card */
-    color: #333; /* Dark text color for contrast */
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    padding: 20px; /* Inner padding */
-    padding-top : 50px;
-    margin: 20px; /* Outer margin */
-    max-width: 400px; /* Limit the width of the card */
-    text-align: left; /* Left-aligned text */
-    transition: transform 0.2s; /* Smooth transition for hover effect */
+.card.is-flipped {
+  transform: rotateY(180deg);
 }
 
-/* Hover effect on the event card */
-.event-card:hover {
-    transform: scale(1.02); /* Slight zoom on hover */
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden; /* Ensures that the back side is hidden when facing away */
 }
 
-/* Styling for the event title */
+.card-front {
+  background-color: #fff;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.event-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid #ddd;
+}
+
+.card-back {
+  background-color: #f0f0f0;
+  color: black;
+  padding: 20px;
+  transform: rotateY(180deg); /* Flips the back side */
+}
 
 .event-title {
-    color: #2a9d8f; /* Teal color for the title */
-    font-size: 1.5em;
-    margin-bottom: 10px;
-    font-weight: bold; /* Make title bold */
+  font-size: 1.5em;
+  margin: 10px 0;
 }
 
-.event-description_caption{
-    color: #555; /* Dark gray for description */
-    font-size: 1em;
-    margin-bottom: 10px;
-    font-weight:bold;
-}
-/* Description styling */
-.event-description {
-    color: #555; /* Dark gray for description */
-    font-size: 1em;
-    margin-bottom: 10px;
+.event-description_caption {
+  font-weight: bold;
+  margin-top: 10px;
 }
 
-/* Date, time, and venue styling */
-.event-date,
-.event-time,
-.event-club,
+.event-description, .event-date, .event-time, .event-club {
+  margin: 5px 0;
+}
+
 .event-venue {
-    color: #777; /* Lighter gray for date, time, and venue */
-    font-size: 0.9em;
-    margin-bottom: 5px;
-    font-weight : bold;
+  color: blue;
+  text-decoration: underline;
 }
 
-/* Delete button styling */
-.event-delete-button {
-    background-color: #e63946; /* Red background for the delete button */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 15px;
-    cursor: pointer;
-    transition: background-color 0.3s; /* Smooth transition for hover */
-}
-
-/* Hover effect for delete button */
-.event-delete-button:hover {
-    background-color: #d62828; /* Darker red on hover */
+.event-delete-button, .event-update-button {
+  margin: 10px 5px;
+  padding: 5px 10px;
+  cursor: pointer;
 }

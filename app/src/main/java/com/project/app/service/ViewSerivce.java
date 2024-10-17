@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ViewSerivce {
@@ -35,7 +36,8 @@ public class ViewSerivce {
             }
         }
 
-        return formRepo.findAll();
+       return formRepo.findAll();
+
     }
 
     public Event getEventById(int id) {
@@ -73,4 +75,27 @@ public class ViewSerivce {
     public List<Event> getPublicEvents(){
         return formRepo.findByisPublicTrue();
     }
+
+    public void updateEvent(int id, Event updatedEvent) {
+        Optional<Event> existingEventOpt = formRepo.findById(id);
+
+        if (existingEventOpt.isPresent()) {
+            Event existingEvent = existingEventOpt.get();
+
+            // Update the event fields
+            existingEvent.setTitle(updatedEvent.getTitle());
+            existingEvent.setDescription(updatedEvent.getDescription());
+            existingEvent.setDate(updatedEvent.getDate());
+            existingEvent.setTime(updatedEvent.getTime());
+            existingEvent.setVenue(updatedEvent.getVenue());
+            existingEvent.setClub(updatedEvent.getClub());
+
+            // Save the updated event back to the repository
+            formRepo.save(existingEvent);
+        } else {
+            // Handle the case when the event with the given id doesn't exist
+            throw new RuntimeException("Event not found with id " + id);
+        }
+    }
+
 }
