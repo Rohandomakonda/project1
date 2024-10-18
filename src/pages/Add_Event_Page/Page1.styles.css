@@ -5,17 +5,25 @@ body {
   padding: 0;
   box-sizing: border-box;
   background-color: #f4f4f4;
+  display: flex;
+  justify-content: center; /* Center the content horizontally */
+  align-items: flex-start; /* Align items at the start vertically */
+  height: 100vh;
+  padding-top: 80px; /* Adjust this based on the height of your navbar */
 }
 
 /* Ensure the form is below the navbar */
 .form-container {
-  padding-top: 100px; /* 100px below the navbar */
-  margin: 100px ;
-  max-width: 600px; /* Center and set max width */
+  margin: 0 auto;
+  max-width: 600px;
   background-color: #ffffff;
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  position: relative;
+  top: 0; /* Reset any potential offset from other styles */
+  z-index: 1;
 }
 
 /* Form title */
@@ -125,7 +133,6 @@ body {
   filter: invert(0.5);
   cursor: pointer;
 }
-
 
 /* Responsive design */
 @media (max-width: 768px) {

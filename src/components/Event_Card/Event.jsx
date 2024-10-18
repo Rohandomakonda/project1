@@ -26,7 +26,7 @@ function Event(props){
     }
 
   return (
-   <div className="card-container" onMouseEnter={handleFlip} onMouseLeave={handleFlip}>
+   <div className="card-container" onClick={handleFlip} >
          <div className={`card ${isFlipped ? 'is-flipped' : ''}`}>
            {/* Front of the card */}
            <div className="card-face card-front">
