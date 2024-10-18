@@ -53,7 +53,7 @@ function Update() {
       time: formattedTime,
     };
 
-    axios.put(`http://localhost:8080/updateEvent/${id}`, updatedDetails)
+    axios.put(`http://localhost:8080/updateEvent/${id}`, details)
       .then((resp) => {
         console.log(resp.data);
         alert("Event updated successfully!");
