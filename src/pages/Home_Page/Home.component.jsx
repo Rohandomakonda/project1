@@ -25,11 +25,8 @@ const handleDelete=()=>{
     }
 
 const handleClick=()=>{
-        navigate("/login");
+        navigate("/signin");
     }
-const handleClick1=()=>{
-        navigate("/signup");
-}
     return(
         <div className="public-events">
            <h1>Public events</h1>
@@ -47,7 +44,6 @@ const handleClick1=()=>{
             />
             ))}
         <button onClick = {handleClick}>Get started</button>
-        <button onClick = {handleClick1}>Register</button>
         </div>
     )
 }

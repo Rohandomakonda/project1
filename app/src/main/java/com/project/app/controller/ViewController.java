@@ -45,4 +45,14 @@ public class ViewController {
             return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/getEvent/{id}")
+    public Event getEventToUpdate(@PathVariable int id){
+        return viewservice.getEventById(id);
+    }
+
+    @PutMapping("/updateEvent/{id}")
+    public void updateEvent(@PathVariable int id,@RequestBody Event event){
+        viewservice.updateEvent(id,event);
+    }
 }
