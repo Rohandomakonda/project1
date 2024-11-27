@@ -25,8 +25,11 @@ const handleDelete=()=>{
     }
 
 const handleClick=()=>{
-        navigate("/signin");
+        navigate("/login");
     }
+const handleClick1=()=>{
+        navigate("/signup");
+}
     return(
         <div className="public-events">
            <h1>Public events</h1>
@@ -44,6 +47,7 @@ const handleClick=()=>{
             />
             ))}
         <button onClick = {handleClick}>Get started</button>
+        <button onClick = {handleClick1}>Register</button>
         </div>
     )
 }
