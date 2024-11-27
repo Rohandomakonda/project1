@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar.component.jsx";
 import Home from "./pages/Home_Page/Home.component.jsx";
 import Update from "./pages/update_page/Update.jsx";
+import Login from "./pages/LoginPage/Login.jsx";
+import SignUp from "./pages/SignUp_Page/signup.component.jsx";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -33,6 +35,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/addevent" element={<Form />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
               <Route path="/viewevents" element={<View />} />
               <Route path="/Update/:id" element={<Update />} />
             </Routes>
