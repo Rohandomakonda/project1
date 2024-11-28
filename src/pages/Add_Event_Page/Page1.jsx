@@ -18,6 +18,14 @@ function Form() {
     const [previews, setPreviews] = useState();
 
     useEffect(() => {
+        const token = localStorage.getItem("authToken");
+
+            if (!token) {
+              alert("Session expired. Please login again.");
+              window.location.href = "/login"; // Redirect to login if token is missing
+              return;
+            }
+
         if (!files) {
             return;
         }
@@ -37,7 +45,7 @@ function Form() {
 
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit =  (e) => {
         e.preventDefault();
 
         const formattedDate = new Date(details.date);
@@ -49,16 +57,25 @@ function Form() {
             time: formattedTime
         };
 
-        axios
-            .post("http://localhost:8080/addevent", Details)
-            .then((resp) => {
-                console.log(resp.data);
-                alert("Event submitted successfully!");
-                navigate("/");
-            })
-            .catch((error) => {
-                alert("Error submitting event: " + error);
-            });
+        try {
+           const token = localStorage.getItem("authToken"); // Retrieve token from localStorage
+
+           const response =  axios.post(
+             "http://localhost:8080/addevent",
+             Details, // Event details to send in the request body
+             {
+               headers: {
+                 Authorization: `Bearer ${token}`, // Add the Authorization header
+               },
+             }
+           );
+
+           console.log("Event added successfully:", response.data);
+           alert("Event added successfully!");
+         } catch (error) {
+           console.error("Error adding event:", error.message);
+           alert("Failed to add event: " + error.message);
+         }
     };
 
     const change = (event) => {

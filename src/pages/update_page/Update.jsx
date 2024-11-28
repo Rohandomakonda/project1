@@ -20,7 +20,9 @@ function Update() {
 
   // Fetch event details on component mount
   useEffect(() => {
-    axios.get(`http://localhost:8080/getEvent/${id}`)
+      const token = localStorage.getItem("authToken");
+    axios.get(`http://localhost:8080/getEvent/${id}`,{
+     headers: { Authorization: `Bearer ${token}` }, })
       .then((response) => {
 //         const event = response.data;
 //         setDetails({
@@ -42,6 +44,7 @@ function Update() {
 
   // Handle form submission
   const handleSubmit = (e) => {
+      const token = localStorage.getItem("authToken");
     e.preventDefault(); // Prevents default form submit behavior
 
     const formattedDate = new Date(details.date).toISOString().split("T")[0]; // Format to YYYY-MM-DD
@@ -53,7 +56,8 @@ function Update() {
       time: formattedTime,
     };
 
-    axios.put(`http://localhost:8080/updateEvent/${id}`, details)
+    axios.put(`http://localhost:8080/updateEvent/${id}`, details,{
+     headers: { Authorization: `Bearer ${token}` },})
       .then((resp) => {
         console.log(resp.data);
         alert("Event updated successfully!");
