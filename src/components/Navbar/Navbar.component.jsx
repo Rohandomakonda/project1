@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 
 function Navbar() {
   const [scrolling, setScrolling] = useState(false);
-  const navigate=useNavigate();
+ // const navigate=useNavigate();
   // Handle scroll event
   const handleScroll = () => {
     if (window.scrollY > 50) {

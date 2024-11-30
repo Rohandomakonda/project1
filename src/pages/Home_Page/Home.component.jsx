@@ -25,7 +25,7 @@ const handleDelete=()=>{
     }
 
 const handleClick=()=>{
-        navigate("/signin");
+        navigate("/register");
     }
     return(
         <div className="public-events">

@@ -1,82 +1,104 @@
-/* Home.styles.css */
+/* General Styling */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(to bottom right, #f8fafc, #e8edf3);
+  color: #333;
+  min-height: 100vh;
+}
+
+/* Public Events Container */
 .public-events {
-    padding: 50px;
-    background-color: #f4f4f4;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: center;
 }
 
-h1 {
-    color: #2a9d8f;
-    margin-bottom: 30px;
+/* Heading */
+.public-events h1 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #2c3e50;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.events-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-}
-
+/* Event Card Container */
 .event-card {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    width: 250px;
-    opacity: 0; /* Start hidden */
-    transform: scale(0); /* Start at 0 size */
-    animation: boomIn 0.7s ease forwards; /* Apply boom animation */
-    transition: transform 0.3s ease;
+  background: white;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-@keyframes boomIn {
-    0% {
-        transform: scale(0) rotate(-180deg);
-        opacity: 0;
-    }
-    50% {
-        transform: scale(1.2) rotate(90deg);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(1) rotate(0deg);
-        opacity: 1;
-    }
+.event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
+/* Event Card Details */
 .event-card h2 {
-    color: #2a9d8f;
-    margin-bottom: 10px;
+  font-size: 24px;
+  color: #34495e;
+  margin-bottom: 10px;
 }
 
 .event-card p {
-    color: #333;
+  font-size: 16px;
+  color: #7f8c8d;
+  margin-bottom: 10px;
 }
 
-.loading {
-    font-size: 20px;
-    color: #2a9d8f;
+/* Event Details Spacing */
+.event-card .event-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #95a5a6;
 }
 
-/* Apply staggered animation */
-.boom-effect {
-    animation: boomIn 0.7s ease forwards;
-    opacity: 0;
-    transform: scale(0);
+/* Delete Button */
+.event-card button {
+  padding: 8px 12px;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
-/* Animation Delay */
-.boom-effect {
-    animation: boomIn 0.7s ease forwards;
-    opacity: 0;
-    transform: scale(0);
+.event-card button:hover {
+  background: #c0392b;
+  transform: scale(1.05);
 }
-.event-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+/* Get Started Button */
+button {
+  margin-top: 30px;
+  padding: 12px 20px;
+  background: #2980b9;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background: #1c5985;
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(0.95);
 }

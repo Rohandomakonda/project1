@@ -1,67 +1,94 @@
+/* General Styling */
 body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #6e8efb, #a777e3);
-  height: 100vh;
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(to bottom right, #eef2f3, #cfd9df);
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0;
-}
-
-.signup-container {
-  background-color: white;
-  width: 100%;
-  max-width: 400px;
-  padding: 20px 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  text-align: center;
-}
-
-.signup-container h2 {
-  margin-bottom: 20px;
+  height: 100vh;
   color: #333;
 }
 
-.signup-container input {
+/* Signup/OTP Container */
+.signup-container {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 40px 30px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+/* Form Title */
+.signup-form h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #2c3e50;
+  font-weight: bold;
+}
+
+/* Form Instructions */
+.signup-form p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Input Fields */
+.signup-form input {
   width: 100%;
   padding: 10px 15px;
   margin: 10px 0;
+  font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 16px;
+  transition: border-color 0.3s ease;
 }
 
-.signup-container input:focus {
+.signup-form input:focus {
+  border-color: #3498db;
   outline: none;
-  border: 1px solid #6e8efb;
-  box-shadow: 0 0 5px rgba(110, 142, 251, 0.5);
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
 }
 
-.signup-container button {
+/* Buttons */
+.signup-form button {
   width: 100%;
-  padding: 10px 15px;
-  background-color: #6e8efb;
+  padding: 12px;
+  background: #3498db;
   color: white;
   border: none;
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.signup-container button:hover {
-  background-color: #5769c8;
+.signup-form button:hover {
+  background: #1d6fa5;
+  transform: scale(1.05);
 }
 
-.signup-container a {
-  display: block;
-  margin-top: 15px;
-  color: #6e8efb;
-  text-decoration: none;
+.signup-form button:active {
+  background: #145d84;
+  transform: scale(0.98);
+}
+
+/* Login Link */
+.login-link {
+  margin-top: 20px;
   font-size: 14px;
 }
 
-.signup-container a:hover {
-  text-decoration: underline;
+.login-link a {
+  color: #3498db;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.login-link a:hover {
+  color: #1d6fa5;
 }
