@@ -36,19 +36,26 @@ function Recruitment(){
                       alert("Session expired. Please login again.");
                       window.location.href = "/login"; // Redirect to login if token is missing
                       return;
-                    }
+                  }
 
                  console.log(formattedDetails);
-                const response = await axios.post(
-                    "http://localhost:8080/api/postRecruitment",
-                    formattedDetails,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`, // Add the Authorization header
-                        },
-                    }
-                );
-
+                const response = axios.post(
+                        "http://localhost:8080/api/postRecruitment",
+                        formattedDetails,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`, // Add the Authorization header
+                            },
+                        }
+                    )
+                    .then((response) => {
+                        // This code will run when the request is successful
+                        console.log('Response:', response.data);
+                    })
+                    .catch((error) => {
+                        // This code will run when an error occurs
+                        console.error('Error sending recruitment details:', error);
+                    });
 
                 console.log("Recruitment added successfully:", response.data);
                 alert("Recruitment added successfully!");

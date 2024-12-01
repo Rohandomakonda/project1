@@ -71,7 +71,7 @@ function Form() {
         try {
             const token = localStorage.getItem("authToken"); // Retrieve token from localStorage
 
-            const response = await axios.post(
+            const response = axios.post(
                 "http://localhost:8080/addevent",
                 formData, // Event details to send in the request body
                 {
@@ -79,7 +79,18 @@ function Form() {
                         Authorization: `Bearer ${token}`, // Add the Authorization header
                     },
                 }
-            );
+            )
+            .then((response) => {
+                // This code will run when the request is successful
+                console.log('Event added successfully:', response.data);
+                alert("Event added successfully!");
+                navigate("/viewevents"); // Redirect to the events page
+            })
+            .catch((error) => {
+                // This code will run when an error occurs
+                console.error('Error adding event:', error);
+                alert("Failed to add event: " + error.message);
+            });
 
             console.log("Event added successfully:", response.data);
             alert("Event added successfully!");

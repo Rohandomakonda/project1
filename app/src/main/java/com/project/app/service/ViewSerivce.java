@@ -28,7 +28,7 @@ public class ViewSerivce {
         List<Event> all_events =  formRepo.findAll();
         LocalDate currentDate = LocalDate.now();
         for(Event event : all_events){
-            Date eventdate = event.getDate();
+            Date eventdate = Date.valueOf(event.getDate());
             LocalDate eventLocalDate = eventdate.toLocalDate();
             if(currentDate.isAfter(eventLocalDate)){
                 System.out.println("Deleting date on "+eventLocalDate);
@@ -57,8 +57,8 @@ public class ViewSerivce {
             List<Event> ongoing = new ArrayList<>();
 
             for (Event event : all_events) {
-                Date eventDate = event.getDate();
-                Time eventTime = event.getTime();
+                Date eventDate = Date.valueOf(event.getDate());
+                Time eventTime = Time.valueOf(event.getTime());
                 LocalDate eventLocalDate = eventDate.toLocalDate();
                 LocalTime eventLocalTime = eventTime.toLocalTime();
 

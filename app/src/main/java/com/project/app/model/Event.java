@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
 @Entity
@@ -18,8 +20,8 @@ public class Event {
     private int id;
     private String title;
     private String description;
-    private Date date;
-    private Time time;
+    private LocalDate date;
+    private LocalTime time;
     private String venue;
     private String club;
     private String venueDescription;

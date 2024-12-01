@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalTime;
 
 @Data
 @Entity
@@ -23,7 +24,7 @@ public class Recruitment {
     private String title;
     private String description;
     private Date date;
-    private Time time;
+    private LocalTime time;
     private String venue;
     private String club;
     private String venueDescription;
