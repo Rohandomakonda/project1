@@ -12,10 +12,11 @@ function Form() {
         venue: "",
         venueDescription: "",
         club: "",
-        imgUrl: [],
         isPublic: true,
     });
     const [files, setFiles] = useState(null);
+    const [image, setImage] = useState(null);
+
     const [previews, setPreviews] = useState([]);
 
     useEffect(() => {
@@ -49,6 +50,8 @@ function Form() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+   const formData = new FormData();
+    formData.append("imageFile", image);
 
         const formattedDate = new Date(details.date);
         const formattedTime = details.time + ":00"; // Add seconds
@@ -58,13 +61,19 @@ function Form() {
             date: formattedDate.toISOString().split("T")[0],
             time: formattedTime
         };
+    formData.append(
+              "events",
+              new Blob([JSON.stringify(formattedDetails)], { type: "application/json" })
+            );
+
+
 
         try {
             const token = localStorage.getItem("authToken"); // Retrieve token from localStorage
 
             const response = await axios.post(
                 "http://localhost:8080/addevent",
-                formattedDetails, // Event details to send in the request body
+                formData, // Event details to send in the request body
                 {
                     headers: {
                         Authorization: `Bearer ${token}`, // Add the Authorization header
@@ -104,6 +113,8 @@ function Form() {
                 imgUrl: fileUrls,
             }));
         }
+    setImage(e.target.files[0]);
+
     };
 
     return (

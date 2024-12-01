@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Event from "../../components/Event_Card/Event";
-
-import axios from "axios"// Assume 'api.js' handles axios configuration
+import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
 import "./View.styles.css";
 
@@ -27,6 +26,7 @@ const View = () => {
     const fetchEvents = axios.get("http://localhost:8080/viewevents", {
       headers: { Authorization: `Bearer ${token}` },
     });
+
     const fetchOngoingEvents = axios.get("http://localhost:8080/ongoingevents", {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -47,8 +47,6 @@ const View = () => {
       .finally(() => {
         setLoading(false); // Set loading to false after fetching is complete
       });
-
-
   }, []);
 
   const handleDelete = (id) => {
@@ -91,7 +89,7 @@ const View = () => {
           time={event.time}
           venue={event.venue}
           club={event.club}
-          imgUrl={event.imgUrl[0]}
+          imgUrl={`http://localhost:8080/${event.id}/image`} // Construct image URL dynamically
           venue_description={event.venueDescription}
           delete={handleDelete}
         />

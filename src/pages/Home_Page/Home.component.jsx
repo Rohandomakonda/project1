@@ -39,7 +39,7 @@ const handleClick=()=>{
               date={event.date}
               time={event.time}
               venue={event.venue}
-              imgUrl={event.imgUrl[0]}
+              imgUrl={`http://localhost:8080/${event.id}/image`}
               club={event.club}
               delete={handleDelete}
             />
