@@ -16,6 +16,7 @@ const Login = () => {
       if (token) {
         localStorage.setItem("authToken", token);
         alert("Login successful!");
+        window.location.reload();
         navigate("/"); // Redirect to Home
       }
     } catch (error) {

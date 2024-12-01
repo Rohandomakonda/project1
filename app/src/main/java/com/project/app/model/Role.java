@@ -2,5 +2,7 @@ package com.project.app.model;
 
 public enum Role {
     USER,
-    ADMIN
+    ADMIN,
+    CLUB_SEC,
+    FACULTY_ADVISOR
 }

@@ -1,61 +1,60 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import "./Navbar.styles.css";
-import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import "./Navbar.styles.css"
 
 function Navbar() {
   const [scrolling, setScrolling] = useState(false);
- // const navigate=useNavigate();
-  // Handle scroll event
-  const handleScroll = () => {
-    if (window.scrollY > 50) {
-      setScrolling(true); // Add the 'scrolled' class when user scrolls down
-    } else {
-      setScrolling(false); // Remove the class when back at the top
-    }
-  };
-  const handleLogout = (e) => {
-    // Remove the auth token from localStorage (or sessionStorage)
-    localStorage.removeItem("authToken");
-
-    // Optional: Send a logout request to the server to clear the session or invalidate the token
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      axios.post(
-        "http://localhost:8080/api/auth/logout",
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then(() => {
-        alert("Logged out successfully");
-        // Optionally navigate to login page after logout
-        window.location.href = "/login";
-      })
-      .catch((error) => {
-        alert("Error logging out: " + error.message);
-      });
-    }
-  };
-
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Set up event listener for scroll
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => {
+      setScrolling(window.scrollY > 50);
+    };
 
-    // Clean up event listener when component is unmounted
+    const checkAuthStatus = () => {
+      const token = localStorage.getItem('authToken');
+      setIsAuthenticated(!!token);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    checkAuthStatus(); // Check auth status on mount
+
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-  const token=localStorage.getItem("authToken");
+
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        await axios.post(
+          'http://localhost:8080/api/auth/logout',
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        localStorage.removeItem('authToken');
+        setIsAuthenticated(false);
+        alert("logout successfull");
+        navigate('/');
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Still remove token and update state even if server request fails
+      localStorage.removeItem('authToken');
+      setIsAuthenticated(false);
+      navigate('/');
+    }
+  };
 
   return (
-    <nav className={`navbar ${scrolling ? "scrolled" : ""}`}>
+    <nav className={`navbar ${scrolling ? 'scrolled' : ''}`}>
       <div className="navbar-logo">
         <Link to="/">NITW Events</Link>
       </div>
@@ -67,10 +66,11 @@ function Navbar() {
         <li><Link to="/recruitments">Recruitments</Link></li>
       </ul>
       <ul className="navbar-profile">
-        {token ? (
-          <li onClick={handleLogout} style={{ cursor: "pointer" }}>
+        {isAuthenticated ? (
+          <li onClick={handleLogout} style={{ cursor: 'pointer' }}>
             Logout
           </li>
+
         ) : (
           <li>
             <Link to="/login">Login</Link>

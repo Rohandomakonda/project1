@@ -10,10 +10,10 @@ body {
 /* Ensure the form is below the navbar */
 .form-container {
   padding-top: 100px; /* 100px below the navbar */
-  margin: 100px ;
+  margin: 2rem,auto ;
   max-width: 600px; /* Center and set max width */
   background-color: #ffffff;
-  padding: 40px;
+  padding: 1000,40,40,40px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
