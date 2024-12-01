@@ -25,7 +25,7 @@ public class RecruitmentController {
 
     @PostMapping("/api/postRecruitment")
     public ResponseEntity<?> postRecruitment(@Valid @RequestBody Recruitment recruitment){
-
+        System.out.println("posting");
         recruitmentService.addRecruitment(recruitment);
 
         return ResponseEntity.ok("Succesfully posted");

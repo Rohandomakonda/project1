@@ -9,7 +9,7 @@ import Update from "./pages/update_page/Update.jsx";
 import Login from "./pages/LoginPage/Login.jsx";
 import SignUp from "./pages/SignUp_Page/signup.component.jsx";
 import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRoute
-
+import Recruitment from "./pages/Recruitment/Recruitment.component.jsx";
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -60,6 +60,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Update />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/recruitments"
+                element={
+                  <ProtectedRoute>
+                    <Recruitment />
                   </ProtectedRoute>
                 }
               />

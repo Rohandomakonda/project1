@@ -20,4 +20,13 @@ public class EmailService {
     }
 
 
+    public void sendEmail(String email, String newEventAdded, String s) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject(newEventAdded);
+        message.setText(s);
+        mailSender.send(message);
+    }
+
+
 }
