@@ -72,6 +72,7 @@ function Navbar() {
         <li><Link to="/addevent">Add Events</Link></li>
         <li><Link to="/recruitments">Recruitments</Link></li>
       </ul>
+    
       <ul className="navbar-profile">
         {isAuthenticated ? (
           <li onClick={handleLogout} style={{ cursor: 'pointer' }}>

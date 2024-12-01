@@ -47,6 +47,8 @@ const View = () => {
       .finally(() => {
         setLoading(false); // Set loading to false after fetching is complete
       });
+
+
   }, []);
 
   const handleDelete = (id) => {
@@ -89,7 +91,7 @@ const View = () => {
           time={event.time}
           venue={event.venue}
           club={event.club}
-          imgUrl={event.imgUrl}
+          imgUrl={event.imgUrl[0]}
           venue_description={event.venueDescription}
           delete={handleDelete}
         />

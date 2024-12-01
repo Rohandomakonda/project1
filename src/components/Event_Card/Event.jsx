@@ -33,14 +33,12 @@ function Event(props){
          <div className={`card ${isFlipped ? 'is-flipped' : ''}`}>
            {/* Front of the card */}
            <div className="card-face card-front">
-
-
-                    <img src={props.imgUrl} alt="Event" style={{ width: "100px", height: "100px" }} />
-             <h2 className="event-title">{props.title}</h2>
+            <img src={props.imgUrl} alt="Event" />
            </div>
 
            {/* Back of the card */}
            <div className="card-face card-back">
+               <h2 className="event-title">{props.title}</h2>
              <p className="event-description_caption">Description</p>
              <p className="event-description">{props.description}</p>
              <p className="event-date">Date: {props.date}</p>

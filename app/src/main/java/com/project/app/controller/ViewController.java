@@ -18,18 +18,43 @@ public class ViewController {
     ViewSerivce viewservice;
 
     @GetMapping("/viewevents")
-    public List<Event> getAllEvents(){
-        return viewservice.getAllEvents();
+    public ResponseEntity<List<Event>> getAllEvents(){
+
+        if(viewservice.getAllEvents() != null)
+        return new ResponseEntity<>(viewservice.getAllEvents(),HttpStatus.OK);
+        else{
+            return new ResponseEntity<>(viewservice.getAllEvents(),HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @GetMapping("/event/{id}/image")
+    public ResponseEntity<?> getImageById(@PathVariable int id){
+        Event event = viewservice.getEventById(id);
+
+        if(event.getImageData() != null)
+        return new ResponseEntity<>(event.getImageData(),HttpStatus.OK);
+        else
+            return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @GetMapping("/ongoingevents")
-    public List<Event> getOngoingEvents(){
-       return viewservice.getongoingEvents();
+    public ResponseEntity<List<Event>> getOngoingEvents(){
+        if(viewservice.getongoingEvents() != null)
+            return new ResponseEntity<>(viewservice.getongoingEvents(),HttpStatus.OK);
+        else{
+            return new ResponseEntity<>(viewservice.getongoingEvents(),HttpStatus.NO_CONTENT);
+        }
     }
 
     @GetMapping("/public/events")
-    public List<Event> getPublicEvents(){
-        return viewservice.getPublicEvents();
+    public ResponseEntity<List<Event>> getPublicEvents(){
+        if(viewservice.getPublicEvents() != null){
+
+        return new ResponseEntity<>(viewservice.getPublicEvents(),HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(viewservice.getPublicEvents(),HttpStatus.NO_CONTENT);
+        }
     }
 
     @DeleteMapping("/event/{id}")

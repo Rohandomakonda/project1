@@ -9,12 +9,12 @@ body {
 
 /* Form container positioning */
 .form-container {
-  margin: 2rem auto;
+  margin-top: 450px;
   max-width: 600px;
   background-color: #ffffff;
-  padding: 1000,40,40,40;
+  padding: 40px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
   position: relative;
   z-index: 1;
 }

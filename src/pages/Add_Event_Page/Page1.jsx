@@ -74,6 +74,8 @@ function Form() {
 
             console.log("Event added successfully:", response.data);
             alert("Event added successfully!");
+            navigate("/viewevents");
+
         } catch (error) {
             console.error("Error adding event:", error.message);
             alert("Failed to add event: " + error.message);
