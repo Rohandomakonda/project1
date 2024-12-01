@@ -12,24 +12,26 @@ function Form() {
         venue: "",
         venueDescription: "",
         club: "",
+        imgUrl: [],
         isPublic: true,
     });
-    const [files, setFiles] = useState();
-    const [previews, setPreviews] = useState();
+    const [files, setFiles] = useState(null);
+    const [previews, setPreviews] = useState([]);
 
     useEffect(() => {
         const token = localStorage.getItem("authToken");
 
-            if (!token) {
-              alert("Session expired. Please login again.");
-              window.location.href = "/login"; // Redirect to login if token is missing
-              return;
-            }
+        if (!token) {
+            alert("Session expired. Please login again.");
+            window.location.href = "/login"; // Redirect to login if token is missing
+            return;
+        }
 
         if (!files) {
             return;
         }
-        let tmp = [];
+
+        const tmp = [];
         for (let i = 0; i < files.length; i++) {
             tmp.push(URL.createObjectURL(files[i]));
         }
@@ -45,37 +47,37 @@ function Form() {
 
     const navigate = useNavigate();
 
-    const handleSubmit =  (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const formattedDate = new Date(details.date);
         const formattedTime = details.time + ":00"; // Add seconds
 
-        const Details = {
+        const formattedDetails = {
             ...details,
             date: formattedDate.toISOString().split("T")[0],
             time: formattedTime
         };
 
         try {
-           const token = localStorage.getItem("authToken"); // Retrieve token from localStorage
+            const token = localStorage.getItem("authToken"); // Retrieve token from localStorage
 
-           const response =  axios.post(
-             "http://localhost:8080/addevent",
-             Details, // Event details to send in the request body
-             {
-               headers: {
-                 Authorization: `Bearer ${token}`, // Add the Authorization header
-               },
-             }
-           );
+            const response = await axios.post(
+                "http://localhost:8080/addevent",
+                formattedDetails, // Event details to send in the request body
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`, // Add the Authorization header
+                    },
+                }
+            );
 
-           console.log("Event added successfully:", response.data);
-           alert("Event added successfully!");
-         } catch (error) {
-           console.error("Error adding event:", error.message);
-           alert("Failed to add event: " + error.message);
-         }
+            console.log("Event added successfully:", response.data);
+            alert("Event added successfully!");
+        } catch (error) {
+            console.error("Error adding event:", error.message);
+            alert("Failed to add event: " + error.message);
+        }
     };
 
     const change = (event) => {
@@ -84,6 +86,22 @@ function Form() {
             ...prevDetails,
             [name]: name === "isPublic" ? value === "true" : value,
         }));
+    };
+
+    const handleFileChange = (e) => {
+        const selectedFiles = e.target.files;
+        if (selectedFiles && selectedFiles.length > 0) {
+            const fileUrls = [];
+            for (let i = 0; i < selectedFiles.length; i++) {
+                fileUrls.push(URL.createObjectURL(selectedFiles[i]));
+            }
+            setPreviews(fileUrls);
+            setFiles(selectedFiles);
+            setDetails((prevDetails) => ({
+                ...prevDetails,
+                imgUrl: fileUrls,
+            }));
+        }
     };
 
     return (
@@ -100,7 +118,6 @@ function Form() {
                     className="form-input"
                 />
                 <textarea
-                    type="text"
                     onChange={change}
                     placeholder="Description"
                     name="description"
@@ -142,11 +159,7 @@ function Form() {
                         required
                         id="file-input"
                         className="file-input"
-                        onChange={(e) => {
-                            if (e.target.files && e.target.files.length > 0) {
-                                setFiles(e.target.files);
-                            }
-                        }}
+                        onChange={handleFileChange}
                     />
                     <label htmlFor="file-input" className="file-input-label">
                         Upload Image

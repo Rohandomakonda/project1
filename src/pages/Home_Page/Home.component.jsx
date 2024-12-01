@@ -39,6 +39,7 @@ const handleClick=()=>{
               date={event.date}
               time={event.time}
               venue={event.venue}
+              imgUrl={event.imgUrl}
               club={event.club}
               delete={handleDelete}
             />

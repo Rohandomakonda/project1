@@ -25,12 +25,17 @@ function Event(props){
       setIsFlipped(!isFlipped); // Toggle the card flip state
     }
 
+
+
+
   return (
    <div className="card-container" onClick={handleFlip} >
          <div className={`card ${isFlipped ? 'is-flipped' : ''}`}>
            {/* Front of the card */}
            <div className="card-face card-front">
 
+
+                    <img src={props.imgUrl} alt="Event" style={{ width: "100px", height: "100px" }} />
              <h2 className="event-title">{props.title}</h2>
            </div>
 

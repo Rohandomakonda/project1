@@ -21,7 +21,14 @@ function Navbar() {
     window.addEventListener('scroll', handleScroll);
     checkAuthStatus(); // Check auth status on mount
 
+    // Set an interval to refresh the authentication status every 100ms
+    const interval = setInterval(() => {
+      checkAuthStatus(); // Refresh authentication status
+    }, 100);
+
+    // Cleanup interval on component unmount
     return () => {
+      clearInterval(interval);
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
@@ -41,7 +48,7 @@ function Navbar() {
         );
         localStorage.removeItem('authToken');
         setIsAuthenticated(false);
-        alert("logout successfull");
+        alert("Logout successful");
         navigate('/');
       }
     } catch (error) {
@@ -70,14 +77,12 @@ function Navbar() {
           <li onClick={handleLogout} style={{ cursor: 'pointer' }}>
             Logout
           </li>
-
         ) : (
           <li>
             <Link to="/login">Login</Link>
           </li>
         )}
       </ul>
-
     </nav>
   );
 }

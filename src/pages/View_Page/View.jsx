@@ -89,6 +89,7 @@ const View = () => {
           time={event.time}
           venue={event.venue}
           club={event.club}
+          imgUrl={event.imgUrl}
           venue_description={event.venueDescription}
           delete={handleDelete}
         />
