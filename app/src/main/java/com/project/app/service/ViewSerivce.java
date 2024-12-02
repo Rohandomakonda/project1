@@ -40,11 +40,11 @@ public class ViewSerivce {
 
     }
 
-    public Event getEventById(int id) {
+    public Event getEventById(long id) {
         return formRepo.findById(id).orElse(new Event());
     }
 
-    public void deleteEvent(int id) {
+    public void deleteEvent(long id) {
         formRepo.deleteById(id);
     }
 
@@ -76,7 +76,7 @@ public class ViewSerivce {
         return formRepo.findByisPublicTrue();
     }
 
-    public void updateEvent(int id, Event updatedEvent) {
+    public void updateEvent(long id, Event updatedEvent) {
         Optional<Event> existingEventOpt = formRepo.findById(id);
 
         if (existingEventOpt.isPresent()) {

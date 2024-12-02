@@ -70,6 +70,7 @@ public ResponseEntity<?> verifyEmail(@Valid @RequestBody VerificationRequest req
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+        System.out.println("logging in");
         return ResponseEntity.ok(authService.login(request));
     }
 

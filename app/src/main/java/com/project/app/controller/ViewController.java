@@ -2,9 +2,11 @@ package com.project.app.controller;
 
 
 import com.project.app.model.Event;
+import com.project.app.service.FormService;
 import com.project.app.service.ViewSerivce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +19,9 @@ public class ViewController {
     @Autowired
     ViewSerivce viewservice;
 
+    @Autowired
+    FormService service;
+
     @GetMapping("/viewevents")
     public ResponseEntity<List<Event>> getAllEvents(){
 
@@ -28,13 +33,11 @@ public class ViewController {
     }
 
     @GetMapping("/event/{id}/image")
-    public ResponseEntity<?> getImageById(@PathVariable int id){
-        Event event = viewservice.getEventById(id);
-
-        if(event.getImageData() != null)
-        return new ResponseEntity<>(event.getImageData(),HttpStatus.OK);
-        else
-            return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
+        byte[] image = service.getEventImage(id);
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG) // or IMAGE_PNG
+                .body(image);
     }
 
     @GetMapping("/ongoingevents")

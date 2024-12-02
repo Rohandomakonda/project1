@@ -13,9 +13,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/addevents")
 public class FormController {
 
     @Autowired
@@ -27,40 +29,23 @@ public class FormController {
     @Autowired
     private UserService userService;
 
-    @PostMapping(value = "/addevent",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> addEvent(
-            @RequestPart("event") Event event,
-            @RequestPart("imageFile") MultipartFile image) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Event> addEvent(
+
+            @RequestParam("title") String title,
+            @RequestParam("description") String description,
+            @RequestParam("date") String date,
+            @RequestParam("time") String time,
+            @RequestParam("venue") String venue,
+            @RequestParam("club") String club,
+            @RequestParam("isPublic") boolean isPublic,
+            @RequestParam("venueDescription") String venueDescription,
+            @RequestParam("image") MultipartFile image) throws IOException {
+
+        // Save event and image
         System.out.println("adding");
-        try {
-            // Validate input
-            if (event == null || image == null || image.isEmpty()) {
-                return new ResponseEntity<>("Event data or image file is missing",
-                        HttpStatus.BAD_REQUEST);
-            }
-
-            Event savedEvent = service.addEvent(event, image);
-
-            // Send email to all users
-            List<String> emailAddresses = userService.getAllUserEmails();
-            emailAddresses.forEach(email ->
-                    emailService.sendEmail(
-                            email,
-                            "New Event Added",
-                            "A new event has been added: " + event.getTitle()
-                    )
-            );
-
-            return new ResponseEntity<>(savedEvent, HttpStatus.CREATED);
-
-        } catch (IOException e) {
-            return new ResponseEntity<>("Error processing the request: " + e.getMessage(),
-                    HttpStatus.INTERNAL_SERVER_ERROR);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Unexpected error: " + e.getMessage(),
-                    HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        Event event = service.saveEvent(title, description, date, time,venueDescription, venue, club, isPublic, image);
+        return ResponseEntity.ok(event);
     }
+
 }
