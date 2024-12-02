@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Event from "../../components/Event_Card/Event";
+import Event from "../../components/Event_Card/Event"; // Assuming you have this component
 import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
 import "./View.styles.css";
@@ -10,6 +10,7 @@ const View = () => {
   const [onGoEvents, changeOngoingEvent] = useState([]);
   const [loading, setLoading] = useState(true); // State to track loading status
 
+  // Fetching events and ongoing events on initial render
   useEffect(() => {
     setLoading(true); // Set loading to true when fetching starts
 
@@ -49,6 +50,7 @@ const View = () => {
       });
   }, []);
 
+  // Handle deletion of events
   const handleDelete = (id) => {
     const token = localStorage.getItem("authToken");
 
@@ -57,6 +59,7 @@ const View = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
+        // Update the events list after successful deletion
         setEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
         changeOngoingEvent((prevEvents) => prevEvents.filter((event) => event.id !== id));
         alert("Event deleted successfully");
@@ -77,6 +80,7 @@ const View = () => {
     );
   });
 
+  // Render the event list, either ongoing or filtered
   const renderEventList = (eventList) => {
     return eventList.length > 0 ? (
       eventList.map((event) => (
@@ -91,7 +95,7 @@ const View = () => {
           club={event.club}
           image={event.image}
           venue_description={event.venueDescription}
-          delete={handleDelete}
+          delete={handleDelete} // Pass delete handler as a prop
         />
       ))
     ) : (
@@ -101,6 +105,7 @@ const View = () => {
 
   return (
     <div className="container">
+      {/* Ongoing Events Section */}
       <div className="ongoing-events">
         <h2 className="center-text">Ongoing events..</h2>
         <div className="events-container">
@@ -108,6 +113,7 @@ const View = () => {
         </div>
       </div>
 
+      {/* Search Bar */}
       <div className="search-container">
         <SearchIcon className="search-icon" />
         <input
@@ -119,6 +125,7 @@ const View = () => {
         />
       </div>
 
+      {/* All Events Section */}
       <div className="events-container">
         {loading ? <p>Loading events...</p> : renderEventList(filteredEvents)}
       </div>
