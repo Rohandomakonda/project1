@@ -47,14 +47,14 @@ function Update() {
       const token = localStorage.getItem("authToken");
     e.preventDefault(); // Prevents default form submit behavior
 
-    const formattedDate = new Date(details.date).toISOString().split("T")[0]; // Format to YYYY-MM-DD
-    const formattedTime = details.time + ":00"; // Add seconds to ensure format is HH:MM:SS
+    //const formattedDate = new Date(details.date).toISOString().split("T")[0]; // Format to YYYY-MM-DD
+    //const formattedTime = details.time + ":00"; // Add seconds to ensure format is HH:MM:SS
 
-    const updatedDetails = {
-      ...details,
-      date: formattedDate,
-      time: formattedTime,
-    };
+//     const updatedDetails = {
+//       ...details,
+//       date: formattedDate,
+//       time: formattedTime,
+//     };
 
     axios.put(`http://localhost:8080/updateEvent/${id}`, details,{
      headers: { Authorization: `Bearer ${token}` },})

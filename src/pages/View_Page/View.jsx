@@ -48,6 +48,8 @@ const View = () => {
       .finally(() => {
         setLoading(false); // Set loading to false after fetching is complete
       });
+
+    console.log(events);
   }, []);
 
   // Handle deletion of events
@@ -93,7 +95,7 @@ const View = () => {
           time={event.time}
           venue={event.venue}
           club={event.club}
-          image={event.image}
+          image={`data:image/jpeg;base64,${event.image}`}
           venue_description={event.venueDescription}
           delete={handleDelete} // Pass delete handler as a prop
         />

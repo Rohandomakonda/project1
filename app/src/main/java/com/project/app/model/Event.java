@@ -3,6 +3,9 @@ package com.project.app.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.sql.Time;
+import java.util.Date;
+
 @Entity
 @Data
 public class Event {

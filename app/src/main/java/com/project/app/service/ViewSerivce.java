@@ -2,6 +2,7 @@ package com.project.app.service;
 
 import com.project.app.model.Event;
 import com.project.app.repo.FormRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +22,9 @@ public class ViewSerivce {
 
     @Autowired
     FormRepo formRepo;
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    @Transactional
     public List<Event> getAllEvents() {
         System.out.println("finding all");
 
@@ -28,10 +32,14 @@ public class ViewSerivce {
         List<Event> all_events =  formRepo.findAll();
         LocalDate currentDate = LocalDate.now();
         for(Event event : all_events){
-            Date eventdate = Date.valueOf(event.getDate());
-            LocalDate eventLocalDate = eventdate.toLocalDate();
-            if(currentDate.isAfter(eventLocalDate)){
-                System.out.println("Deleting date on "+eventLocalDate);
+            String eventdate =  event.getDate();
+            String eventTime = event.getTime();
+
+            LocalDate eventDate = LocalDate.parse(eventdate, dateFormatter);
+           // LocalDateTime eventDateTime = LocalDateTime.of(eventDate, LocalDate.parse(eventTimeString).atStartOfDay().toLocalTime()); // Combine date and time if needed
+
+            if(currentDate.isAfter(eventDate)){
+                System.out.println("Deleting date on "+eventDate);
                 formRepo.deleteById(event.getId());
             }
         }
@@ -57,13 +65,13 @@ public class ViewSerivce {
             List<Event> ongoing = new ArrayList<>();
 
             for (Event event : all_events) {
-                Date eventDate = Date.valueOf(event.getDate());
-                Time eventTime = Time.valueOf(event.getTime());
-                LocalDate eventLocalDate = eventDate.toLocalDate();
-                LocalTime eventLocalTime = eventTime.toLocalTime();
+                String eventdate =  event.getDate();
+                String eventTime = event.getTime();
+
+                LocalDate eventDate = LocalDate.parse(eventdate, dateFormatter);
 
                 // Check if the event is today and the current time is before or during the event
-                if (currentDate.isEqual(eventLocalDate) && !currentTime.isAfter(eventLocalTime)) {
+                if (currentDate.isEqual(eventDate)) {
                     ongoing.add(event);
                 }
             }

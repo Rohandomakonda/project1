@@ -3,11 +3,14 @@ package com.project.app.service;
 
 import com.project.app.model.Event;
 import com.project.app.repo.FormRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.sql.Time;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,7 +33,8 @@ public class FormService {
 //
 //    }
 
-    public Event saveEvent(String title, String description, String date, String time,String venueDescription, String venue, String club, boolean isPublic, MultipartFile image) throws IOException {
+    @Transactional
+    public Event saveEvent(String title, String description, String date, String time, String venueDescription, String venue, String club, boolean isPublic, MultipartFile image) throws IOException {
         Event event = new Event();
         event.setTitle(title);
         event.setDescription(description);
