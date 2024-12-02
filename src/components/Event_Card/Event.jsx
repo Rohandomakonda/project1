@@ -33,7 +33,7 @@ function Event(props){
          <div className={`card ${isFlipped ? 'is-flipped' : ''}`}>
            {/* Front of the card */}
            <div className="card-face card-front">
-            <img src={props.imgUrl} alt="Event" />
+            <img src={props.image} alt="Event" />
            </div>
 
            {/* Back of the card */}

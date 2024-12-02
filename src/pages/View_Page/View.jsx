@@ -89,7 +89,7 @@ const View = () => {
           time={event.time}
           venue={event.venue}
           club={event.club}
-          imgUrl={`http://localhost:8080/${event.id}/image`} // Construct image URL dynamically
+          image={event.image}
           venue_description={event.venueDescription}
           delete={handleDelete}
         />
