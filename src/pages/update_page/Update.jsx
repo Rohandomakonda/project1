@@ -7,6 +7,7 @@ function Update() {
   const { id } = useParams(); // Extract id from URL
   const navigate = useNavigate(); // For navigation after update
 
+  // State to hold form details
   const [details, setDetails] = useState({
     title: '',
     description: '',
@@ -15,56 +16,49 @@ function Update() {
     venue: '',
     venueDescription: '',
     club: '',
-    isPublic: false,
+    isPublic: false, // Default value to avoid errors
   });
 
   // Fetch event details on component mount
   useEffect(() => {
-      const token = localStorage.getItem("authToken");
-    axios.get(`http://localhost:8080/getEvent/${id}`,{
-     headers: { Authorization: `Bearer ${token}` }, })
+    const token = localStorage.getItem("authToken");
+    axios.get(`http://localhost:8080/getEvent/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((response) => {
-//         const event = response.data;
-//         setDetails({
-//           title: event.title,
-//           description: event.description,
-//           date: event.date,
-//           time: event.time,
-//           venue: event.venue,
-//           venueDescription: event.venueDescription,
-//           club: event.club,
-//           isPublic: event.isPublic,
-//         });
-    setDetails(response.data);
+        const event = response.data;
+        setDetails({
+          title: event.title || '',
+          description: event.description || '',
+          date: event.date || '',
+          time: event.time || '',
+          venue: event.venue || '',
+          venueDescription: event.venueDescription || '',
+          club: event.club || '',
+          isPublic: event.isPublic !== undefined ? event.isPublic : false, // Ensure default boolean
+        });
       })
       .catch((error) => {
         console.error("Error fetching event details:", error);
       });
-  }, [id]); // Dependency array to run on component mount
+  }, [id]);
 
   // Handle form submission
   const handleSubmit = (e) => {
-      const token = localStorage.getItem("authToken");
     e.preventDefault(); // Prevents default form submit behavior
+    const token = localStorage.getItem("authToken");
 
-    //const formattedDate = new Date(details.date).toISOString().split("T")[0]; // Format to YYYY-MM-DD
-    //const formattedTime = details.time + ":00"; // Add seconds to ensure format is HH:MM:SS
-
-//     const updatedDetails = {
-//       ...details,
-//       date: formattedDate,
-//       time: formattedTime,
-//     };
-
-    axios.put(`http://localhost:8080/updateEvent/${id}`, details,{
-     headers: { Authorization: `Bearer ${token}` },})
+    axios.put(`http://localhost:8080/updateEvent/${id}`, details, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((resp) => {
         console.log(resp.data);
         alert("Event updated successfully!");
-        navigate("/viewevents"); // Redirect to the events page after successful update
+        navigate("/viewevents"); // Redirect to events page after successful update
       })
       .catch((error) => {
-        alert("Error updating event: " + error);
+        console.error("Error updating event:", error);
+        alert("Error updating event: " + error.message);
       });
   };
 
@@ -143,9 +137,9 @@ function Update() {
           className="form-select"
           onChange={handleChange}
           name="isPublic"
-          value={details.isPublic.toString()}
+          value={details.isPublic !== undefined ? details.isPublic.toString() : ''}
         >
-          <option value="" >Select Event Type</option>
+          <option value="">Select Event Type</option>
           <option value="false">Private</option>
           <option value="true">Public</option>
         </select>
