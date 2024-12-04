@@ -7,7 +7,6 @@ import "./ViewRecruitment.css";
 const ViewRecruitments = () => {
   const [recruitments, setRecruitments] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [onGoingRecruitments, setOngoingRecruitments] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -21,18 +20,12 @@ const ViewRecruitments = () => {
       return;
     }
 
-    const fetchAllRecruitments = axios.get("http://localhost:8080/api/getAllRecruitments", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    const fetchOngoingRecruitments = axios.get("http://localhost:8080/api/getAllRecruitments", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    Promise.all([fetchAllRecruitments, fetchOngoingRecruitments])
-      .then(([allRecruitmentsResp, ongoingRecruitmentsResp]) => {
-        setRecruitments(allRecruitmentsResp.data || []); // Fallback to empty array
-        setOngoingRecruitments(ongoingRecruitmentsResp.data || []);
+    axios
+      .get("http://localhost:8080/api/getAllRecruitments", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((allRecruitmentsResp) => {
+        setRecruitments(allRecruitmentsResp.data); // Assuming this is the data you want
       })
       .catch((error) => {
         alert("Error fetching recruitments: " + error.message);
@@ -53,7 +46,6 @@ const ViewRecruitments = () => {
       })
       .then(() => {
         setRecruitments((prev) => prev.filter((event) => event.id !== id));
-        setOngoingRecruitments((prev) => prev.filter((event) => event.id !== id));
         alert("Event deleted successfully");
       })
       .catch((error) => {
@@ -96,13 +88,6 @@ const ViewRecruitments = () => {
 
   return (
     <div className="container">
-      <div className="ongoing-events">
-        <h2 className="center-text">Ongoing Recruitments</h2>
-        <div className="events-container">
-          {loading ? <p>Loading recruitments...</p> : renderRecruitmentList(onGoingRecruitments)}
-        </div>
-      </div>
-
       <div className="search-container">
         <SearchIcon className="search-icon" />
         <input

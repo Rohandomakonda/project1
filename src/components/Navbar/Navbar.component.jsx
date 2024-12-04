@@ -72,6 +72,7 @@ function Navbar() {
         <li><Link to="/addevent">Add Events</Link></li>
         <li><Link to="/recruitments">Add Recruitments</Link></li>
         <li><Link to="/viewRecruitments">View Recruitments</Link></li>
+         <li><Link to="/viewclubs">View clubs</Link></li>
       </ul>
 
       <ul className="navbar-profile">

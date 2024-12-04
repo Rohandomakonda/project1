@@ -37,7 +37,12 @@
   color: black;
   padding: 20px;
   transform: rotateY(180deg);
-   border-radius: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align content to the top */
+  height: 100%;
+  box-sizing: border-box; /* Ensures padding is included in the height calculation */
 }
 
 .event-title {
@@ -63,14 +68,33 @@
 }
 
 .event-delete-button,
-.event-update-button {
-  margin: 10px 5px;
-  padding: 5px 10px;
+.event-update-button,
+.event-register-button {
+  margin: 5px;
+  padding: 6px 12px; /* Smaller size for buttons */
   cursor: pointer;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.event-delete-button:hover,
+.event-update-button:hover,
+.event-register-button:hover {
+  background-color: #45a049; /* Slightly darker on hover */
 }
 
 .button-container {
   display: flex;
-  justify-content: center;
-  margin-top: 10px;
+  justify-content: space-evenly; /* Align buttons side by side */
+  margin-top: auto; /* Ensures buttons stay at the bottom of the card */
+  width: 100%;
+  gap: 10px; /* Space between buttons */
+}
+
+.event-fromLink {
+  color: blue;
+  text-decoration: underline;
 }

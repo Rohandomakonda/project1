@@ -11,6 +11,8 @@ import SignUp from "./pages/SignUp_Page/signup.component.jsx";
 import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRoute
 import Recruitment from "./pages/Recruitment/Recruitment.component.jsx";
 import ViewRecruitment from "./pages/View_Page/ViewRecruitment.jsx";
+import ViewClub from "./pages/clubs/ViewClub_page.jsx";
+import Club_info from "./pages/Club_Details/Club_Info.jsx"
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -38,6 +40,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<SignUp />} />
+               <Route path="/viewclubs" element={<ViewClub />} />
 
               {/* Protected Routes */}
               <Route
@@ -57,13 +60,21 @@ function App() {
                 }
               />
               <Route
-                path="/Update/:id"
+                path="/getclub/:name"
                 element={
                   <ProtectedRoute>
-                    <Update />
+                    <Club_info />
                   </ProtectedRoute>
                 }
               />
+               <Route
+                   path="/Update/:id"
+                    element={
+                   <ProtectedRoute>
+                    <Update />
+                     </ProtectedRoute>
+                      }
+                            />
               <Route
                 path="/recruitments"
                 element={
@@ -80,6 +91,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+
 
             </Routes>
           </>

@@ -1,0 +1,110 @@
+/* Container styling */
+.container {
+  background-color: #f4f4f4; /* Matches requested background */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  max-width: 800px;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Club heading */
+.container h1 {
+  font-size: 32px;
+  color: #333;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.container h2 {
+  font-size: 20px;
+  color: #666;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Events section */
+.ongoing-events {
+  background-color: #ffffff; /* White background for events section */
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.center-text {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* Events container styling */
+.events-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Individual event card */
+.event-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  padding: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.event-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.event-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.event-card h3 {
+  font-size: 18px;
+  color: #333;
+  margin: 0 0 10px 0;
+}
+
+.event-card p {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+/* Loader text */
+p {
+  text-align: center;
+  font-size: 18px;
+  color: #999;
+}
+
+/* Back to previous page button */
+.back-button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #0056b3;
+}

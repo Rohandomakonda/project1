@@ -17,12 +17,16 @@ function Recruitment(props) {
     navigate(`/Update/${props.id}`);
   }
 
+ function handleRegister(e) {
+   e.stopPropagation(); // Prevent flipping when clicking on the register button
+   window.open(props.formLink, '_blank'); // Open the form link in a new tab
+ }
+
+
   function generateGoogleMapsLink(venue) {
     const baseURL = "https://www.google.com/maps/search/?api=1&query=NITWARANGAL+";
     return baseURL + encodeURIComponent(venue);
   }
-
-
 
   function handleFlip() {
     setIsFlipped(!isFlipped);
@@ -54,20 +58,17 @@ function Recruitment(props) {
             {props.venue}
           </a>
           <p className="event-club">Club: {props.club}</p>
-            <a
-            className="event-fromLink"
-            href={(props.formLink)}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {props.venue}
-          </a>
+
           <div className="button-container">
             <button className="event-delete-button" onClick={handleDelete}>
               <DeleteIcon />
             </button>
             <button className="event-update-button" onClick={handleUpdate}>
               Update
+            </button>
+            {/* Register button */}
+            <button className="event-register-button" onClick={handleRegister} >
+              Register
             </button>
           </div>
         </div>
