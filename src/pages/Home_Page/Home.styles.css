@@ -1,104 +1,65 @@
-/* General Styling */
-body {
+/* Apply the background to the entire page */
+body{
   margin: 0;
   padding: 0;
-  font-family: 'Arial', sans-serif;
-  background: linear-gradient(to bottom right, #f8fafc, #e8edf3);
-  color: #333;
-  min-height: 100vh;
+  background-color: #f4f4f4;
+  min-height: 100%;
+  font-family: Arial, sans-serif; /* Optional for consistent font styling */
+  color: #333; /* Default text color */
+  box-sizing: border-box;
 }
 
-/* Public Events Container */
+/* Main Container for Public Events */
 .public-events {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  min-height: 100vh; /* Full height to cover the viewport */
+  box-sizing: border-box;
+  background-color: transparent; /* Ensure no override of background */
 }
 
-/* Heading */
+/* Heading Styling */
 .public-events h1 {
   font-size: 36px;
-  font-weight: bold;
-  margin-bottom: 30px;
-  color: #2c3e50;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
 }
 
-/* Event Card Container */
-.event-card {
-  background: white;
-  margin: 20px auto;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.event-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-}
-
-/* Event Card Details */
-.event-card h2 {
-  font-size: 24px;
-  color: #34495e;
-  margin-bottom: 10px;
-}
-
-.event-card p {
-  font-size: 16px;
-  color: #7f8c8d;
-  margin-bottom: 10px;
-}
-
-/* Event Details Spacing */
-.event-card .event-details {
+/* Event List Section */
+.event-list {
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  font-size: 14px;
-  color: #95a5a6;
+  justify-content: center;
+  gap: 20px;
 }
 
-/* Delete Button */
-.event-card button {
-  padding: 8px 12px;
-  background: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.event-card button:hover {
-  background: #c0392b;
-  transform: scale(1.05);
-}
-
-/* Get Started Button */
+/* Button Styling */
 button {
-  margin-top: 30px;
-  padding: 12px 20px;
-  background: #2980b9;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
+  background-color: #28a745;
+  color: #fff;
+  font-size: 18px;
+  padding: 12px 24px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background: #1c5985;
-  transform: scale(1.05);
+  background-color: #218838;
 }
 
-button:active {
-  transform: scale(0.95);
+/* Card Container Styling */
+.card-container {
+  background-color: transparent; /* Prevents any override from card-specific styles */
+}
+
+/* Ensure no white background in nested elements */
+.card, .event-card, .events-container {
+  background-color: transparent !important;
 }

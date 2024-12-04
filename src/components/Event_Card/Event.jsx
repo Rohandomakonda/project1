@@ -8,12 +8,12 @@ function Event(props) {
   const [isFlipped, setIsFlipped] = React.useState(false);
 
   function handleDelete(e) {
-    e.stopPropagation(); // Prevent flipping when clicking on the delete button
+    e.stopPropagation(); // Prevent flipping when clicking on delete button
     props.delete(props.id);
   }
 
   function handleUpdate(e) {
-    e.stopPropagation(); // Prevent flipping when clicking on the update button
+    e.stopPropagation(); // Prevent flipping when clicking on update button
     navigate(`/Update/${props.id}`);
   }
 
@@ -27,7 +27,7 @@ function Event(props) {
   }
 
   return (
-    <div className="card-container" onClick={handleFlip}>
+    <div  onClick={handleFlip}>
       <div className={`card ${isFlipped ? "is-flipped" : ""}`}>
         {/* Front of the card */}
         <div

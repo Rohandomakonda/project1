@@ -1,29 +1,26 @@
 import React, { useState, useEffect } from "react";
-import Event from "../../components/Event_Card/Event"; // Assuming you have this component
+import Event from "../../components/Event_Card/Event"; // Component for individual event cards
 import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
 import "./View.styles.css";
 
 const View = () => {
-  const [events, setEvents] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // State to manage search input
-  const [onGoEvents, changeOngoingEvent] = useState([]);
-  const [loading, setLoading] = useState(true); // State to track loading status
+  const [events, setEvents] = useState([]); // All events
+  const [searchTerm, setSearchTerm] = useState(""); // Search term for filtering
+  const [onGoEvents, setOnGoEvents] = useState([]); // Ongoing events
+  const [loading, setLoading] = useState(true); // Loading state
 
-  // Fetching events and ongoing events on initial render
   useEffect(() => {
-    setLoading(true); // Set loading to true when fetching starts
+    setLoading(true);
 
-    // Retrieve token from localStorage
     const token = localStorage.getItem("authToken");
-
     if (!token) {
-      alert("Session expired. Please login again.");
-      window.location.href = "/login"; // Redirect to login if token is missing
+      alert("Session expired. Please log in again.");
+      window.location.href = "/login";
       return;
     }
 
-    // API requests with Authorization header
+    // Fetch events and ongoing events in parallel
     const fetchEvents = axios.get("http://localhost:8080/viewevents", {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -32,27 +29,22 @@ const View = () => {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    // Wait for both API requests to finish
     Promise.all([fetchEvents, fetchOngoingEvents])
       .then(([allEventsResp, ongoingEventsResp]) => {
-        setEvents(allEventsResp.data);
-        changeOngoingEvent(ongoingEventsResp.data);
+        setEvents(allEventsResp.data); // Update all events
+        setOnGoEvents(ongoingEventsResp.data); // Update ongoing events
       })
       .catch((error) => {
-        alert("Error fetching events: " + error.message);
-        if (error.response && error.response.status === 401) {
-          alert("Session expired. Please login again.");
-          window.location.href = "/login"; // Redirect on unauthorized access
+        console.error("Error fetching events:", error);
+        if (error.response?.status === 401) {
+          alert("Session expired. Please log in again.");
+          window.location.href = "/login";
         }
       })
-      .finally(() => {
-        setLoading(false); // Set loading to false after fetching is complete
-      });
-
-    console.log(events);
+      .finally(() => setLoading(false));
   }, []);
 
-  // Handle deletion of events
+  // Delete event handler
   const handleDelete = (id) => {
     const token = localStorage.getItem("authToken");
 
@@ -61,57 +53,45 @@ const View = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
-        // Update the events list after successful deletion
         setEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
-        changeOngoingEvent((prevEvents) => prevEvents.filter((event) => event.id !== id));
+        setOnGoEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
         alert("Event deleted successfully");
       })
       .catch((error) => {
+        console.error("Error deleting event:", error);
         alert("Error deleting event: " + error.message);
       });
   };
 
-  // Filter events based on search term with priority (title > description > venue > club)
-  const filteredEvents = events.filter((event) => {
-    const lowerSearchTerm = searchTerm.toLowerCase();
-    return (
-      event.title.toLowerCase().includes(lowerSearchTerm) ||
-      event.description.toLowerCase().includes(lowerSearchTerm) ||
-      event.venue.toLowerCase().includes(lowerSearchTerm) ||
-      event.club.toLowerCase().includes(lowerSearchTerm)
-    );
-  });
+  // Filter events by search term
+  const filteredEvents = events.filter((event) =>
+    ["title", "description", "venue", "club"].some((key) =>
+      event[key]?.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
 
-  // Render the event list, either ongoing or filtered
-  const renderEventList = (eventList) => {
-    return eventList.length > 0 ? (
+  // Render event cards
+  const renderEvents = (eventList) =>
+    eventList.length > 0 ? (
       eventList.map((event) => (
         <Event
           key={event.id}
-          id={event.id}
-          title={event.title}
-          description={event.description}
-          date={event.date}
-          time={event.time}
-          venue={event.venue}
-          club={event.club}
-          image={`data:image/jpeg;base64,${event.image}`}
-          venue_description={event.venueDescription}
-          delete={handleDelete} // Pass delete handler as a prop
+          {...event}
+          image={`data:image/jpeg;base64,${event.image}`} // Image rendering
+          delete={handleDelete} // Delete handler
         />
       ))
     ) : (
       <p>No events found</p>
     );
-  };
 
   return (
     <div className="container">
       {/* Ongoing Events Section */}
       <div className="ongoing-events">
-        <h2 className="center-text">Ongoing events..</h2>
+        <h2 className="center-text">Ongoing Events</h2>
         <div className="events-container">
-          {loading ? <p>Loading events...</p> : renderEventList(onGoEvents)}
+          {loading ? <p>Loading...</p> : renderEvents(onGoEvents)}
         </div>
       </div>
 
@@ -123,13 +103,13 @@ const View = () => {
           placeholder="Search events"
           className="search-bar"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)} // Update search term on input change
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
 
       {/* All Events Section */}
       <div className="events-container">
-        {loading ? <p>Loading events...</p> : renderEventList(filteredEvents)}
+        {loading ? <p>Loading...</p> : renderEvents(filteredEvents)}
       </div>
     </div>
   );

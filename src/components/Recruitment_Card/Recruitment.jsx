@@ -33,7 +33,7 @@ function Recruitment(props) {
   }
 
   return (
-    <div className="card-container" onClick={handleFlip}>
+    <div  onClick={handleFlip}>
       <div className={`card ${isFlipped ? "is-flipped" : ""}`}>
         {/* Front of the card */}
         <div

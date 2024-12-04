@@ -1,4 +1,4 @@
-/* General page styling */
+/* General Styling */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -6,23 +6,27 @@ body {
   box-sizing: border-box;
   background-color: #f4f4f4;
 }
+
+/* Container */
 .container {
-  padding-top: 80px; /* Adjust based on the height of your navbar */
+  padding: 20px;
 }
+
 /* Ongoing Events Section */
 .ongoing-events {
   padding: 20px;
-  margin-top: 350px;
   border-radius: 8px;
+  margin-bottom: 20px;
 }
 
 .center-text {
   text-align: center;
+  font-size: 24px;
   color: #333;
   margin-bottom: 20px;
-  font-size: 24px;
 }
 
+/* Events Container */
 .events-container {
   display: flex;
   flex-wrap: wrap;
@@ -39,7 +43,7 @@ body {
   text-align: center;
 }
 
-/* Search bar styling */
+/* Search Bar Styling */
 .search-container {
   display: flex;
   justify-content: center;
@@ -61,20 +65,14 @@ body {
   border: 2px solid #ccc;
   border-radius: 8px;
   outline: none;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s ease;
 }
 
 .search-bar:focus {
   border-color: #007bff;
 }
 
-/* Loading message styling */
-p {
-  font-size: 18px;
-  color: #666;
-}
-
-/* Responsive styling */
+/* Responsive Design */
 @media (max-width: 768px) {
   .events-container {
     flex-direction: column;
