@@ -18,19 +18,24 @@ function Recruitment(){
 
         const navigate = useNavigate();
 
+        const [image, setImage] = useState(null); // For storing the image file
+
         const handleSubmit = async (e) => {
             e.preventDefault();
 
-            const formattedDate = new Date(details.date);
-            const formattedTime = details.time;
+           const formData = new FormData();
 
-            const formattedDetails = {
-                ...details,
-                date: formattedDate.toISOString().split("T")[0],
-                time: formattedTime
-            };
+               // Append form fields
+               Object.entries(details).forEach(([key, value]) => {
+                 formData.append(key, value);
+               });
 
-            try {
+               // Append image file
+               if (image) {
+                 formData.append("image", image);
+               }
+
+
                 const token = localStorage.getItem("authToken"); // Retrieve token from localStorage
                   if (!token) {
                       alert("Session expired. Please login again.");
@@ -38,32 +43,31 @@ function Recruitment(){
                       return;
                   }
 
-                 console.log(formattedDetails);
                 const response = axios.post(
                         "http://localhost:8080/api/postRecruitment",
-                        formattedDetails,
+                        formData,
                         {
                             headers: {
-                                Authorization: `Bearer ${token}`, // Add the Authorization header
+                                "Content-Type": "multipart/form-data",
+                                 Authorization: `Bearer ${token}`, // Authorization header
                             },
                         }
                     )
                     .then((response) => {
                         // This code will run when the request is successful
                         console.log('Response:', response.data);
+                        alert("added Recruitment successfully");
+                        navigate("/viewevents");
                     })
                     .catch((error) => {
                         // This code will run when an error occurs
                         console.error('Error sending recruitment details:', error);
+                        alert("Recruitment not added");
+
                     });
 
-                console.log("Recruitment added successfully:", response.data);
-                alert("Recruitment added successfully!");
-                navigate("/viewevents");
-            } catch (error) {
-                console.error("Error adding recruitment:", error.message);
-                alert("Failed to add recruitment: " + error.message);
-            }
+
+
 
 
         };
@@ -75,6 +79,10 @@ function Recruitment(){
                 [name]: value,
             }));
         };
+
+        const handleImageChange = (e) => {
+            setImage(e.target.files[0]); // Store the selected file
+         };
 
 
 
@@ -148,6 +156,13 @@ function Recruitment(){
                         value={details.club}
                         required
                         className="form-input"
+                    />
+
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        required
                     />
 
                      <input

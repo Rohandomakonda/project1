@@ -1,13 +1,17 @@
 package com.project.app.controller;
 
 
+import com.project.app.model.Event;
 import com.project.app.model.Recruitment;
 import com.project.app.service.RecruitmentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -23,12 +27,23 @@ public class RecruitmentController {
         return recruitmentService.getAllRecruitments();
     }
 
-    @PostMapping("/api/postRecruitment")
-    public ResponseEntity<?> postRecruitment(@Valid @RequestBody Recruitment recruitment){
-        System.out.println("posting");
-        recruitmentService.addRecruitment(recruitment);
+    @PostMapping(value = "/api/postRecruitment",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Recruitment> addRecruitment(
 
-        return ResponseEntity.ok("Succesfully posted");
+            @RequestParam("title") String title,
+            @RequestParam("description") String description,
+            @RequestParam("date") String date,
+            @RequestParam("time") String time,
+            @RequestParam("venue") String venue,
+            @RequestParam("club") String club,
+            @RequestParam("venueDescription") String venueDescription,
+            @RequestParam("formLink") String formLink,
+            @RequestParam("image") MultipartFile image) throws IOException {
+
+        // Save event and image
+        System.out.println("adding Recruitment");
+        Recruitment recruitment = recruitmentService.saveRecruitment(title, description, date, time,venueDescription, venue, club, formLink, image);
+        return ResponseEntity.ok(recruitment);
     }
 
 }

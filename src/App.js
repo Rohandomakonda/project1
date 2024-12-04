@@ -10,6 +10,7 @@ import Login from "./pages/LoginPage/Login.jsx";
 import SignUp from "./pages/SignUp_Page/signup.component.jsx";
 import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRoute
 import Recruitment from "./pages/Recruitment/Recruitment.component.jsx";
+import ViewRecruitment from "./pages/View_Page/ViewRecruitment.jsx";
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -71,6 +72,15 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/viewRecruitments"
+                element={
+                  <ProtectedRoute>
+                    <ViewRecruitment />
+                  </ProtectedRoute>
+                }
+              />
+
             </Routes>
           </>
         )}

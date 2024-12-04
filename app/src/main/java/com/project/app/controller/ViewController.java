@@ -67,7 +67,7 @@ public class ViewController {
         if(event != null){
             viewservice.deleteEvent(id);
             List<Event> events = viewservice.getAllEvents();
-        return new ResponseEntity<>(events, HttpStatus.CONTINUE);
+        return new ResponseEntity<>(events, HttpStatus.OK);
         }
         else{
             return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);

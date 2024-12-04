@@ -70,7 +70,8 @@ function Navbar() {
         <li><Link to="/about">About</Link></li>
         <li><Link to="/viewevents">View Events</Link></li>
         <li><Link to="/addevent">Add Events</Link></li>
-        <li><Link to="/recruitments">Recruitments</Link></li>
+        <li><Link to="/recruitments">Add Recruitments</Link></li>
+        <li><Link to="/viewRecruitments">View Recruitments</Link></li>
       </ul>
 
       <ul className="navbar-profile">

@@ -23,11 +23,14 @@ public class Recruitment {
     private int id;
     private String title;
     private String description;
-    private Date date;
-    private LocalTime time;
+    private String date;
+    private String time;
     private String venue;
     private String club;
     private String venueDescription;
     @NotBlank
     private String formLink;
+
+    @Lob
+    private byte[] image;
 }
