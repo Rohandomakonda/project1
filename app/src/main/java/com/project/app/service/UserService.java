@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -25,13 +26,14 @@ public class UserService {
     private BCryptPasswordEncoder passwordEncoder;
 
     public User registerUser(String email, String password,String name) {
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new RuntimeException("Email already registered");
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isPresent() && userOptional.get().isVerified()) {
+            throw new RuntimeException("Email already registered pls login");
         }
 
         User user = new User();
         user.setEmail(email);
-        user.setPassword(passwordEncoder.encode(password)); // In production, hash the password
+        user.setPassword(passwordEncoder.encode(password));
         user.setName(name);
         user = userRepository.save(user);
 
@@ -43,12 +45,14 @@ public class UserService {
     }
 
     public boolean verifyEmail(String email, String otp) {
+
         if (otpService.validateOtp(email, otp)) {
             User user = userRepository.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("User not found"));
             user.setVerified(true);
             userRepository.save(user);
             otpService.markOtpAsUsed(email);
+
             return true;
         }
         return false;
@@ -66,7 +70,48 @@ public class UserService {
         emailService.sendOtpEmail(email, otp);
     }
 
-    public List<String> getAllUserEmails() {
-        return userRepository.getAllUsersByEmail();
+    public boolean verifyFpOtp(String email, String otp){
+        if (!otpService.validateOtp(email, otp)) {
+            User user = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+            user.setVerified(false);
+            return false;
+        }
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setVerified(true);
+        otpService.markOtpAsUsed(email);
+
+        return true;
+    }
+
+
+
+
+    public void sendForgotPasswordOtp(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        String otp = otpService.generateOtp(email);
+        emailService.sendForgotOtp(email, otp);
+    }
+
+    public boolean updatePassword(String email, String newP, String confirmP) {
+
+        if(newP.equals(confirmP)){
+            User user = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+            user.setPassword(passwordEncoder.encode(newP));
+            userRepository.save(user);
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 }

@@ -20,11 +20,19 @@ public class EmailService {
     }
 
 
-    public void sendEmail(String email, String newEventAdded, String s) {
+    public void sendEmail(String email, String msg) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
-        message.setSubject(newEventAdded);
-        message.setText(s);
+        message.setSubject("New Event added: ");
+        message.setText(msg);
+        mailSender.send(message);
+    }
+
+    public void sendForgotOtp(String to, String otp) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject("Your OTP for Changing password ");
+        message.setText("Your OTP is: " + otp + "\nThis OTP will expire in 5 minutes.");
         mailSender.send(message);
     }
 

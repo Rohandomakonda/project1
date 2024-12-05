@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface OtpRepository extends JpaRepository<OtpEntity, Long> {
     Optional<OtpEntity> findTopByEmailOrderByExpiryTimeDesc(String email);
+
+    void deleteById(Long id);
 }

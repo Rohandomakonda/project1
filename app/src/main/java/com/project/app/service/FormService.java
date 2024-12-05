@@ -2,6 +2,7 @@ package com.project.app.service;
 
 
 import com.project.app.model.Event;
+import com.project.app.model.User;
 import com.project.app.repo.FormRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,13 @@ import java.util.List;
 public class FormService {
 
     @Autowired
-    FormRepo repo;
+    private FormRepo repo;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private UserService userService;
 
 //    public Event addEvent(Event event, MultipartFile image) throws IOException {
 //
@@ -49,6 +56,16 @@ public class FormService {
         if (!image.isEmpty()) {
             event.setImage(image.getBytes());
         }
+
+        List<User> allusers = userService.getAllUsers();
+
+        for(User user : allusers ){
+            if(user.isVerified()){
+                System.out.println("sending to all mails");
+                emailService.sendEmail(user.getEmail(), event.getTitle()+" by "+ event.getClub());
+            }
+        }
+
 
         return repo.save(event);
     }

@@ -84,4 +84,36 @@ public ResponseEntity<?> verifyEmail(@Valid @RequestBody VerificationRequest req
         authService.logout();
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/forgotPassword")
+    public ResponseEntity<?> forgotPassword(@RequestParam("email") String email){
+            userService.sendForgotPasswordOtp(email);
+            return ResponseEntity.ok("sent forgot password otp to email");
+    }
+
+    @PostMapping("/forgotPassword/verify")
+    public ResponseEntity<?> verifyFpOtp(@Valid @RequestBody VerificationRequest request) {
+        boolean verified = userService.verifyFpOtp(request.getEmail(), request.getOtp());
+
+        if (verified) {
+
+            return ResponseEntity.ok("redirecting to change password");
+        }
+
+        return ResponseEntity.badRequest().body("Invalid OTP");
+    }
+
+    @PostMapping("/forgotPassword/changePassword")
+    public ResponseEntity<?> verifyChangePassword(@RequestParam String email,@RequestParam String newP, @RequestParam String confirmP){
+            boolean updated = userService.updatePassword(email,newP,confirmP);
+
+            if(updated){
+                return ResponseEntity.ok("updated password pls login again");
+            }
+
+        return ResponseEntity.ok("new Password and confirm password doesn't match");
+
+
+    }
+
 }

@@ -15,4 +15,5 @@ public interface FormRepo extends JpaRepository<Event,Long> {
     
     List<Event> findByisPublicTrue();
 
+    List<Event> findByClub(String name);
 }

@@ -106,4 +106,7 @@ public class ViewSerivce {
         }
     }
 
+    public List<Event> getEventsByClub(String name) {
+       return formRepo.findByClub(name);
+    }
 }

@@ -5,6 +5,7 @@ import com.project.app.model.OtpEntity;
 import com.project.app.repo.OtpRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -40,6 +41,11 @@ public class OtpService {
             return false;
         }
 
+        if(LocalDateTime.now().isAfter(otpEntity.getExpiryTime())){
+            otpRepository.deleteById(otpEntity.getId());
+            return false;
+        }
+
         return !otpEntity.isUsed() &&
                 otpEntity.getOtp().equals(otp) &&
                 LocalDateTime.now().isBefore(otpEntity.getExpiryTime());
@@ -49,8 +55,10 @@ public class OtpService {
         OtpEntity otpEntity = otpRepository.findTopByEmailOrderByExpiryTimeDesc(email)
                 .orElse(null);
         if (otpEntity != null) {
-            otpEntity.setUsed(true);
-            otpRepository.save(otpEntity);
+            otpRepository.deleteById(otpEntity.getId());
         }
+
+
     }
+
 }

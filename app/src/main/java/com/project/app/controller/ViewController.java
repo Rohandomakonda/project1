@@ -40,6 +40,13 @@ public class ViewController {
                 .body(image);
     }
 
+    @GetMapping("/getclubevents/{name}")
+    public ResponseEntity<List<Event>> getClubByName(@PathVariable String name){
+            List<Event> events = viewservice.getEventsByClub(name);
+            return new ResponseEntity<>(events,HttpStatus.OK);
+    }
+
+
     @GetMapping("/ongoingevents")
     public ResponseEntity<List<Event>> getOngoingEvents(){
         if(viewservice.getongoingEvents() != null)

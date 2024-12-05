@@ -13,21 +13,20 @@ useEffect(()=>{
        axios.get("http://localhost:8080/viewclubs")
             .then((resp)=>{
                     setClubs(resp.data);
-                })
+            })
             .catch((err)=>{
                     alert("getError "+err);
                 });
-
-
     },[])
 
 
 
 const handleClick=()=>{
-        navigate("/${clubname}");
+        navigate("/getclub/${clubs.clubname}");
+
     }
     return(
-        <div className="public-events">
+        <div className="public-events" OnClick = {handleClick}>
 
            <h1>clubs</h1>
             {clubs.map((club) => (
