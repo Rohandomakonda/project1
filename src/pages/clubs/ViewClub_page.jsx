@@ -1,46 +1,46 @@
-import React from 'react';
-import "./viewClub.styles.css";
+import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import Club from "../../components/Club_Card/Club.jsx";
-import {useState,useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import "./viewClub.styles.css";
 
+function ViewClub() {
+  const [clubs, setClubs] = useState([]);
 
-function ViewClub(){
-const [clubs,setClubs] = useState([]);
-const navigate = useNavigate();
-useEffect(()=>{
-       axios.get("http://localhost:8080/viewclubs")
-            .then((resp)=>{
-                    setClubs(resp.data);
-            })
-            .catch((err)=>{
-                    alert("getError "+err);
-                });
-    },[])
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/viewclubs")
+      .then((resp) => {
+        setClubs(resp.data);
+      })
+      .catch((err) => {
+        alert("getError " + err);
+      });
+  }, []);
 
+  return (
+    <div className="public-events">
 
+      <div className="top-image-container">
+        <img
+          src="https://your-image-url-here.jpg"
+          alt="Top Image"
+          className="top-image"
+        />
+      </div>
 
-const handleClick=()=>{
-        navigate("/getclub/${clubs.clubname}");
-
-    }
-    return(
-        <div className="public-events" OnClick = {handleClick}>
-
-           <h1>clubs</h1>
-            {clubs.map((club) => (
-            <Club
-              key={club.id}
-              id={club.id}
-              name={club.name}
-              description={club.description}
-              image={`data:image/jpeg;base64,${clubs.image}`}
-            />
-            ))}
-
-        </div>
-    )
+      <div className="clubs-container">
+        {clubs.map((club) => (
+          <Club
+            key={club.id}
+            id={club.id}
+            name={club.clubname}
+            description={club.description}
+            image={`data:image/jpeg;base64,${club.image}`} // Assuming club.image is base64
+          />
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default ViewClub;

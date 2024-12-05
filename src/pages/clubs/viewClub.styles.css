@@ -1,56 +1,113 @@
-.view-club-container {
-  background-color: #0f4f4f;
-  padding: 20px;
-  min-height: 100vh;
-  color: #fff;
-}
-
-.intro {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.intro h1 {
-  font-size: 36px;
-  font-weight: 700;
+/* Ensure body and html take up full width and height */
+html, body {
   margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f0f0f0; /* Background color for the entire page */
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
-.clubs-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
+/* Reset box-sizing */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.club-card {
-  background-color: #1a6363;
-  border-radius: 10px;
+/* Overall page container */
+.view-club-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full viewport height */
+  width: 100vw; /* Full viewport width */
+  overflow: hidden; /* Prevent horizontal scrolling */
+}
+
+/* Top half section with background image */
+.top-section {
+  width: 100%;
+  height: 400px; /* 50% of the viewport height */
+  position: relative;
+  overflow: hidden; /* Hide any content overflow */
+}
+
+.background-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(50%);
+}
+
+/* Bottom section with clubs grid */
+.clubs-section {
+  flex: 1;
   padding: 20px;
-  transition: transform 0.3s ease-in-out;
+  width: 100%;
+  background-color: transparent;
+  overflow-y: auto; /* Allow vertical scrolling */
+  max-height: 50vh; /* Allow the section to grow and be scrollable */
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* Wrap content when needed */
+}
+
+/* Grid layout for displaying the clubs */
+.clubs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Club card styling */
+.club-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 300px; /* Make the card smaller */
+  margin: 10px;
 }
 
 .club-card:hover {
   transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-.club-card img {
+/* Club card front image section */
+.club-card-front {
   width: 100%;
-  height: auto;
-  border-radius: 10px;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid #ddd;
 }
 
-.club-card h2 {
-  font-size: 24px;
-  font-weight: 600;
-  color: #fff;
-  margin-top: 10px;
+/* Details for club card */
+.club-card-details {
+  padding: 15px;
+  text-align: center;
 }
 
-.club-card p {
-  color: #ddd;
-  font-size: 16px;
-  line-height: 1.5;
-  margin-top: 10px;
+.club-card-name {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.club-card-description {
+  font-size: 1rem;
+  color: #7f8c8d;
+  margin-bottom: 15px;
+}
+
+.club-card:hover .club-card-details {
+  background-color: #f4f4f4;
 }

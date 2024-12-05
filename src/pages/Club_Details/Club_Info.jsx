@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-//import "./club_design.styles.css";
+import './Club_Info.css';
+
+
 
 function Club_Info() {
   const { name } = useParams();
@@ -96,7 +98,7 @@ function Club_Info() {
         )}
       </div>
       <div className="ongoing-events">
-        <h2>Ongoing Events</h2>
+        <h2> Events</h2>
         <div className="events-container">
           {loadingEvents ? <p>Loading events...</p> : renderEventList(events)}
         </div>

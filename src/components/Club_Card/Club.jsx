@@ -1,22 +1,23 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./Club.style.css";
+import "./Club.style.css"; // Ensure the CSS file is correctly linked
 
-function Club(props) {
-  const navigate = useNavigate();
+function Club({ id, name, description, image }) {
+  const navigate = useNavigate(); // Hook for navigation
 
-  function handleClick() {
-    navigate(`/clubs/${props.clubname}`);
-  }
+  const handleClick = () => {
+    navigate(`/getclub/${name}`); // Corrected navigation to get the club details by name
+  };
 
   return (
-    <div className="card-container" onClick={handleClick}>
+    <div className="club-card" onClick={handleClick}>
       <div
-        className="card-face card-front"
-        style={{ backgroundImage: `url(${props.image})` }}
+        className="club-card-front"
+        style={{ backgroundImage: `url(${image})` }}
       ></div>
-      <div className="card-details">
-        <h2>{props.clubname}</h2>
+      <div className="club-card-details">
+        <h2 className="club-card-name">{name}</h2>
+        <p className="club-card-description">{description}</p>
       </div>
     </div>
   );
