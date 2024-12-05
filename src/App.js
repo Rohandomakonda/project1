@@ -12,7 +12,8 @@ import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRou
 import Recruitment from "./pages/Recruitment/Recruitment.component.jsx";
 import ViewRecruitment from "./pages/View_Page/ViewRecruitment.jsx";
 import ViewClub from "./pages/clubs/ViewClub_page.jsx";
-import Club_info from "./pages/Club_Details/Club_Info.jsx"
+import Club_info from "./pages/Club_Details/Club_Info.jsx";
+import ForgotP from "./pages/ForgotPassword_Page/ForgotP.jsx";
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -89,6 +90,12 @@ function App() {
                   <ProtectedRoute>
                     <ViewRecruitment />
                   </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/forgotPassword"
+                element={
+                    <ForgotP />
                 }
               />
 

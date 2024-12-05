@@ -104,6 +104,7 @@ public class UserService {
                     .orElseThrow(() -> new RuntimeException("User not found"));
             user.setPassword(passwordEncoder.encode(newP));
             userRepository.save(user);
+            emailService.sendPasswordChangeEmail(user.getEmail(),"Password has been changed");
             return true;
         }
 

@@ -36,5 +36,13 @@ public class EmailService {
         mailSender.send(message);
     }
 
+    public void sendPasswordChangeEmail(String email, String msg) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Your Account password has been changed: ");
+        message.setText(msg);
+        mailSender.send(message);
+    }
+
 
 }

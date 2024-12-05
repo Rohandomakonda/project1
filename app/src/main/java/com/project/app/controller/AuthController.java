@@ -1,10 +1,7 @@
 package com.project.app.controller;
 
 
-import com.project.app.dto.AuthResponse;
-import com.project.app.dto.LoginRequest;
-import com.project.app.dto.RegisterRequest;
-import com.project.app.dto.VerificationRequest;
+import com.project.app.dto.*;
 import com.project.app.model.User;
 import com.project.app.service.AuthService;
 import com.project.app.service.UserService;
@@ -86,8 +83,8 @@ public ResponseEntity<?> verifyEmail(@Valid @RequestBody VerificationRequest req
     }
 
     @PostMapping("/forgotPassword")
-    public ResponseEntity<?> forgotPassword(@RequestParam("email") String email){
-            userService.sendForgotPasswordOtp(email);
+    public ResponseEntity<?> forgotPassword(@RequestBody EmailReq emailReq){
+            userService.sendForgotPasswordOtp(emailReq.getEmail());
             return ResponseEntity.ok("sent forgot password otp to email");
     }
 

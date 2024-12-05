@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import './Club_Info.css';
-
+import Event from "../../components/Event_Card/Event.jsx";
 
 
 function Club_Info() {
@@ -58,27 +58,20 @@ function Club_Info() {
       });
   }, [name, navigate]);
 
+   const handleDelete=()=>{
+
+   };
   const renderEventList = (eventList) => {
     return eventList.length > 0 ? (
       eventList.map((event) => (
-        <div key={event.id} className="event-card">
-          <img
-            src={`data:image/jpeg;base64,${event.image}`}
-            alt={event.title}
-            className="event-image"
-          />
-          <h3>{event.title}</h3>
-          <p>{event.description}</p>
-          <p>
-            <strong>Date:</strong> {event.date}
-          </p>
-          <p>
-            <strong>Time:</strong> {event.time}
-          </p>
-          <p>
-            <strong>Venue:</strong> {event.venue}
-          </p>
-        </div>
+         <Event
+                  key={event.id}
+                  {...event}
+                  image={`data:image/jpeg;base64,${event.image}`}
+                  delete={handleDelete}
+         />
+
+
       ))
     ) : (
       <p>No events found</p>
@@ -92,7 +85,7 @@ function Club_Info() {
           <p>Loading club details...</p>
         ) : (
           <>
-            <h1>{details.name}</h1>
+            <h1>{name}</h1>
             <p>{details.description}</p>
           </>
         )}

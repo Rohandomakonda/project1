@@ -22,7 +22,7 @@ function ViewClub() {
 
       <div className="top-image-container">
         <img
-          src="https://your-image-url-here.jpg"
+          src="https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg"
           alt="Top Image"
           className="top-image"
         />
