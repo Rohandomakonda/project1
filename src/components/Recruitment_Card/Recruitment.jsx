@@ -41,6 +41,7 @@ function Recruitment(props) {
           style={{ backgroundImage: `url(${props.image})` }}
         ></div>
 
+
         {/* Back of the card */}
         <div className="card-face card-back">
           <h2 className="event-title">{props.title}</h2>
