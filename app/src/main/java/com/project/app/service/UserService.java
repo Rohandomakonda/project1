@@ -1,6 +1,7 @@
 package com.project.app.service;
 
 
+import com.project.app.model.Role;
 import com.project.app.model.User;
 import com.project.app.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -25,7 +27,7 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    public User registerUser(String email, String password,String name) {
+    public User registerUser(String email, String password, String name, Set<Role> roles) {
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isPresent() && userOptional.get().isVerified()) {
             throw new RuntimeException("Email already registered pls login");
@@ -35,6 +37,7 @@ public class UserService {
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
         user.setName(name);
+        user.setRoles(roles);
         user = userRepository.save(user);
 
 

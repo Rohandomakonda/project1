@@ -26,7 +26,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
-        User user = userService.registerUser(request.getEmail(), request.getPassword(),request.getName());
+        User user = userService.registerUser(request.getEmail(), request.getPassword(),request.getName(),request.getRoles());
 
         if(user != null)
         return ResponseEntity.ok("Please check your email for OTP.");

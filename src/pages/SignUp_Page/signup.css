@@ -92,3 +92,50 @@ body {
 .login-link a:hover {
   color: #1d6fa5;
 }
+/* Container for each radio button and label */
+label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Hide the default radio button */
+input[type="radio"] {
+  display: none;
+}
+
+/* Custom radio button appearance */
+label input[type="radio"] + span {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #007bff;
+  border-radius: 50%;
+  margin-right: 10px;
+  display: inline-block;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Inner circle for the selected state */
+label input[type="radio"]:checked + span::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background-color: #007bff;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.2s ease-in-out;
+}
+
+/* Add hover effect for better interactivity */
+label:hover input[type="radio"] + span {
+  border-color: #0056b3;
+}
+

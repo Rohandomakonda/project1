@@ -12,7 +12,11 @@ const Login = () => {
     try {
       const response = await axios.post("http://localhost:8080/api/auth/login", credentials);
       const token = response.data.accessToken;
-
+      const roles = response.data.roles;
+      if(roles){
+            localStorage.setItem("roles", JSON.stringify(roles)); // Convert roles array to string
+            alert("registerd user");
+      }
       if (token) {
         localStorage.setItem("authToken", token);
         alert("Login successful!");
