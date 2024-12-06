@@ -1,20 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import "./Navbar.styles.css"
+import "./Navbar.styles.css";
 
 function Navbar() {
   const [scrolling, setScrolling] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
+  const [roles, setRoles] = useState([]);
+
+  const token = localStorage.getItem('authToken');
 
   useEffect(() => {
+    const storedRoles = localStorage.getItem("roles");
+    if (storedRoles) {
+      setRoles(JSON.parse(storedRoles)); // Parse roles from localStorage
+    }
+
     const handleScroll = () => {
       setScrolling(window.scrollY > 50);
     };
 
     const checkAuthStatus = () => {
-      const token = localStorage.getItem('authToken');
       setIsAuthenticated(!!token);
     };
 
@@ -31,11 +38,10 @@ function Navbar() {
       clearInterval(interval);
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [token]);
 
   const handleLogout = async () => {
     try {
-      const token = localStorage.getItem('authToken');
       if (token) {
         await axios.post(
           'http://localhost:8080/api/auth/logout',
@@ -47,7 +53,9 @@ function Navbar() {
           }
         );
         localStorage.removeItem('authToken');
+        localStorage.removeItem('roles'); // Clear roles on logout
         setIsAuthenticated(false);
+        setRoles([]);
         alert("Logout successful");
         navigate('/');
       }
@@ -55,7 +63,9 @@ function Navbar() {
       console.error('Logout error:', error);
       // Still remove token and update state even if server request fails
       localStorage.removeItem('authToken');
+      localStorage.removeItem('roles');
       setIsAuthenticated(false);
+      setRoles([]);
       navigate('/');
     }
   };
@@ -68,13 +78,15 @@ function Navbar() {
       <ul className="navbar-links">
         <li><Link to="/">Home</Link></li>
         <li><Link to="/about">About</Link></li>
-        <li><Link to="/viewevents">View Events</Link></li>
-        <li><Link to="/addevent">Add Events</Link></li>
-        <li><Link to="/recruitments">Add Recruitments</Link></li>
-        <li><Link to="/viewRecruitments">View Recruitments</Link></li>
-         <li><Link to="/viewclubs">View clubs</Link></li>
-      </ul>
+        {token && <li><Link to="/viewevents">View Events</Link></li>}
+        {token && <li><Link to="/viewRecruitments">View Recruitments</Link></li>}
 
+        {/* Check if the role includes CLUB_SEC or ADMIN */}
+        {token && (roles.includes("CLUB_SEC") || roles.includes("ADMIN")) && <li><Link to="/addevent">Add Events</Link></li>}
+        {token && (roles.includes("CLUB_SEC") || roles.includes("ADMIN")) && <li><Link to="/recruitments">Add Recruitments</Link></li>}
+
+        {token && <li><Link to="/viewclubs">View clubs</Link></li>}
+      </ul>
       <ul className="navbar-profile">
         {isAuthenticated ? (
           <li onClick={handleLogout} style={{ cursor: 'pointer' }}>

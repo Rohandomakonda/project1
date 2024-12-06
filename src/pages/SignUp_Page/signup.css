@@ -138,4 +138,3 @@ label input[type="radio"]:checked + span::after {
 label:hover input[type="radio"] + span {
   border-color: #0056b3;
 }
-

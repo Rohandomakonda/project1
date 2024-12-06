@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 function Recruitment(props) {
   const navigate = useNavigate();
   const [isFlipped, setIsFlipped] = React.useState(false);
-
+const storedRoles = localStorage.getItem("roles");
+const roles = storedRoles ? JSON.parse(storedRoles) : [];
   function handleDelete(e) {
     e.stopPropagation(); // Prevent flipping when clicking on the delete button
     props.delete(props.id);
@@ -61,16 +62,17 @@ function Recruitment(props) {
           <p className="event-club">Club: {props.club}</p>
 
           <div className="button-container">
-            <button className="event-delete-button" onClick={handleDelete}>
-              <DeleteIcon />
-            </button>
-            <button className="event-update-button" onClick={handleUpdate}>
-              Update
-            </button>
+            {(roles.includes("CLUB_SEC") || roles.includes("ADMIN")) &&<button className="event-delete-button" onClick={handleDelete}>
+               <DeleteIcon />
+               </button>}
+            {(roles.includes("CLUB_SEC") || roles.includes("ADMIN")) &&<button className="event-update-button" onClick={handleUpdate}>
+               Update
+              </button>}
             {/* Register button */}
-            <button className="event-register-button" onClick={handleRegister} >
-              Register
-            </button>
+            {roles.includes("USER") &&<button className="event-register-button" onClick={handleRegister} >
+             Register
+              </button>}
+
           </div>
         </div>
       </div>

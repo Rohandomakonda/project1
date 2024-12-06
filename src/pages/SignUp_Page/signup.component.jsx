@@ -4,7 +4,7 @@ import axios from "axios"; // Assume 'api.js' handles axios configuration
 import "./signup.css"; // Styling for SignUp
 
 const SignUp = () => {
-  const [formData, setFormData] = useState({ name: "", password: "", email: "",roles:[]});
+  const [formData, setFormData] = useState({ name: "", password: "", email: "",roles:["USER"]});
   const [otp, setOtp] = useState("");
   const [step, setStep] = useState(1); // Step 1 for Registration, Step 2 for OTP Verification
   const [selectedOption,setSelectedOption] = useState("USER");
@@ -36,6 +36,7 @@ const SignUp = () => {
         alert("Verification successful!");
       }
       if(roles){
+          console.log(roles);
         localStorage.setItem("roles", JSON.stringify(roles)); // Convert roles array to string
         alert("registerd user type");
         navigate("/viewevents"); // Redirect to View Events page after verification
