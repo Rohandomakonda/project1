@@ -58,6 +58,11 @@ public class RecruitmentController {
         recruitmentService.deleteRecruitment(id);
         return ResponseEntity.ok("Recruitment delete");
     }
+    @GetMapping("/getRecruitment/{id}")
+    private ResponseEntity<?> getRecruitment(@PathVariable int id){
+
+        return ResponseEntity.ok(recruitmentService.getRecruitment(id));
+    }
 
 
 

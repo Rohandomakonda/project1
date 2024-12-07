@@ -27,7 +27,7 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    public User registerUser(String email, String password, String name, Set<Role> roles) {
+    public User registerUser(String email, String password, String name, Set<Role> roles,String club) {
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isPresent() && userOptional.get().isVerified()) {
             throw new RuntimeException("Email already registered pls login");
@@ -38,6 +38,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(password));
         user.setName(name);
         user.setRoles(roles);
+        user.setClub(club);
         user = userRepository.save(user);
 
 

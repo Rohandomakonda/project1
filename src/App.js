@@ -14,6 +14,7 @@ import ViewRecruitment from "./pages/View_Page/ViewRecruitment.jsx";
 import ViewClub from "./pages/clubs/ViewClub_page.jsx";
 import Club_info from "./pages/Club_Details/Club_Info.jsx";
 import ForgotP from "./pages/ForgotPassword_Page/ForgotP.jsx";
+import UpdateRec from "./pages/Recruitment/updateRecruitment.jsx"
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -76,6 +77,14 @@ function App() {
                      </ProtectedRoute>
                       }
                             />
+                            <Route
+                               path="/updateRecruitment/:id"
+                                element={
+                               <ProtectedRoute>
+                              <UpdateRec />
+                               </ProtectedRoute>
+                                 }
+                                />
               <Route
                 path="/recruitments"
                 element={

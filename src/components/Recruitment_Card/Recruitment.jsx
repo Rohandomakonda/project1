@@ -15,7 +15,7 @@ const roles = storedRoles ? JSON.parse(storedRoles) : [];
 
   function handleUpdate(e) {
     e.stopPropagation(); // Prevent flipping when clicking on the update button
-    navigate(`/Update/${props.id}`);
+    navigate(`/updateRecruitment/${props.id}`);
   }
 
  function handleRegister(e) {

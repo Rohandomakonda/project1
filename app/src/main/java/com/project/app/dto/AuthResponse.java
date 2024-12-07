@@ -14,14 +14,17 @@ public class AuthResponse {
     private String email;
     private String name;
     private Set<Role> roles;
+    private String club;
 
-    public AuthResponse(String accessToken, String refreshToken, Long id, String email, String name, Set<Role> roles) {
+    public AuthResponse(String accessToken, String refreshToken, Long id, String email, String name, Set<Role> roles,String club) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.id = id;
         this.email = email;
         this.name = name;
         this.roles = roles;
+        this.club = club;
+
     }
 
 

@@ -1,0 +1,143 @@
+/* General page styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #f4f4f4;
+}
+
+/* Ensure the form is below the navbar */
+.form-container {
+  padding-top: 100px; /* 100px below the navbar */
+  margin: 2rem,auto ;
+  max-width: 600px; /* Center and set max width */
+  background-color: #ffffff;
+  padding: 1000,40,40,40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Form title */
+.form-title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Input field styling */
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+/* Textarea styling */
+.form-textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+/* Input fields focus effect */
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  border-color: #007bff;
+}
+
+/* Select dropdown styling */
+.form-select {
+  background-color: #fff;
+  cursor: pointer;
+}
+
+/* Button styling */
+.submit-button {
+  display: block;
+  width: 100%;
+  padding: 12px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+/* Styling for the date (calendar) input */
+.form-calendar {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Hover effect for the calendar input */
+.form-calendar:hover {
+  border-color: #007bff;
+}
+
+/* Focus effect */
+.form-calendar:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Date input text alignment */
+.form-calendar::-webkit-datetime-edit {
+  color: #333;
+  padding: 4px 0;
+}
+
+/* Placeholder text color */
+.form-calendar::placeholder {
+  color: #999;
+}
+
+/* Remove the clear button on the date input in Chrome */
+.form-calendar::-webkit-clear-button {
+  display: none;
+}
+
+/* Adjust the calendar icon styling */
+.form-calendar::-webkit-calendar-picker-indicator {
+  filter: invert(0.5);
+  cursor: pointer;
+}
+
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .form-container {
+    padding: 20px;
+  }
+
+  .form-title {
+    font-size: 20px;
+  }
+
+  .submit-button {
+    font-size: 16px;
+  }
+}

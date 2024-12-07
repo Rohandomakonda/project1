@@ -41,12 +41,12 @@ const ViewRecruitments = () => {
     const token = localStorage.getItem("authToken");
 
     axios
-      .delete(`http://localhost:8080/event/${id}`, {
+      .delete(`http://localhost:8080/deleteRecruitment/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
         setRecruitments((prev) => prev.filter((event) => event.id !== id));
-        alert("Event deleted successfully");
+        alert("recruitment deleted successfully");
       })
       .catch((error) => {
         alert("Error deleting event: " + error.message);

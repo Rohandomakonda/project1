@@ -4,7 +4,7 @@ import axios from "axios"; // Assume 'api.js' handles axios configuration
 import "./signup.css"; // Styling for SignUp
 
 const SignUp = () => {
-  const [formData, setFormData] = useState({ name: "", password: "", email: "",roles:["USER"]});
+  const [formData, setFormData] = useState({ name: "", password: "", email: "",roles:["USER"],club: ""});
   const [otp, setOtp] = useState("");
   const [step, setStep] = useState(1); // Step 1 for Registration, Step 2 for OTP Verification
   const [selectedOption,setSelectedOption] = useState("USER");

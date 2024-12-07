@@ -121,7 +121,7 @@ public class AuthService {
         String refreshToken = tokenProvider.generateRefreshToken(user.getEmail());
 
         // Step 5: Return the AuthResponse
-        return new AuthResponse(accessToken, refreshToken, user.getId(), user.getEmail(),user.getName(),user.getRoles());
+        return new AuthResponse(accessToken, refreshToken, user.getId(), user.getEmail(),user.getName(),user.getRoles(),user.getClub());
     }
 
 
@@ -168,7 +168,8 @@ public class AuthService {
                 user.getId(),
                 user.getEmail(),
                 user.getName(),
-                user.getRoles()
+                user.getRoles(),
+                user.getClub()
         );
     }
 }
