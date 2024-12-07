@@ -8,10 +8,16 @@ const SignUp = () => {
   const [otp, setOtp] = useState("");
   const [step, setStep] = useState(1); // Step 1 for Registration, Step 2 for OTP Verification
   const [selectedOption,setSelectedOption] = useState("USER");
+
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    if (formData.roles.includes("CLUB_SEC") && !formData.club) {
+        alert("Please select a club.");
+        return;
+    }
+
     try {
       const response = await axios.post("http://localhost:8080/api/auth/register", formData);
       alert("Registration successful! Check your email for the OTP.");
@@ -20,6 +26,11 @@ const SignUp = () => {
       alert("Error during registration: " + error.response?.data?.message || error.message);
     }
   };
+
+  const handleClubChange = (e) =>{
+      setFormData({ ...formData, club: e.target.value });
+      console.log(formData.club);
+  }
 
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
@@ -30,6 +41,7 @@ const SignUp = () => {
       });
       const token = response.data.accessToken; // Assuming the response includes an accessToken
       const roles = response.data.roles;
+      const club = response.data.club;
 
       if (token) {
         localStorage.setItem("authToken", token);
@@ -38,6 +50,7 @@ const SignUp = () => {
       if(roles){
           console.log(roles);
         localStorage.setItem("roles", JSON.stringify(roles)); // Convert roles array to string
+        localStorage.setItem("club",club)
         alert("registerd user type");
         navigate("/viewevents"); // Redirect to View Events page after verification
 
@@ -104,6 +117,22 @@ const SignUp = () => {
             <span></span>
             Admin
           </label>
+
+          {selectedOption==="CLUB_SEC" ? (
+        <select
+          name="club"
+          club={formData.club}
+          onChange={handleClubChange}
+          required
+        >
+          <option value="">Select Club</option>
+          <option value="MECHE">MECHE</option>
+          <option value="CSES">CSES</option>
+          <option value="SDC">SDC</option>
+          <option value="QC">QC</option>
+        </select>
+
+          ) : (null) }
 
           <button type="submit">Sign Up</button>
         </form>

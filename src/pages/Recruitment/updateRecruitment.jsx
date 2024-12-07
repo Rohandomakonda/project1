@@ -72,10 +72,12 @@ function UpdateRec() {
       [name]: name === "isPublic" ? value === "true" : value, // Convert isPublic to boolean
     }));
   };
-
+//add event -> club const-> localStorage
+//update event & delete -> same ->viewpage same club member -> similar for recruitment
+// register-> club-sec -> option -> select club -> localStorage
   return (
     <div className="form-container">
-      <h1 className="form-title">Update Event</h1>
+      <h1 className="form-title">Update Recruitment</h1>
       <form onSubmit={handleSubmit} className="event-form">
         <input
           type="text"

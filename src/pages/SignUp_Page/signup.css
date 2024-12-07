@@ -138,3 +138,32 @@ label input[type="radio"]:checked + span::after {
 label:hover input[type="radio"] + span {
   border-color: #0056b3;
 }
+
+select[name="club"] {
+  width: 100%; /* Full width */
+  padding: 10px; /* Spacing inside the dropdown */
+  margin: 10px 0; /* Space around the dropdown */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 5px; /* Rounded corners */
+  background-color: #f9f9f9; /* Light background */
+  font-size: 16px; /* Font size */
+  color: #333; /* Text color */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth effects */
+}
+
+select[name="club"]:hover {
+  border-color: #007bff; /* Change border color on hover */
+}
+
+select[name="club"]:focus {
+  outline: none; /* Remove default outline */
+  border-color: #007bff; /* Highlight border on focus */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add shadow on focus */
+}
+
+select[name="club"] option {
+  padding: 5px; /* Padding for options */
+  color: #333; /* Option text color */
+  background-color: #fff; /* Background color for options */
+}
