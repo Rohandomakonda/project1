@@ -22,6 +22,8 @@ public class RecruitmentController {
     private RecruitmentService recruitmentService;
 
 
+
+
     @GetMapping("/api/getAllRecruitments")
     public List<Recruitment> getAllRecruitments(){
         return recruitmentService.getAllRecruitments();
@@ -45,5 +47,19 @@ public class RecruitmentController {
         Recruitment recruitment = recruitmentService.saveRecruitment(title, description, date, time,venueDescription, venue, club, formLink, image);
         return ResponseEntity.ok(recruitment);
     }
+    @PutMapping("/updateRecruitment/{id}")
+    private ResponseEntity<?> updateRecruitment(@PathVariable int id, @RequestBody Recruitment recruitment){
+         recruitmentService.updateRecruitment(id,recruitment);
+        return ResponseEntity.ok("Recruitment updated");
+
+    }
+    @DeleteMapping("/deleteRecruitment/{id}")
+    private ResponseEntity<?> deleteRecruitment(@PathVariable int id){
+        recruitmentService.deleteRecruitment(id);
+        return ResponseEntity.ok("Recruitment delete");
+    }
+
+
+
 
 }
