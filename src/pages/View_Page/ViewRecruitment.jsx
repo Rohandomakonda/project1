@@ -2,12 +2,20 @@ import React, { useState, useEffect } from "react";
 import Recruitment from "../../components/Recruitment_Card/Recruitment.jsx"; // Assuming you have this component
 import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
-import "./ViewRecruitment.css";
+import Skeleton from "@mui/material/Skeleton"; // Import MUI Skeleton
+import Grid from "@mui/material/Grid";
+import "./View.styles.css";
 
 const ViewRecruitments = () => {
   const [recruitments, setRecruitments] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [myRecruitments, setMyRecruitments] = useState([]);
+  const storedRoles = localStorage.getItem("roles");
+
+  // Parse the roles stored in localStorage
+  const roles = storedRoles ? JSON.parse(storedRoles) : [];
+  const club = localStorage.getItem("club");
 
   useEffect(() => {
     setLoading(true);
@@ -25,7 +33,9 @@ const ViewRecruitments = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((allRecruitmentsResp) => {
-        setRecruitments(allRecruitmentsResp.data); // Assuming this is the data you want
+        setRecruitments(allRecruitmentsResp.data);
+        const mcRecruitments = allRecruitmentsResp.data.filter((recruitment) => recruitment.club === club);
+        setMyRecruitments(mcRecruitments);
       })
       .catch((error) => {
         alert("Error fetching recruitments: " + error.message);
@@ -35,7 +45,7 @@ const ViewRecruitments = () => {
         }
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [club]);
 
   const handleDelete = (id) => {
     const token = localStorage.getItem("authToken");
@@ -46,7 +56,9 @@ const ViewRecruitments = () => {
       })
       .then(() => {
         setRecruitments((prev) => prev.filter((event) => event.id !== id));
-        alert("recruitment deleted successfully");
+        setMyRecruitments((prev) => prev.filter((event) => event.id !== id));
+
+        alert("Recruitment deleted successfully");
       })
       .catch((error) => {
         alert("Error deleting event: " + error.message);
@@ -85,25 +97,66 @@ const ViewRecruitments = () => {
       <p>No recruitments found</p>
     );
   };
+  const renderSkeletons = (count) =>
+      Array.from(new Array(count)).map((_, index) => (
+        <Grid item xs={12} sm={6} md={4} key={index}>
+          <Skeleton variant="rectangular" width="100%" height={150} />
+        </Grid>
+      ));
 
-  return (
-    <div className="container">
-      <div className="search-container">
-        <SearchIcon className="search-icon" />
-        <input
-          type="text"
-          placeholder="Search recruitments"
-          className="search-bar"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
+  if (roles.includes("CLUB_SEC")) {
+      return (
+        <div className="container">
+          {/* My Club Events Section */}
+          <div className="ongoing-events">
+            <h2 className="center-text">My Club Recruitments</h2>
+            <Grid container spacing={2}>
+              {loading ? renderSkeletons(3) : renderRecruitmentList(myRecruitments)}
+            </Grid>
+          </div>
 
-      <div className="events-container">
-        {loading ? <p>Loading recruitments...</p> : renderRecruitmentList(filteredRecruitments)}
-      </div>
-    </div>
-  );
+          {/* Search Bar */}
+          <div className="search-container">
+            <SearchIcon className="search-icon" />
+            <input
+              type="text"
+              placeholder="Search events"
+              className="search-bar"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+
+          {/* All Events Section */}
+          <Grid container spacing={2}>
+            {loading ? renderSkeletons(6) : renderRecruitmentList(filteredRecruitments)}
+          </Grid>
+        </div>
+      );
+    } else {
+      return (
+        <div className="container">
+
+
+          {/* Search Bar */}
+          <div className="search-container">
+            <SearchIcon className="search-icon" />
+            <input
+              type="text"
+              placeholder="Search events"
+              className="search-bar"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+
+          {/* All Events Section */}
+          <Grid container spacing={2}>
+            {loading ? renderSkeletons(6) :  renderRecruitmentList(filteredRecruitments)}
+          </Grid>
+        </div>
+      );
+    }
 };
 
 export default ViewRecruitments;

@@ -8,9 +8,13 @@ import "./View.styles.css";
 
 const View = () => {
   const [events, setEvents] = useState([]); // All events
+  const [myClubEvents, setMyClubEvents] = useState([]); // Events specific to the club
   const [searchTerm, setSearchTerm] = useState(""); // Search term for filtering
   const [onGoEvents, setOnGoEvents] = useState([]); // Ongoing events
   const [loading, setLoading] = useState(true); // Loading state
+  const storedRoles = localStorage.getItem("roles");
+  const roles = storedRoles ? JSON.parse(storedRoles) : [];
+  const club = localStorage.getItem("club");
 
   useEffect(() => {
     setLoading(true);
@@ -35,6 +39,10 @@ const View = () => {
       .then(([allEventsResp, ongoingEventsResp]) => {
         setEvents(allEventsResp.data); // Update all events
         setOnGoEvents(ongoingEventsResp.data); // Update ongoing events
+
+        // Filter events by club after fetching all data
+        const mcEvents = allEventsResp.data.filter((event) => event.club === club);
+        setMyClubEvents(mcEvents);
       })
       .catch((error) => {
         console.error("Error fetching events:", error);
@@ -44,7 +52,7 @@ const View = () => {
         }
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [club]);
 
   // Delete event handler
   const handleDelete = (id) => {
@@ -56,6 +64,7 @@ const View = () => {
       })
       .then(() => {
         setEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
+        setMyClubEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
         setOnGoEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
         alert("Event deleted successfully");
       })
@@ -96,35 +105,65 @@ const View = () => {
       <p>No events found</p>
     );
 
-  return (
-    <div className="container">
-      {/* Ongoing Events Section */}
-      <div className="ongoing-events">
-        <h2 className="center-text">Ongoing Events</h2>
+  if (roles.includes("CLUB_SEC")) {
+    return (
+      <div className="container">
+        {/* My Club Events Section */}
+        <div className="ongoing-events">
+          <h2 className="center-text">My Club Events</h2>
+          <Grid container spacing={2}>
+            {loading ? renderSkeletons(3) : renderEvents(myClubEvents)}
+          </Grid>
+        </div>
+
+        {/* Search Bar */}
+        <div className="search-container">
+          <SearchIcon className="search-icon" />
+          <input
+            type="text"
+            placeholder="Search events"
+            className="search-bar"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+
+        {/* All Events Section */}
         <Grid container spacing={2}>
-          {loading ? renderSkeletons(3) : renderEvents(onGoEvents)}
+          {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
         </Grid>
       </div>
+    );
+  } else {
+    return (
+      <div className="container">
+        {/* Ongoing Events Section */}
+        <div className="ongoing-events">
+          <h2 className="center-text">Ongoing Events</h2>
+          <Grid container spacing={2}>
+            {loading ? renderSkeletons(3) : renderEvents(onGoEvents)}
+          </Grid>
+        </div>
 
-      {/* Search Bar */}
-      <div className="search-container">
-        <SearchIcon className="search-icon" />
-        <input
-          type="text"
-          placeholder="Search events"
-          className="search-bar"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+        {/* Search Bar */}
+        <div className="search-container">
+          <SearchIcon className="search-icon" />
+          <input
+            type="text"
+            placeholder="Search events"
+            className="search-bar"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
 
+        {/* All Events Section */}
+        <Grid container spacing={2}>
+          {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
+        </Grid>
       </div>
-
-      {/* All Events Section */}
-      <Grid container spacing={2}>
-        {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
-      </Grid>
-    </div>
-  );
+    );
+  }
 };
 
 export default View;

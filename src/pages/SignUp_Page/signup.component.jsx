@@ -43,9 +43,11 @@ const SignUp = () => {
         email: formData.email, // Use the registered email
         otp, // OTP entered by the user
       });
+       const name=response.data.name;
       const token = response.data.accessToken; // Assuming the response includes an accessToken
       const roles = response.data.roles;
       const club = response.data.club;
+      const userId= response.data.userId;
 
       if (token) {
         localStorage.setItem("authToken", token);
@@ -53,8 +55,10 @@ const SignUp = () => {
       }
       if(roles){
           console.log(roles);
-        localStorage.setItem("roles", JSON.stringify(roles)); // Convert roles array to string
-        localStorage.setItem("club",club)
+           localStorage.setItem("name", name);
+        localStorage.setItem("roles", JSON.stringify(roles));
+        localStorage.setItem("club",club);
+        localStorage.setItem("userId",userId);
         alert("registerd user type");
         navigate("/viewevents"); // Redirect to View Events page after verification
 

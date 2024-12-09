@@ -26,11 +26,16 @@ const Login = () => {
       const token = response.data.accessToken;
       const roles = response.data.roles;
       const name = response.data.name;
+      const club=response.data.club;
+       const userId=response.data.userId;
 
       if (token && roles) {
         localStorage.setItem("roles", JSON.stringify(roles)); // Convert roles array to string
         localStorage.setItem("authToken", token);
         localStorage.setItem("name",name);
+        localStorage.setItem("club",club);
+         localStorage.setItem("userId",userId);
+
        setSnackbarOpen(true); // Show success Snackbar
         setLoading(false);
          setTimeout(() => navigate("/"), 3000);

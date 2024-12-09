@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Page1.styles.css";
+
 function Form() {
   const [details, setDetails] = useState({
     title: "",
@@ -14,8 +15,27 @@ function Form() {
     venueDescription: "",
   });
 
+  const [role, setRole] = useState(localStorage.getItem("role")); // Getting role from localStorage
+  const club = localStorage.getItem("club"); // Getting club name from localStorage
   const [image, setImage] = useState(null); // For storing the image file
   const navigate = useNavigate();
+if (role === "CLUB_SEC") {
+      setDetails((prevDetails) => ({
+        ...prevDetails,
+        club: club, // Prefill the club name when the role is 'CLUB_SEC'
+      }));
+    }
+  useEffect(() => {
+    if (role === "CLUB_SEC") {
+      setDetails((prevDetails) => ({
+        ...prevDetails,
+        club: club, // Prefill the club name when the role is 'CLUB_SEC'
+      }));
+    }
+console.log(club+" hello");
+console.log(role);
+  }, [role, club]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -137,14 +157,19 @@ function Form() {
           <option value="true">Public</option>
           <option value="false">Private</option>
         </select>
-        <input
-          type="text"
-          name="club"
-          placeholder="Club Name"
-          value={details.club}
-          onChange={handleChange}
-          required
-        />
+
+        {/* Club field - Disable if role is 'CLUB_SEC' */}
+       <input
+         type="text"
+         name="club"
+         placeholder="Club Name"
+         value={details.club || club} // Pre-fill with club value if role is CLUB_SEC
+         onChange={handleChange}
+         required
+         readOnly={role === "CLUB_SEC"} // Disable if the role is CLUB_SEC
+       />
+
+
         <input
           type="file"
           accept="image/*"
