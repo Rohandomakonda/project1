@@ -17,22 +17,24 @@ function Event(props) {
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);  // Added isSaved state
 
+const userId = localStorage.getItem("userId");
   const storedRoles = localStorage.getItem("roles");
   const roles = storedRoles ? JSON.parse(storedRoles) : [];
+
+  console.log("event card lopala roles "+ roles);
 
   const token = localStorage.getItem("token");  // Ensure the token is fetched from localStorage
 
   // Toggle the liked state
   function handleLike() {
+console.log("props id is "+props.id);
+console.log("userId is " + userId);
+console.log(`http://localhost:8080/favourites/${props.id}/${userId}`);
     if (isLiked) {
       axios
-        .delete(`http://localhost:8080/dislike/${props.id}`, null, {
+        .delete(`http://localhost:8080/dislike/${props.id}/${userId}`, {
           headers: {
-            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`, // Authorization header
-          },
-          params: {
-            userId: localStorage.getItem("userId"),
           },
         })
         .then((response) => {
@@ -47,14 +49,12 @@ function Event(props) {
           }
         });
     } else {
+
       axios
-        .post(`http://localhost:8080/favourites/${props.id}`, null, {
+        .post(`http://localhost:8080/favourites/${props.id}/${userId}`, {
           headers: {
-            "Content-Type": "multipart/form-data",
+            //"Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`, // Authorization header
-          },
-          params: {
-            userId: localStorage.getItem("userId"),
           },
         })
         .then((response) => {

@@ -47,7 +47,7 @@ const SignUp = () => {
       const token = response.data.accessToken; // Assuming the response includes an accessToken
       const roles = response.data.roles;
       const club = response.data.club;
-      const userId= response.data.userId;
+      const userId= response.data.id;
 
       if (token) {
         localStorage.setItem("authToken", token);

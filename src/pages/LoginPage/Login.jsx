@@ -22,15 +22,17 @@ const Login = () => {
     try {
        setLoading(true);
       const response = await axios.post("http://localhost:8080/api/auth/login", credentials);
-      console.log(response.data.accessToken);
+      console.log(response.data.roles);
       const token = response.data.accessToken;
       const roles = response.data.roles;
       const name = response.data.name;
       const club=response.data.club;
-       const userId=response.data.userId;
+
+       const userId=response.data.id;
 
       if (token && roles) {
         localStorage.setItem("roles", JSON.stringify(roles)); // Convert roles array to string
+        console.log("json stringify " + JSON.stringify(roles));
         localStorage.setItem("authToken", token);
         localStorage.setItem("name",name);
         localStorage.setItem("club",club);
