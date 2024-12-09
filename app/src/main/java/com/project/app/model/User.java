@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -33,4 +34,17 @@ public class User {
 
     private String club;
 
+    // Relationships
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<SavedEvent> savedEvents;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorite_events",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id")
+    )
+    private List<Event> favoriteEvents;
+
 }
+

@@ -59,12 +59,12 @@ public class FormService {
 
         List<User> allusers = userService.getAllUsers();
 
-        for(User user : allusers ){
-            if(user.isVerified()){
-                System.out.println("sending to all mails");
-                emailService.sendEmail(user.getEmail(), event.getTitle()+" by "+ event.getClub());
-            }
-        }
+//        for(User user : allusers ){
+//            if(user.isVerified()){
+//                System.out.println("sending to all mails");
+//                emailService.sendEmail(user.getEmail(), event.getTitle()+" by "+ event.getClub());
+//            }
+//        }
 
 
         return repo.save(event);

@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -25,5 +26,8 @@ public class Event {
 
     @Lob
     private byte[] image;
+
+    @ManyToMany(mappedBy = "favoriteEvents")
+    private List<User> favoritedByUsers;
 
 }

@@ -8,6 +8,7 @@ function Home() {
   const [publicEvents, setPublicEvents] = useState([]);
   const navigate = useNavigate();
   const token = localStorage.getItem('authToken');
+
   useEffect(() => {
 
     axios.get("http://localhost:8080/public/events")
@@ -31,6 +32,7 @@ function Home() {
     <div className="public-events">
       <h1>Public Events</h1>
       <div className="event-list">
+
         {publicEvents.map((event) => (
           <Event
             key={event.id}
