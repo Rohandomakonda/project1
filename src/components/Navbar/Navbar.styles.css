@@ -84,7 +84,7 @@ body {
 }
 
 /* Profile link styling */
-.navbar-profile li a {
+.navbar-profile li  {
     color: white; /* White text color */
     text-decoration: none; /* No underline */
     padding: 10px 15px; /* Padding around links */
@@ -93,7 +93,7 @@ body {
 }
 
 /* Hover effect for profile links */
-.navbar-profile li a:hover {
+.navbar-profile li :hover {
     background-color: rgba(255, 255, 255, 0.2); /* Light background on hover */
     transform: scale(1.1); /* Slightly grow the link */
     border-radius: 5px; /* Rounded corners */
@@ -110,3 +110,21 @@ body {
         font-size: 1.1em; /* Larger font size for links on larger screens */
     }
 }
+
+/* Profile link styling */
+.navbar-profile li  {
+    color: white; /* White text color */
+    text-decoration: none; /* No underline */
+    padding: 10px 15px; /* Padding around links */
+    border-radius: 5px; /* Rounded corners for hover effect */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+}
+
+/* Hover effect for profile links */
+.navbar-profile li  {
+    background-color: rgba(255, 255, 255, 0.2); /* Light background on hover */
+    transform: scale(1.1); /* Slightly grow the link */
+    border-radius: 5px; /* Rounded corners */
+}
+
+

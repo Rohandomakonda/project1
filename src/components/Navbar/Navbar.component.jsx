@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "./Navbar.styles.css";
-
+import Avatar from '@mui/material/Avatar';
+import FadeMenu from "../FadeMenu/FadeMenu.jsx";
 function Navbar() {
   const [scrolling, setScrolling] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -10,7 +11,8 @@ function Navbar() {
   const [roles, setRoles] = useState([]);
 
   const token = localStorage.getItem('authToken');
-
+  const name = localStorage.getItem('name');
+  console.log(name);
   useEffect(() => {
     const storedRoles = localStorage.getItem("roles");
     if (storedRoles) {
@@ -24,6 +26,8 @@ function Navbar() {
     const checkAuthStatus = () => {
       setIsAuthenticated(!!token);
     };
+
+
 
     window.addEventListener('scroll', handleScroll);
     checkAuthStatus(); // Check auth status on mount
@@ -70,6 +74,40 @@ function Navbar() {
     }
   };
 
+     function stringToColor(string) {
+        let hash = 0;
+        let i;
+
+        /* eslint-disable no-bitwise */
+        for (i = 0; i < string.length; i += 1) {
+          hash = string.charCodeAt(i) + ((hash << 5) - hash);
+        }
+
+        let color = '#';
+
+        for (i = 0; i < 3; i += 1) {
+          const value = (hash >> (i * 8)) & 0xff;
+          color += `00${value.toString(16)}`.slice(-2);
+        }
+        /* eslint-enable no-bitwise */
+
+        return color;
+      };
+
+      function stringAvatar(name) {
+        return {
+          sx: {
+            bgcolor: stringToColor(name),
+          },
+          children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+        };
+      };
+
+    const handleMenu=()=>{
+
+
+    }
+
   return (
     <nav className={`navbar ${scrolling ? 'scrolled' : ''}`}>
       <div className="navbar-logo">
@@ -89,8 +127,11 @@ function Navbar() {
       </ul>
       <ul className="navbar-profile">
         {isAuthenticated ? (
-          <li onClick={handleLogout} style={{ cursor: 'pointer' }}>
-            Logout
+          <li onClick={handleMenu}>
+           <Avatar {...stringAvatar("abhiraj d ")} />
+           <div className="Profile">
+           <FadeMenu setIsAuthenticated={setIsAuthenticated} setRoles={setRoles}/>
+           </div>
           </li>
         ) : (
           <li>

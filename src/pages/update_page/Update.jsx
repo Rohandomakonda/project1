@@ -1,40 +1,44 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./Update.styles.css";
+import CircularProgress from "@mui/material/CircularProgress";
+import CustomizedSnackbars from "../../components/SnackBarCustom.jsx";
 
 function Update() {
   const { id } = useParams(); // Extract id from URL
   const navigate = useNavigate(); // For navigation after update
+  const [loading, setLoading] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false); // Manage Snackbar visibility
 
-  // State to hold form details
   const [details, setDetails] = useState({
-    title: '',
-    description: '',
-    date: '',
-    time: '',
-    venue: '',
-    venueDescription: '',
-    club: '',
+    title: "",
+    description: "",
+    date: "",
+    time: "",
+    venue: "",
+    venueDescription: "",
+    club: "",
     isPublic: false, // Default value to avoid errors
   });
 
   // Fetch event details on component mount
   useEffect(() => {
     const token = localStorage.getItem("authToken");
-    axios.get(`http://localhost:8080/getEvent/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    axios
+      .get(`http://localhost:8080/getEvent/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((response) => {
         const event = response.data;
         setDetails({
-          title: event.title || '',
-          description: event.description || '',
-          date: event.date || '',
-          time: event.time || '',
-          venue: event.venue || '',
-          venueDescription: event.venueDescription || '',
-          club: event.club || '',
+          title: event.title || "",
+          description: event.description || "",
+          date: event.date || "",
+          time: event.time || "",
+          venue: event.venue || "",
+          venueDescription: event.venueDescription || "",
+          club: event.club || "",
           isPublic: event.isPublic !== undefined ? event.isPublic : false, // Ensure default boolean
         });
       })
@@ -46,17 +50,22 @@ function Update() {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevents default form submit behavior
+    setLoading(true);
+
     const token = localStorage.getItem("authToken");
 
-    axios.put(`http://localhost:8080/updateEvent/${id}`, details, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    axios
+      .put(`http://localhost:8080/updateEvent/${id}`, details, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((resp) => {
         console.log(resp.data);
-        alert("Event updated successfully!");
-        navigate("/viewevents"); // Redirect to events page after successful update
+        setLoading(false);
+        setSnackbarOpen(true); // Show success Snackbar
+        setTimeout(() => navigate("/viewevents"), 3000); // Navigate after showing Snackbar
       })
       .catch((error) => {
+        setLoading(false);
         console.error("Error updating event:", error);
         alert("Error updating event: " + error.message);
       });
@@ -126,10 +135,14 @@ function Update() {
           value={details.venue}
         >
           <option value="">Select Venue</option>
-          <option value="Department of Computer Science and Engineering">CSE dept</option>
+          <option value="Department of Computer Science and Engineering">
+            CSE dept
+          </option>
           <option value="New Academic Building (NAB)">NAB</option>
           <option value="Electronic & ICT Academy">E&ICT Building</option>
-          <option value="Department Of Electrical & Electronic Engineering">Electrical Dept</option>
+          <option value="Department Of Electrical & Electronic Engineering">
+            Electrical Dept
+          </option>
           <option value="Dr. B.R. Ambedkar Learning centre">ALC</option>
         </select>
 
@@ -137,7 +150,7 @@ function Update() {
           className="form-select"
           onChange={handleChange}
           name="isPublic"
-          value={details.isPublic !== undefined ? details.isPublic.toString() : ''}
+          value={details.isPublic !== undefined ? details.isPublic.toString() : ""}
         >
           <option value="">Select Event Type</option>
           <option value="false">Private</option>
@@ -153,8 +166,22 @@ function Update() {
           required
           className="form-input"
         />
-        <button type="submit" className="submit-button">Update Event</button>
+
+        {loading ? (
+          <CircularProgress disableShrink />
+        ) : (
+          <button type="submit" className="submit-button">
+            Update Event
+          </button>
+        )}
       </form>
+      {/* Snackbar Component */}
+      <CustomizedSnackbars
+        open={snackbarOpen}
+        onClose={() => setSnackbarOpen(false)}
+        alertM={"Event updated successfully"}
+        type={"success"}
+      />
     </div>
   );
 }

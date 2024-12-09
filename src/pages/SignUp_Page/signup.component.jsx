@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom"; // Added Link for navigation
 import axios from "axios"; // Assume 'api.js' handles axios configuration
 import "./signup.css"; // Styling for SignUp
+import TextField from '@mui/material/TextField';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({ name: "", password: "", email: "",roles:["USER"],club: ""});
   const [otp, setOtp] = useState("");
   const [step, setStep] = useState(1); // Step 1 for Registration, Step 2 for OTP Verification
   const [selectedOption,setSelectedOption] = useState("USER");
+  const [pwd,setPwd]=useState(true);
 
   const navigate = useNavigate();
 
@@ -70,21 +74,45 @@ const SignUp = () => {
       {step === 1 ? (
         <form onSubmit={handleRegister} className="signup-form">
           <h2>Create an Account</h2>
-          <input
+
+           <TextField
+           id="outlined-basic"
+           label="Name"
+           variant="outlined"
             type="text"
             placeholder="Name"
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          />
-          <input
-            type="password"
+           />
+
+          <div className="password-container">
+          <TextField
+           id="outlined-basic"
+           className="MuiTextField-root"
+           label="password"
+           variant="outlined"
+            type={pwd ? "password" : "text"}
             placeholder="Password"
+            required
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
           />
-          <input
-            type="email"
-            placeholder="Email"
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-          />
+          <button
+              type="button"
+              className="toggle-visibility"
+              onClick = {()=>{setPwd(!pwd)}}
+          >
+          {pwd ? <VisibilityOffIcon/> : <VisibilityIcon/> }
+          </button>
+          </div>
+        <div className="email">
+        <TextField
+              id="outlined-basic"
+              className="MuiTextField-root"
+              label="Email"
+              required
+              variant="outlined"
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+        />
+        </div>
           <label>
             <input
               type="radio"
@@ -125,7 +153,7 @@ const SignUp = () => {
           onChange={handleClubChange}
           required
         >
-          <option value="">Select Club</option>
+          <option value="" hidden>Select Club</option>
           <option value="MECHE">MECHE</option>
           <option value="CSES">CSES</option>
           <option value="SDC">SDC</option>
@@ -134,7 +162,7 @@ const SignUp = () => {
 
           ) : (null) }
 
-          <button type="submit">Sign Up</button>
+          <button className="submit" type="submit">Sign Up</button>
         </form>
       ) : (
         <form onSubmit={handleVerifyOtp} className="signup-form">

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Event from "../../components/Event_Card/Event"; // Component for individual event cards
 import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
+import Skeleton from "@mui/material/Skeleton"; // Import MUI Skeleton
+import Grid from "@mui/material/Grid"; // Import MUI Grid
 import "./View.styles.css";
 
 const View = () => {
@@ -70,16 +72,25 @@ const View = () => {
     )
   );
 
+  // Skeleton placeholders for events
+  const renderSkeletons = (count) =>
+    Array.from(new Array(count)).map((_, index) => (
+      <Grid item xs={12} sm={6} md={4} key={index}>
+        <Skeleton variant="rectangular" width="100%" height={150} />
+      </Grid>
+    ));
+
   // Render event cards
   const renderEvents = (eventList) =>
     eventList.length > 0 ? (
       eventList.map((event) => (
-        <Event
-          key={event.id}
-          {...event}
-          image={`data:image/jpeg;base64,${event.image}`} // Image rendering
-          delete={handleDelete} // Delete handler
-        />
+        <Grid item xs={12} sm={6} md={4} key={event.id}>
+          <Event
+            {...event}
+            image={`data:image/jpeg;base64,${event.image}`} // Image rendering
+            delete={handleDelete} // Delete handler
+          />
+        </Grid>
       ))
     ) : (
       <p>No events found</p>
@@ -90,9 +101,9 @@ const View = () => {
       {/* Ongoing Events Section */}
       <div className="ongoing-events">
         <h2 className="center-text">Ongoing Events</h2>
-        <div className="events-container">
-          {loading ? <p>Loading...</p> : renderEvents(onGoEvents)}
-        </div>
+        <Grid container spacing={2}>
+          {loading ? renderSkeletons(3) : renderEvents(onGoEvents)}
+        </Grid>
       </div>
 
       {/* Search Bar */}
@@ -105,12 +116,13 @@ const View = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+
       </div>
 
       {/* All Events Section */}
-      <div className="events-container">
-        {loading ? <p>Loading...</p> : renderEvents(filteredEvents)}
-      </div>
+      <Grid container spacing={2}>
+        {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
+      </Grid>
     </div>
   );
 };

@@ -2,11 +2,17 @@ import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import "./Event.styles.css";
 import { useNavigate } from "react-router-dom";
+import EditIcon from '@mui/icons-material/Edit';
+import Fab from '@mui/material/Fab';
+
+
+
 
 function Event(props) {
   const navigate = useNavigate();
   const [isFlipped, setIsFlipped] = React.useState(false);
   const storedRoles = localStorage.getItem("roles");
+
 
   // Parse the roles stored in localStorage
   const roles = storedRoles ? JSON.parse(storedRoles) : [];
@@ -60,12 +66,18 @@ function Event(props) {
           {/* Check if the user has 'CLUB_SEC' or 'ADMIN' roles */}
           {(roles.includes("CLUB_SEC") || roles.includes("ADMIN")) && (
             <div className="button-container">
-              <button className="event-delete-button" onClick={handleDelete}>
-                <DeleteIcon />
-              </button>
-              <button className="event-update-button" onClick={handleUpdate}>
-                Update
-              </button>
+               <Fab color = "error" aria-label="delete">
+                      <DeleteIcon
+                        onClick={handleDelete}
+                      />
+               </Fab>
+
+               <Fab color="secondary" aria-label="edit">
+                        <EditIcon
+                             onClick={handleUpdate}
+                         />
+               </Fab>
+
             </div>
           )}
         </div>

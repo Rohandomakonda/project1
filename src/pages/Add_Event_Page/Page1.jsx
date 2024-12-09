@@ -122,7 +122,7 @@ function Form() {
           onChange={handleChange}
           required
         >
-          <option value="">Select Venue</option>
+          <option value="" hidden>Select Venue</option>
           <option value="CSE Dept">CSE Dept</option>
           <option value="NAB">New Academic Building</option>
           <option value="EICT">EICT Building</option>

@@ -62,15 +62,5 @@
   text-decoration: underline;
 }
 
-.event-delete-button,
-.event-update-button {
-  margin: 10px 5px;
-  padding: 5px 10px;
-  cursor: pointer;
-}
 
-.button-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
+

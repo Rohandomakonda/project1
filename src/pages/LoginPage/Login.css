@@ -29,25 +29,25 @@ body {
   font-weight: bold;
 }
 
-/* Input Fields */
-.login-form input {
-  width: 100%;
-  padding: 10px 15px;
-  margin: 10px 0;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  transition: border-color 0.3s ease;
+
+
+
+.password-container .toggle-visibility {
+  position: absolute;
+  right: 0px; /* Adjust position as needed */
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.25rem; /* Slightly larger for better visibility */
+  color: #555;
 }
 
-.login-form input:focus {
-  border-color: #3498db;
-  outline: none;
-  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+.password-container .toggle-visibility:hover {
+  color: #007bff; /* Change color on hover */
 }
 
 /* Submit Button */
-.login-form button {
+.submit {
   width: 100%;
   padding: 12px;
   background: #3498db;
@@ -59,12 +59,12 @@ body {
   transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.login-form button:hover {
+.login-form .submit:hover {
   background: #1d6fa5;
   transform: scale(1.05);
 }
 
-.login-form button:active {
+.login-form .submit:active {
   background: #145d84;
   transform: scale(0.98);
 }
@@ -85,3 +85,26 @@ body {
 .register-link a:hover {
   color: #1d6fa5;
 }
+
+/* Material-UI TextField Styling */
+.MuiTextField-root {
+  margin-bottom: 30px; /* Add spacing between TextFields */
+  padding-bottom : 20px;
+  border-bottom : 20px;
+  width: 100%;
+}
+
+/* Password Container */
+.password-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-top: 20px; /* Ensure proper spacing after the password field */
+  margin-bottom : 20px;
+
+}
+
+.password-container .MuiTextField-root {
+  flex: 1;
+}
+

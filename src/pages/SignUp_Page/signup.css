@@ -36,25 +36,9 @@ body {
   margin-bottom: 20px;
 }
 
-/* Input Fields */
-.signup-form input {
-  width: 100%;
-  padding: 10px 15px;
-  margin: 10px 0;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  transition: border-color 0.3s ease;
-}
-
-.signup-form input:focus {
-  border-color: #3498db;
-  outline: none;
-  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
-}
 
 /* Buttons */
-.signup-form button {
+.signup-form .submit {
   width: 100%;
   padding: 12px;
   background: #3498db;
@@ -66,12 +50,12 @@ body {
   transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.signup-form button:hover {
+.signup-form .submit:hover {
   background: #1d6fa5;
   transform: scale(1.05);
 }
 
-.signup-form button:active {
+.signup-form .submit:active {
   background: #145d84;
   transform: scale(0.98);
 }
@@ -101,6 +85,10 @@ label {
   font-size: 16px;
   color: #333;
   cursor: pointer;
+}
+
+.email{
+    margin-bottom:20px
 }
 
 /* Hide the default radio button */
@@ -166,4 +154,17 @@ select[name="club"] option {
   padding: 5px; /* Padding for options */
   color: #333; /* Option text color */
   background-color: #fff; /* Background color for options */
+}
+.password-container .toggle-visibility {
+  position: absolute;
+  right: 0px; /* Adjust position as needed */
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.25rem; /* Slightly larger for better visibility */
+  color: #555;
+}
+
+.password-container .toggle-visibility:hover {
+  color: #007bff; /* Change color on hover */
 }

@@ -80,6 +80,7 @@ function Club_Info() {
 
   return (
     <div className="container">
+        <button onClick={()=>navigate(-1)}> Back </button>
       <div className="club-details">
         {loadingDetails ? (
           <p>Loading club details...</p>

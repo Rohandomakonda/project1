@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "./updateRecruitment.css";
-
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 
 function UpdateRec() {
   const { id } = useParams(); // Extract id from URL
@@ -54,7 +55,12 @@ function UpdateRec() {
     })
       .then((resp) => {
         console.log(resp.data);
-        alert("recruitment updated successfully!");
+        alert("updating");
+//       <Alert severity="success">
+//         <AlertTitle>Success</AlertTitle>
+//         This is a success Alert with an encouraging title.
+//       </Alert>
+        alert("navigating");
         navigate("/viewRecruitments"); // Redirect to recruitments page after successful update
       })
       .catch((error) => {

@@ -2,6 +2,8 @@ import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import "./Recruitment.styles.css";
 import { useNavigate } from "react-router-dom";
+import EditIcon from '@mui/icons-material/Edit';
+import Fab from '@mui/material/Fab';
 
 function Recruitment(props) {
   const navigate = useNavigate();
@@ -62,12 +64,16 @@ const roles = storedRoles ? JSON.parse(storedRoles) : [];
           <p className="event-club">Club: {props.club}</p>
 
           <div className="button-container">
-            {(roles.includes("CLUB_SEC") || roles.includes("ADMIN")) &&<button className="event-delete-button" onClick={handleDelete}>
-               <DeleteIcon />
-               </button>}
-            {(roles.includes("CLUB_SEC") || roles.includes("ADMIN")) &&<button className="event-update-button" onClick={handleUpdate}>
-               Update
-              </button>}
+            {(roles.includes("CLUB_SEC") || roles.includes("ADMIN")) &&<Fab color="secondary" aria-label="edit">
+              <EditIcon
+                onClick={handleUpdate}
+              />
+              </Fab>}
+            {(roles.includes("CLUB_SEC") || roles.includes("ADMIN")) &&<Fab color = "error" aria-label="delete">
+             <DeleteIcon
+                 onClick={handleDelete}
+             />
+             </Fab>}
             {/* Register button */}
             {roles.includes("USER") &&<button className="event-register-button" onClick={handleRegister} >
              Register

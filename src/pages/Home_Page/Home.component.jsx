@@ -7,8 +7,9 @@ import "./Home.styles.css";
 function Home() {
   const [publicEvents, setPublicEvents] = useState([]);
   const navigate = useNavigate();
-
+  const token = localStorage.getItem('authToken');
   useEffect(() => {
+
     axios.get("http://localhost:8080/public/events")
       .then((resp) => {
         setPublicEvents(resp.data);
@@ -45,7 +46,7 @@ function Home() {
           />
         ))}
       </div>
-      <button onClick={handleClick}>Get Started</button>
+     {!token && <button onClick={handleClick}>Get Started</button>}
     </div>
   );
 }

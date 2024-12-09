@@ -139,7 +139,7 @@ function Recruitment(){
                         name="venue"
                         id="venue"
                     >
-                        <option value="">Select Venue</option>
+                        <option value="" hidden>Select Venue</option>
                         <option value="Department of Computer Science and Engineering">CSE dept</option>
                         <option value="New Academic Building (NAB)">NAB</option>
                         <option value="Electronic & ICT Academy">E&ICT Building</option>
