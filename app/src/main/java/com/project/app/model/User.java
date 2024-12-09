@@ -2,6 +2,8 @@ package com.project.app.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -36,6 +38,7 @@ public class User {
 
     // Relationships
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference  // Allows serialization of the 'savedEvents' field
     private List<SavedEvent> savedEvents;
 
     @ManyToMany
@@ -44,6 +47,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "event_id")
     )
+    @JsonIgnoreProperties("favoritedByUsers")
     private List<Event> favoriteEvents;
 
 }

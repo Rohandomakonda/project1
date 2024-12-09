@@ -1,5 +1,6 @@
 package com.project.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -28,6 +29,7 @@ public class Event {
     private byte[] image;
 
     @ManyToMany(mappedBy = "favoriteEvents")
+    @JsonIgnoreProperties("favoriteEvents")
     private List<User> favoritedByUsers;
 
 }

@@ -25,8 +25,10 @@ public class ViewController {
     @GetMapping("/viewevents")
     public ResponseEntity<List<Event>> getAllEvents(){
 
-        if(viewservice.getAllEvents() != null)
+        if(viewservice.getAllEvents() != null){
+            System.out.println("getting all events");
         return new ResponseEntity<>(viewservice.getAllEvents(),HttpStatus.OK);
+        }
         else{
             return new ResponseEntity<>(viewservice.getAllEvents(),HttpStatus.NO_CONTENT);
         }
@@ -58,8 +60,9 @@ public class ViewController {
 
     @GetMapping("/public/events")
     public ResponseEntity<List<Event>> getPublicEvents(){
+            System.out.println("getpublic events");
         if(viewservice.getPublicEvents() != null){
-
+            System.out.println("getpublic events");
         return new ResponseEntity<>(viewservice.getPublicEvents(),HttpStatus.OK);
         }
         else{

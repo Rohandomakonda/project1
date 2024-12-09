@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useMemo } from "react";
 import Event from "../../components/Event_Card/Event"; // Component for individual event cards
 import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
@@ -75,11 +75,17 @@ const View = () => {
   };
 
   // Filter events by search term
-  const filteredEvents = events.filter((event) =>
+//   const filteredEvents = events.filter((event) =>
+//     ["title", "description", "venue", "club"].some((key) =>
+//       event[key]?.toLowerCase().includes(searchTerm.toLowerCase())
+//     )
+//   );
+const filteredEvents = events.filter((event) =>
     ["title", "description", "venue", "club"].some((key) =>
       event[key]?.toLowerCase().includes(searchTerm.toLowerCase())
     )
-  );
+);
+
 
   // Skeleton placeholders for events
   const renderSkeletons = (count) =>
