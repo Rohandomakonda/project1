@@ -17,6 +17,14 @@ public class SaveEventController {
         savedEventService.saveEvent(eventId, userId);
         return ResponseEntity.ok("Event saved successfully!");
     }
+    @DeleteMapping("unsave/{evenTitle}")
+    public ResponseEntity<String> unsaveEvent(@PathVariable String eventTitle, @RequestParam Long userId){
+        savedEventService.unsaveEvent(eventTitle, userId);
+        return ResponseEntity.ok("Event saved successfully!");
+    }
+
+
+
 
 
 }

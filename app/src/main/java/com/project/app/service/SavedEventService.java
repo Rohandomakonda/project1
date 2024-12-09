@@ -38,4 +38,17 @@ public class SavedEventService {
         savedEventRepository.save(savedEvent);
 
     }
+
+    public void unsaveEvent(String eventTitle, Long userId) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+
+        SavedEvent savedEvent = savedEventRepository.findByUserAndTitle(user, eventTitle)
+                .orElseThrow(() -> new UsernameNotFoundException("Event not found in user's saved events"));
+
+
+        savedEventRepository.delete(savedEvent);
+    }
 }

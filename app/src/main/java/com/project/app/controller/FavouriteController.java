@@ -18,5 +18,10 @@ public class FavouriteController {
         return ResponseEntity.ok("Event added to favorites!");
 
     }
+    @DeleteMapping("dislike/{eventId}")
+    public ResponseEntity<String> dislike(@PathVariable Long eventId, @RequestParam Long userId){
+        favouriteService.removeFavorite(eventId, userId);
+        return ResponseEntity.ok("Event removed from favorites!");
+    }
 }
 

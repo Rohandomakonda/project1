@@ -35,4 +35,27 @@ public class FavouriteService {
         user.getFavoriteEvents().add(event);
         userRepository.save(user);
     }
+
+    public void removeFavorite(Long eventId, Long userId) {
+
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new UsernameNotFoundException("Event not found"));
+
+
+        LocalDate eventDate = LocalDate.parse(event.getDate(), dateFormatter);
+        if (eventDate.isBefore(LocalDate.now())) {
+            throw new IllegalStateException("Only upcoming or ongoing events can be removed from favorites.");
+        }
+
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+
+        user.getFavoriteEvents().remove(event);
+
+
+        userRepository.save(user);
+    }
+
 }
