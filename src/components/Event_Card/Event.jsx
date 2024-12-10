@@ -23,13 +23,11 @@ const userId = localStorage.getItem("userId");
 
   console.log("event card lopala roles "+ roles);
 
-  const token = localStorage.getItem("token");  // Ensure the token is fetched from localStorage
+  const token = localStorage.getItem("authToken");  // Ensure the token is fetched from localStorage
 
   // Toggle the liked state
   function handleLike() {
-console.log("props id is "+props.id);
-console.log("userId is " + userId);
-console.log(`http://localhost:8080/favourites/${props.id}/${userId}`);
+
     if (isLiked) {
       axios
         .delete(`http://localhost:8080/dislike/${props.id}/${userId}`, {
@@ -49,24 +47,22 @@ console.log(`http://localhost:8080/favourites/${props.id}/${userId}`);
           }
         });
     } else {
-
+        console.log("props id is "+props.id);
+        console.log("userId is " + userId);
+       console.log(`POST Request URL: http://localhost:8080/like/${props.id}/${userId}`);
+        console.log("token is " + token);
       axios
-        .post(`http://localhost:8080/favourites/${props.id}/${userId}`, {
+        .post(`http://localhost:8080/like/${props.id}/${userId}`, null, {
           headers: {
-            //"Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`, // Authorization header
+            Authorization: `Bearer ${token}`,
           },
         })
         .then((response) => {
+          console.log("Response:", response);
           alert("Event liked successfully!");
         })
         .catch((error) => {
-          console.error("Error liking event:", error);
-          if (error.response) {
-            alert("Failed to like event: " + error.response.data.message);
-          } else {
-            alert("An error occurred while liking the event.");
-          }
+          console.error("Error: ", error.response || error.message);
         });
     }
     setIsLiked(!isLiked);
@@ -74,15 +70,20 @@ console.log(`http://localhost:8080/favourites/${props.id}/${userId}`);
 
   // Toggle the saved/bookmarked state
   function handleBookmark() {
+
+
       if (isSaved) {
+          console.log("props title is "+props.title);
+          console.log("userId is " + userId);
+          console.log("token is " + token);
         axios
-          .delete(`http://localhost:8080/unsave/${props.title}`, null, {
+          .delete(`http://localhost:8080/unsave`, {
             headers: {
-              "Content-Type": "multipart/form-data",
               Authorization: `Bearer ${token}`, // Authorization header
             },
             params: {
-              userId: localStorage.getItem("userId"),
+              userId: userId,
+              eventTitle:props.title,
             },
           })
           .then((response) => {
@@ -98,13 +99,12 @@ console.log(`http://localhost:8080/favourites/${props.id}/${userId}`);
           });
       } else {
         axios
-          .post(`http://localhost:8080/favourites/${props.id}`, null, {
+          .post(`http://localhost:8080/saved-events/${props.id}`, null, {
             headers: {
-              "Content-Type": "multipart/form-data",
               Authorization: `Bearer ${token}`, // Authorization header
             },
             params: {
-              userId: localStorage.getItem("userId"),
+              userId: userId,
             },
           })
           .then((response) => {
