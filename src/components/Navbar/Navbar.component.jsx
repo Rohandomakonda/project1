@@ -122,7 +122,8 @@ function Navbar() {
         {/* Check if the role includes CLUB_SEC or ADMIN */}
         {token && (roles.includes("CLUB_SEC") || roles.includes("ADMIN")) && <li><Link to="/addevent">Add Events</Link></li>}
         {token && (roles.includes("CLUB_SEC") || roles.includes("ADMIN")) && <li><Link to="/recruitments">Add Recruitments</Link></li>}
-
+        {token && (roles.includes("USER") ) && <li><Link to="/getallsavedevents">Saved Events</Link></li>}
+         {token && (roles.includes("USER") ) && <li><Link to="/getalllikedevents">Favourite Events</Link></li>}
         {token && <li><Link to="/viewclubs">View clubs</Link></li>}
       </ul>
       <ul className="navbar-profile">

@@ -2,8 +2,12 @@ package com.project.app.controller;
 
 import com.project.app.service.SavedEventService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.project.app.model.Event;
+
+import java.util.List;
 
 @RestController
 public class SaveEventController {
@@ -23,6 +27,12 @@ public class SaveEventController {
         savedEventService.unsaveEvent(eventTitle, userId);
         return ResponseEntity.ok("Event saved successfully!");
     }
+    @GetMapping("/getallsavedevents")
+    public ResponseEntity<List<Event>> getsavedevents(@RequestParam("userId") Long userId) {
+        System.out.println("get saved Events");
+        return new ResponseEntity<>(savedEventService.getsavedEvents(userId), HttpStatus.OK);
+    }
+
 
 
 

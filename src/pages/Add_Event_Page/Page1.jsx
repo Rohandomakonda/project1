@@ -4,38 +4,25 @@ import { useNavigate } from "react-router-dom";
 import "./Page1.styles.css";
 
 function Form() {
-  const [details, setDetails] = useState({
-    title: "",
-    description: "",
-    date: "",
-    time: "",
-    venue: "",
-    club: "",
-    isPublic: true,
-    venueDescription: "",
+  const [details, setDetails] = useState(() => {
+    const initialClub = localStorage.getItem("club") || "";
+    const initialRole = localStorage.getItem("role") || "";
+    return {
+      title: "",
+      description: "",
+      date: "",
+      time: "",
+      venue: "",
+      club: initialRole === "CLUB_SEC" ? initialClub : "", // Set club if role is CLUB_SEC
+      isPublic: true,
+      venueDescription: "",
+    };
   });
 
-  const [role, setRole] = useState(localStorage.getItem("role")); // Getting role from localStorage
+  const [role] = useState(localStorage.getItem("role")); // Getting role from localStorage
   const club = localStorage.getItem("club"); // Getting club name from localStorage
   const [image, setImage] = useState(null); // For storing the image file
   const navigate = useNavigate();
-if (role === "CLUB_SEC") {
-      setDetails((prevDetails) => ({
-        ...prevDetails,
-        club: club, // Prefill the club name when the role is 'CLUB_SEC'
-      }));
-    }
-  useEffect(() => {
-    if (role === "CLUB_SEC") {
-      setDetails((prevDetails) => ({
-        ...prevDetails,
-        club: club, // Prefill the club name when the role is 'CLUB_SEC'
-      }));
-    }
-console.log(club+" hello");
-console.log(role);
-  }, [role, club]);
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -158,17 +145,16 @@ console.log(role);
           <option value="false">Private</option>
         </select>
 
-        {/* Club field - Disable if role is 'CLUB_SEC' */}
-       <input
-         type="text"
-         name="club"
-         placeholder="Club Name"
-         value={details.club || club} // Pre-fill with club value if role is CLUB_SEC
-         onChange={handleChange}
-         required
-         readOnly={role === "CLUB_SEC"} // Disable if the role is CLUB_SEC
-       />
-
+        {/* Club field - Pre-filled and read-only if role is CLUB_SEC */}
+        <input
+          type="text"
+          name="club"
+          placeholder="Club Name"
+          value={details.club || club} // Pre-fill with club value
+          onChange={handleChange}
+          required
+          readOnly={role === "CLUB_SEC"} // Make read-only if role is CLUB_SEC
+        />
 
         <input
           type="file"

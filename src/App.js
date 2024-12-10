@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import './App.css';
 import View from "./pages/View_Page/View";
+import SavedEvents from "./pages/View_Page/savedEvents.jsx";
 import Form from "./pages/Add_Event_Page/Page1";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar.component.jsx";
@@ -77,19 +78,27 @@ function App() {
                      </ProtectedRoute>
                       }
                             />
-                            <Route
-                               path="/updateRecruitment/:id"
-                                element={
-                               <ProtectedRoute>
-                              <UpdateRec />
-                               </ProtectedRoute>
-                                 }
+                    <Route
+                      path="/updateRecruitment/:id"
+                     element={
+                      <ProtectedRoute>
+                       <UpdateRec />
+                        </ProtectedRoute>
+                          }
                                 />
               <Route
                 path="/recruitments"
                 element={
                   <ProtectedRoute>
                     <Recruitment />
+                  </ProtectedRoute>
+                }
+              />
+             <Route
+                path="/getallsavedevents"
+                element={
+                  <ProtectedRoute>
+                    <SavedEvents />
                   </ProtectedRoute>
                 }
               />
