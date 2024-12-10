@@ -1,10 +1,16 @@
 package com.project.app.controller;
 
 
+import com.project.app.model.Event;
 import com.project.app.service.FavouriteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -25,6 +31,19 @@ public class FavouriteController {
         System.out.println("disliking the event "+eventId+" "+userId);
         favouriteService.removeFavorite(eventId, userId);
         return ResponseEntity.ok("Event removed from favorites!");
+    }
+    @GetMapping("/getalllikedevents")
+    public ResponseEntity<List<Event>> getlikedevents(@RequestParam("userId") Long userId) {
+        try {
+            List<Event> events = favouriteService.getsavedEvents(userId);
+            return new ResponseEntity<>(events, HttpStatus.OK);
+        } catch (UsernameNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);  // User not found
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);  // No favorite events
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);  // General error
+        }
     }
 }
 

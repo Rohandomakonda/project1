@@ -88,6 +88,8 @@ const SavedEvents = () => {
             {...event}
             image={`data:image/jpeg;base64,${event.image}`} // Image rendering
             delete={handleDelete} // Delete handler
+           //if this event is in saved event then saved true else saved false
+                       //if this event is in fav event then liked true else liked false
           />
         </Grid>
       ))

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class FavouriteService {
@@ -56,6 +58,16 @@ public class FavouriteService {
 
 
         userRepository.save(user);
+    }
+
+    public List<Event> getsavedEvents(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        List<Event> events = user.getFavoriteEvents();
+        if (events == null) {
+            throw new NoSuchElementException("User has no favorite events");
+        }
+        return events;
     }
 
 }
