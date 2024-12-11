@@ -15,6 +15,7 @@ function Event(props) {
   const club = localStorage.getItem("club");
   const [isFlipped, setIsFlipped] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+
   const [isSaved, setIsSaved] = useState(false);  // Added isSaved state
 
 const userId = localStorage.getItem("userId");
@@ -186,14 +187,14 @@ const userId = localStorage.getItem("userId");
               <Fab
                 color={isLiked ? "error" : "default"}  // Red color for like button
                 aria-label="like"
-                onClick={handleLike}
+                onClick={() => handleLike(props.id)}
               >
                 {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
               </Fab>
               <Fab
                 color={isSaved ? "primary" : "default"}  // Default color for bookmark
                 aria-label="bookmark"
-                onClick={handleBookmark}
+                onClick={() => handleBookmark(props.id)}
               >
                 {isSaved ? <BookmarkIcon /> : <BookmarkBorderIcon />}
               </Fab>

@@ -24,9 +24,9 @@ const userId = localStorage.getItem("userId");
 
   const token = localStorage.getItem("authToken");  // Ensure the token is fetched from localStorage
 
-  // Toggle the liked state
-  function handleLike(id) {
 
+  function handledislike(id) {
+alert("world");
 
       props.dislike(id);
 
@@ -148,13 +148,15 @@ const userId = localStorage.getItem("userId");
           {/* Check if the user has 'USER' role and toggle like and bookmark buttons */}
           {roles.includes("USER") && (
             <div className="button-container">
-                        <Fab
-                              color= "default"  // Red color for like button
-                              aria-label="like"
-                              onClick={handleLike(props.id)}
-                            >
-                             <FavoriteIcon />
-                            </Fab>
+                       <Fab
+                         color="default"  // Red color for like button
+                         aria-label="like"
+                         onClick={() => handledislike(props.id)}  // Wrap the function call in a callback
+                       >
+                         <FavoriteIcon />
+                       </Fab>
+
+
             </div>
           )}
         </div>

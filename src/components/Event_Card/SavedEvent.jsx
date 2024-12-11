@@ -187,7 +187,7 @@ const userId = localStorage.getItem("userId");
               <Fab
                 color={isSaved ? "primary" : "default"}  // Default color for bookmark
                 aria-label="bookmark"
-                onClick={handleBookmark}
+                 onClick={() => handledbookmark(props.id)}
               >
                 {isSaved ? <BookmarkIcon /> : <BookmarkBorderIcon />}
               </Fab>

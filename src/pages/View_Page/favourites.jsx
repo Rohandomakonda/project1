@@ -50,6 +50,7 @@ const Favourites = () => {
   }, [userId]);
 
   const handleDislike = (id) => {
+      alert("hello");
     const token = localStorage.getItem("authToken");
 
     axios
