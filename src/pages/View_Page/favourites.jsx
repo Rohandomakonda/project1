@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Event from "../../components/Event_Card/Event"; // Component for individual event cards
+import LikedEvent from "../../components/Event_Card/LikedEvent"; // Component for individual event cards
 import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
 import Skeleton from "@mui/material/Skeleton"; // Import MUI Skeleton
@@ -25,7 +25,7 @@ const Favourites = () => {
       return;
     }
 
-    // Fetch saved events
+
     axios
       .get("http://localhost:8080/getalllikedevents", {
         headers: { Authorization: `Bearer ${token}` },
@@ -49,11 +49,11 @@ const Favourites = () => {
     setRoles(userRoles ? JSON.parse(userRoles) : []);
   }, [userId]);
 
-  const handleDelete = (id) => {
+  const handleDislike = (id) => {
     const token = localStorage.getItem("authToken");
 
     axios
-      .delete(`http://localhost:8080/event/${id}`, {
+      .delete(`http://localhost:8080/dislike/${id}/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
@@ -86,10 +86,10 @@ const Favourites = () => {
     eventList.length > 0 ? (
       eventList.map((event) => (
         <Grid item xs={12} sm={6} md={4} key={event.id}>
-          <Event
+          <LikedEvent
             {...event}
             image={`data:image/jpeg;base64,${event.image}`} // Image rendering
-            delete={handleDelete} // Delete handler
+            dislike={handleDislike} // Delete handler
             //if this event is in saved event then saved true else saved false
             //if this event is in fav event then liked true else liked false
           />
