@@ -1,5 +1,6 @@
 package com.project.app.service;
 
+import com.project.app.dto.LikeEventsResponse;
 import com.project.app.model.Event;
 import com.project.app.model.User;
 import com.project.app.repo.FormRepo;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -60,14 +62,29 @@ public class FavouriteService {
         userRepository.save(user);
     }
 
-    public List<Event> getsavedEvents(Long userId) {
+    public List<LikeEventsResponse> getAllLikedEvents(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         List<Event> events = user.getFavoriteEvents();
+        List<LikeEventsResponse> likedEvents = new ArrayList<>();
         if (events == null) {
             throw new NoSuchElementException("User has no favorite events");
         }
-        return events;
+
+        for(Event event : events){
+            LikeEventsResponse likeEvents = new LikeEventsResponse();
+            likeEvents.setId(event.getId());
+            likeEvents.setTitle(event.getTitle());
+            likeEvents.setDate(event.getDate());
+            likeEvents.setDate(event.getDate());
+            likeEvents.setVenueDescription(event.getVenueDescription());
+            likeEvents.setVenue(event.getVenue());
+            likeEvents.setClub(event.getClub());
+            likeEvents.setPublic(event.isPublic());
+            likeEvents.setImage(event.getImage());
+             likedEvents.add(likeEvents);
+        }
+        return likedEvents;
     }
 
 }

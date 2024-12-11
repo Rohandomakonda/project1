@@ -4,11 +4,15 @@ import axios from 'axios';
 import "./Navbar.styles.css";
 import Avatar from '@mui/material/Avatar';
 import FadeMenu from "../FadeMenu/FadeMenu.jsx";
+import CustomizedSnackbars from "../SnackBarCustom.jsx";
 function Navbar() {
   const [scrolling, setScrolling] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
   const [roles, setRoles] = useState([]);
+  const [error,setError] = useState(false);
+  const [loading,setLoading] = useState(false);
+  const [snackbarOpen,setSnackbarOpen] = useState(false);
 
   const token = localStorage.getItem('authToken');
   const name = localStorage.getItem('name');
@@ -44,6 +48,10 @@ function Navbar() {
     };
   }, [token]);
 
+//    useEffect(()=>{
+//         alert("snackbarOpen "+snackbarOpen);
+//
+//    },[snackbarOpen]);
   const handleLogout = async () => {
     try {
       if (token) {
@@ -60,8 +68,12 @@ function Navbar() {
         localStorage.removeItem('roles'); // Clear roles on logout
         setIsAuthenticated(false);
         setRoles([]);
+        setSnackbarOpen(true); // Show success Snackbar
+        setLoading(false);
+        setError(false);
+        setTimeout(() => navigate("/"), 3000);
         alert("Logout successful");
-        navigate('/');
+
       }
     } catch (error) {
       console.error('Logout error:', error);
@@ -70,7 +82,10 @@ function Navbar() {
       localStorage.removeItem('roles');
       setIsAuthenticated(false);
       setRoles([]);
-      navigate('/');
+      setSnackbarOpen(true); // Show success Snackbar
+      setLoading(false);
+      setError(true);
+      setTimeout(() => navigate("/"), 3000);
     }
   };
 
@@ -140,6 +155,12 @@ function Navbar() {
           </li>
         )}
       </ul>
+      <CustomizedSnackbars
+       open={snackbarOpen}
+       onClose={() => setSnackbarOpen(false)}
+        alertM={error ? "Logout unsuccessful pls try again" : "Logout successful"}
+        type={error ? "error" : "success"}
+        />
     </nav>
   );
 }

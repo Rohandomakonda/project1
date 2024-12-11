@@ -16,6 +16,7 @@ const Login = () => {
   const [pwd,setPwd] = useState(true);
   const [loading,setLoading] = useState(false);
   const [snackbarOpen,setSnackbarOpen] = useState(false);
+  const [error,setError] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,11 +41,15 @@ const Login = () => {
 
        setSnackbarOpen(true); // Show success Snackbar
         setLoading(false);
-         setTimeout(() => navigate("/"), 3000);
+        setError(false);
+         setTimeout(() => navigate("/"), 1500);
       }
     } catch (error) {
       console.error("Login failed:", error);
-      alert("Login unsuccessful!");
+      setLoading(false);
+      setSnackbarOpen(true);
+      setError(true);
+
     }
   };
 
@@ -85,8 +90,8 @@ const Login = () => {
        <CustomizedSnackbars
                open={snackbarOpen}
                onClose={() => setSnackbarOpen(false)}
-               alertM={"Login successfull"}
-               type={"success"}
+               alertM={error ? "Login unsuccessful pls try again" : "Login successful"}
+               type={error ? "error" : "success"}
              />
       </form>
       <div className="register-link">

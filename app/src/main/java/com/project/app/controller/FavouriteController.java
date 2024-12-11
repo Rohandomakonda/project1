@@ -1,6 +1,7 @@
 package com.project.app.controller;
 
 
+import com.project.app.dto.LikeEventsResponse;
 import com.project.app.model.Event;
 import com.project.app.service.FavouriteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +34,9 @@ public class FavouriteController {
         return ResponseEntity.ok("Event removed from favorites!");
     }
     @GetMapping("/getalllikedevents")
-    public ResponseEntity<List<Event>> getlikedevents(@RequestParam("userId") Long userId) {
+    public ResponseEntity<List<LikeEventsResponse>> getlikedevents(@RequestParam("userId") Long userId) {
         try {
-            List<Event> events = favouriteService.getsavedEvents(userId);
+            List<LikeEventsResponse> events = favouriteService.getAllLikedEvents(userId);
             return new ResponseEntity<>(events, HttpStatus.OK);
         } catch (UsernameNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);  // User not found

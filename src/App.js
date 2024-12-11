@@ -15,7 +15,9 @@ import ViewRecruitment from "./pages/View_Page/ViewRecruitment.jsx";
 import ViewClub from "./pages/clubs/ViewClub_page.jsx";
 import Club_info from "./pages/Club_Details/Club_Info.jsx";
 import ForgotP from "./pages/ForgotPassword_Page/ForgotP.jsx";
-import UpdateRec from "./pages/Recruitment/updateRecruitment.jsx"
+import UpdateRec from "./pages/Recruitment/updateRecruitment.jsx";
+import Favourites from "./pages/View_Page/favourites.jsx";
+
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -102,6 +104,14 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                 path="/getalllikedevents"
+                 element={
+                   <ProtectedRoute>
+                     <Favourites />
+                   </ProtectedRoute>
+                 }
+               />
               <Route
                 path="/viewRecruitments"
                 element={

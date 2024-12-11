@@ -6,7 +6,7 @@ import Skeleton from "@mui/material/Skeleton"; // Import MUI Skeleton
 import Grid from "@mui/material/Grid"; // Import MUI Grid
 import "./View.styles.css";
 
-const SavedEvents = () => {
+const Favourites = () => {
   const [events, setEvents] = useState([]); // All events
   const [loading, setLoading] = useState(false); // Loading state
   const [searchTerm, setSearchTerm] = useState(""); // Search term
@@ -17,7 +17,8 @@ const SavedEvents = () => {
   useEffect(() => {
     setLoading(true);
     const token = localStorage.getItem("authToken");
-
+    console.log("auth token is "+ token);
+    console.log("userId" + userId);
     if (!token) {
       alert("Session expired. Please log in again.");
       window.location.href = "/login";
@@ -31,6 +32,7 @@ const SavedEvents = () => {
         params: { userId },
       })
       .then((response) => {
+          console.log("response data is "+response.data);
         setEvents(response.data); // Update events list
       })
       .catch((error) => {
@@ -123,4 +125,4 @@ const SavedEvents = () => {
   }
 };
 
-export default SavedEvents;
+export default Favourites;

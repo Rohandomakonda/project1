@@ -5,6 +5,8 @@ import "./signup.css"; // Styling for SignUp
 import TextField from '@mui/material/TextField';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import CircularProgress from '@mui/material/CircularProgress';
+import CustomizedSnackbars from "../../components/SnackBarCustom.jsx";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({ name: "", password: "", email: "",roles:["USER"],club: ""});
@@ -12,22 +14,35 @@ const SignUp = () => {
   const [step, setStep] = useState(1); // Step 1 for Registration, Step 2 for OTP Verification
   const [selectedOption,setSelectedOption] = useState("USER");
   const [pwd,setPwd]=useState(true);
+  const [loading,setLoading] = useState(false);
+  const [snackbarOpen,setSnackbarOpen] = useState(false);
+  const [error,setError] = useState(false);
+
 
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
+
     e.preventDefault();
+    setLoading(true);
     if (formData.roles.includes("CLUB_SEC") && !formData.club) {
         alert("Please select a club.");
+        setLoading(false);
         return;
     }
 
     try {
       const response = await axios.post("http://localhost:8080/api/auth/register", formData);
-      alert("Registration successful! Check your email for the OTP.");
+     // alert("Registration successful! Check your email for the OTP.");
+      setSnackbarOpen(true); // Show success Snackbar
+      setLoading(false);
+      setError(false);
+      setTimeout(() => null, 1500);
       setStep(2); // Move to the OTP Verification step
     } catch (error) {
-      alert("Error during registration: " + error.response?.data?.message || error.message);
+      setLoading(false);
+       setSnackbarOpen(true);
+        setError(true);
     }
   };
 
@@ -39,6 +54,7 @@ const SignUp = () => {
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await axios.post("http://localhost:8080/api/auth/verify", {
         email: formData.email, // Use the registered email
         otp, // OTP entered by the user
@@ -51,7 +67,7 @@ const SignUp = () => {
 
       if (token) {
         localStorage.setItem("authToken", token);
-        alert("Verification successful!");
+       // alert("Verification successful!");
       }
       if(roles){
           console.log(roles);
@@ -59,12 +75,17 @@ const SignUp = () => {
         localStorage.setItem("roles", JSON.stringify(roles));
         localStorage.setItem("club",club);
         localStorage.setItem("userId",userId);
-        alert("registerd user type");
-        navigate("/viewevents"); // Redirect to View Events page after verification
-
+        setSnackbarOpen(true); // Show success Snackbar
+        setLoading(false);
+        setError(false);
+        //alert("registerd user type");
+         setTimeout(() => navigate("/viewevents"), 3000);
       }
     } catch (error) {
-      alert("Error verifying OTP: " + error.response?.data?.message || error.message);
+        setSnackbarOpen(true); // Show success Snackbar
+        setLoading(false);
+        setError(true);
+     // alert("Error verifying OTP: " + error.response?.data?.message || error.message);
     }
   };
 
@@ -78,7 +99,16 @@ const SignUp = () => {
       {step === 1 ? (
         <form onSubmit={handleRegister} className="signup-form">
           <h2>Create an Account</h2>
-
+        <div className="email">
+        <TextField
+              id="outlined-basic"
+              className="MuiTextField-root"
+              label="Email"
+              required
+              variant="outlined"
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+        />
+        </div>
            <TextField
            id="outlined-basic"
            label="Name"
@@ -107,16 +137,7 @@ const SignUp = () => {
           {pwd ? <VisibilityOffIcon/> : <VisibilityIcon/> }
           </button>
           </div>
-        <div className="email">
-        <TextField
-              id="outlined-basic"
-              className="MuiTextField-root"
-              label="Email"
-              required
-              variant="outlined"
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-        />
-        </div>
+
           <label>
             <input
               type="radio"
@@ -165,8 +186,13 @@ const SignUp = () => {
         </select>
 
           ) : (null) }
-
-          <button className="submit" type="submit">Sign Up</button>
+          {loading ? <CircularProgress color="inherit" /> : <button className="submit" type="submit">Sign Up</button>}
+       <CustomizedSnackbars
+        open={snackbarOpen}
+        onClose={() => setSnackbarOpen(false)}
+        alertM={error ? "registration unsuccessful" : "OTP is being sent to your email"}
+        type={error ? "error" : "success"}
+        />
         </form>
       ) : (
         <form onSubmit={handleVerifyOtp} className="signup-form">
@@ -178,7 +204,14 @@ const SignUp = () => {
             value={otp}
             onChange={(e) => setOtp(e.target.value)}
           />
-          <button type="submit">Verify</button>
+
+          {loading ? <CircularProgress color="inherit" /> : <button type="submit">Verify</button>}
+          <CustomizedSnackbars
+                  open={snackbarOpen}
+                  onClose={() => setSnackbarOpen(false)}
+                  alertM={error ? "Incorrect OTP pls type again" : "registration successfully completed"}
+                  type={error ? "error" : "success"}
+           />
         </form>
       )}
       <div className="login-link">
