@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from '@mui/icons-material/Edit';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -15,113 +15,108 @@ function Event(props) {
   const club = localStorage.getItem("club");
   const [isFlipped, setIsFlipped] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-
-  const [isSaved, setIsSaved] = useState(false);  // Added isSaved state
-
-const userId = localStorage.getItem("userId");
+  const [isSaved, setIsSaved] = useState(false); // Added isSaved state
+  const userId = localStorage.getItem("userId");
   const storedRoles = localStorage.getItem("roles");
   const roles = storedRoles ? JSON.parse(storedRoles) : [];
 
-  console.log("event card lopala roles "+ roles);
+  const token = localStorage.getItem("authToken");
 
-  const token = localStorage.getItem("authToken");  // Ensure the token is fetched from localStorage
+  useEffect(() => {
+    // Fetch whether the event is liked by the user
+    axios
+      .get(`http://localhost:8080/isliked/${props.id}/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setIsLiked(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching like status:", error);
+      });
+
+    // Fetch whether the event is saved/bookmarked by the user
+    axios
+      .get(`http://localhost:8080/issaved`, {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { userId: userId, eventTitle: props.title },
+      })
+      .then((response) => {
+        setIsSaved(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching saved status:", error);
+      });
+  }, [props.id, userId, token, props.title]);
 
   // Toggle the liked state
   function handleLike() {
-
     if (isLiked) {
       axios
         .delete(`http://localhost:8080/dislike/${props.id}/${userId}`, {
           headers: {
-            Authorization: `Bearer ${token}`, // Authorization header
+            Authorization: `Bearer ${token}`,
           },
         })
-        .then((response) => {
+        .then(() => {
+          setIsLiked(false);
           alert("Event disliked successfully!");
         })
         .catch((error) => {
           console.error("Error disliking event:", error);
-          if (error.response) {
-            alert("Failed to dislike event: " + error.response.data.message);
-          } else {
-            alert("An error occurred while disliking the event.");
-          }
+          alert("Failed to dislike event: " + error.response?.data?.message);
         });
     } else {
-        console.log("props id is "+props.id);
-        console.log("userId is " + userId);
-       console.log(`POST Request URL: http://localhost:8080/like/${props.id}/${userId}`);
-        console.log("token is " + token);
       axios
         .post(`http://localhost:8080/like/${props.id}/${userId}`, null, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         })
-        .then((response) => {
-          console.log("Response:", response);
+        .then(() => {
+          setIsLiked(true);
           alert("Event liked successfully!");
         })
         .catch((error) => {
-          console.error("Error: ", error.response || error.message);
+          console.error("Error liking event:", error);
+          alert("Failed to like event: " + error.response?.data?.message);
         });
     }
-    setIsLiked(!isLiked);
   }
 
   // Toggle the saved/bookmarked state
   function handleBookmark() {
-
-
-      if (isSaved) {
-          console.log("props title is "+props.title);
-          console.log("userId is " + userId);
-          console.log("token is " + token);
-        axios
-          .delete(`http://localhost:8080/unsave`, {
-            headers: {
-              Authorization: `Bearer ${token}`, // Authorization header
-            },
-            params: {
-              userId: userId,
-              eventTitle:props.title,
-            },
-          })
-          .then((response) => {
-            alert("Event unsaved successfully!");
-          })
-          .catch((error) => {
-            console.error("Error unsaving event:", error);
-            if (error.response) {
-              alert("Failed to unsave event: " + error.response.data.message);
-            } else {
-              alert("An error occurred while unsaving the event.");
-            }
-          });
-      } else {
-        axios
-          .post(`http://localhost:8080/saved-events/${props.id}`, null, {
-            headers: {
-              Authorization: `Bearer ${token}`, // Authorization header
-            },
-            params: {
-              userId: userId,
-            },
-          })
-          .then((response) => {
-            alert("Event saved successfully!");
-          })
-          .catch((error) => {
-            console.error("Error saving event:", error);
-            if (error.response) {
-              alert("Failed to saving event: " + error.response.data.message);
-            } else {
-              alert("An error occurred while saving the event.");
-            }
-          });
-      }
-      setIsSaved(!isSaved);
+    if (isSaved) {
+      axios
+        .delete(`http://localhost:8080/unsave`, {
+          headers: { Authorization: `Bearer ${token}` },
+          params: {
+            userId: userId,
+            eventTitle: props.title,
+          },
+        })
+        .then(() => {
+          setIsSaved(false);
+          alert("Event unsaved successfully!");
+        })
+        .catch((error) => {
+          console.error("Error unsaving event:", error);
+          alert("Failed to unsave event: " + error.response?.data?.message);
+        });
+    } else {
+      axios
+        .post(`http://localhost:8080/saved-events/${props.id}`, null, {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { userId: userId },
+        })
+        .then(() => {
+          setIsSaved(true);
+          alert("Event saved successfully!");
+        })
+        .catch((error) => {
+          console.error("Error saving event:", error);
+          alert("Failed to save event: " + error.response?.data?.message);
+        });
     }
+  }
 
   function handleDelete(e) {
     e.stopPropagation();
@@ -187,14 +182,14 @@ const userId = localStorage.getItem("userId");
               <Fab
                 color={isLiked ? "error" : "default"}  // Red color for like button
                 aria-label="like"
-                onClick={() => handleLike(props.id)}
+                onClick={handleLike}
               >
                 {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
               </Fab>
               <Fab
                 color={isSaved ? "primary" : "default"}  // Default color for bookmark
                 aria-label="bookmark"
-                onClick={() => handleBookmark(props.id)}
+                onClick={handleBookmark}
               >
                 {isSaved ? <BookmarkIcon /> : <BookmarkBorderIcon />}
               </Fab>

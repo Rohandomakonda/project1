@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Event from "../../components/Event_Card/Event"; // Component for individual event cards
+import SavedEvent from "../../components/Event_Card/SavedEvent"; // Component for individual event cards
 import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
 import Skeleton from "@mui/material/Skeleton"; // Import MUI Skeleton
@@ -47,22 +47,24 @@ const SavedEvents = () => {
     setRoles(userRoles ? JSON.parse(userRoles) : []);
   }, [userId]);
 
-  const handleDelete = (id) => {
-    const token = localStorage.getItem("authToken");
+ const handleunsave = (title) => {
+   const token = localStorage.getItem("authToken");
 
-    axios
-      .delete(`http://localhost:8080/event/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(() => {
-        setEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
-        alert("Event deleted successfully");
-      })
-      .catch((error) => {
-        console.error("Error deleting event:", error);
-        alert("Error deleting event: " + error.message);
-      });
-  };
+   axios
+     .delete(`http://localhost:8080/unsave`, {
+       headers: { Authorization: `Bearer ${token}` },
+       params: { userId: userId, eventTitle: title }, // Send eventId for deletion
+     })
+     .then(() => {
+       setEvents((prevEvents) => prevEvents.filter((event) => event.title !== title));
+       alert("Event unsaved successfully");
+     })
+     .catch((error) => {
+       console.error("Error unsaving event:", error);
+       alert("Error unsaving event: " + error.message);
+     });
+ };
+
 
   // Filter events based on the search term
   const filteredEvents = events.filter((event) =>
@@ -84,10 +86,10 @@ const SavedEvents = () => {
     eventList.length > 0 ? (
       eventList.map((event) => (
         <Grid item xs={12} sm={6} md={4} key={event.id}>
-          <Event
+          <SavedEvent
             {...event}
             image={`data:image/jpeg;base64,${event.image}`} // Image rendering
-            delete={handleDelete} // Delete handler
+            unsave={handleunsave} // Delete handler
            //if this event is in saved event then saved true else saved false
                        //if this event is in fav event then liked true else liked false
           />

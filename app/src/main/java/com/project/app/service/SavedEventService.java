@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SavedEventService {
@@ -44,18 +45,29 @@ public class SavedEventService {
 
     }
 
+
+
+    @Transactional
     public void unsaveEvent(String eventTitle, Long userId) {
+        System.out.println("Attempting to unsave event with title: " + eventTitle + " for user ID: " + userId);
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        // Fetch user from the database
+        Optional<User> user = userRepository.findById(userId);
+        User user1= user.get();
 
+        System.out.println("User found: " + user1.getId());
+//
 
-        SavedEvent savedEvent = savedEventRepository.findByUserAndTitle(user, eventTitle)
-                .orElseThrow(() -> new UsernameNotFoundException("Event not found in user's saved events"));
+        Optional<SavedEvent> savedEvent = savedEventRepository.findByUserAndTitle(user1, eventTitle);
+        SavedEvent se1= savedEvent.get();
 
+        System.out.println("SavedEvent found: " + se1.getTitle());
 
-        savedEventRepository.delete(savedEvent);
+        // Delete the event from the saved events list
+        savedEventRepository.delete(se1);
+        System.out.println("Event unsaved successfully!");
     }
+
     @Transactional
     public List<Event> getsavedEvents(Long userId) {
         List<Event> res = new ArrayList<>();  // Initialize the result list

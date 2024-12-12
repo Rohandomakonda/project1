@@ -22,11 +22,18 @@ public class SaveEventController {
         return ResponseEntity.ok("Event saved successfully!");
     }
     @DeleteMapping("/unsave")
-    public ResponseEntity<String> unsaveEvent(@RequestParam("eventTitle") String eventTitle, @RequestParam("userId") Long userId){
-        System.out.println("unsaving Event");
-        savedEventService.unsaveEvent(eventTitle, userId);
-        return ResponseEntity.ok("Event saved successfully!");
+    public ResponseEntity<String> unsaveEvent(@RequestParam("eventTitle") String eventTitle, @RequestParam("userId") Long userId) {
+        System.out.println("Received request to unsave event with title: " + eventTitle + " for user ID: " + userId);
+
+        try {
+            savedEventService.unsaveEvent(eventTitle, userId);
+            return ResponseEntity.ok("Event unsaved successfully!");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error unsaving event: " + e.getMessage());
+        }
     }
+
+
     @GetMapping("/getallsavedevents")
     public ResponseEntity<List<Event>> getsavedevents(@RequestParam("userId") Long userId) {
         System.out.println("get saved Events");
