@@ -14,7 +14,13 @@ public class SavedEvent {
     private String title;
     private String description;
     private String date;
+    private String time;
     private String venue;
+    private String club;
+    private String venueDescription;
+
+    @Lob
+    private byte[] image;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

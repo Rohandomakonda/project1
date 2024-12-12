@@ -40,6 +40,10 @@ public class SaveEventController {
         return new ResponseEntity<>(savedEventService.getsavedEvents(userId), HttpStatus.OK);
     }
 
+    @GetMapping("/issaved")
+    public ResponseEntity<Boolean> isSaved(@RequestParam("userId") Long userId,@RequestParam("eventTitle") String eventTitle){
+       return new ResponseEntity<>( savedEventService.isSaved(userId,eventTitle),HttpStatus.OK);
+    }
 
 
 

@@ -11,9 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Service
 public class FavouriteService {
@@ -99,4 +97,33 @@ public class FavouriteService {
         return likedEvents;
     }
 
+    public boolean isLiked(Long eventId,Long userId) {
+        boolean liked=false;
+        Optional<Event> event = eventRepository.findById(eventId);
+        if(!event.isPresent()){
+            return false;
+        }
+
+        Event event1 = event.get();
+
+
+        Optional<User> user1 = userRepository.findById(userId);
+
+        if(!user1.isPresent()){return false;}
+
+        User user = user1.get();
+
+
+        List<LikeEventsResponse> alleventsLikeByUser = getAllLikedEvents(user.getId());
+        for(LikeEventsResponse likedevents : alleventsLikeByUser){
+            if(Objects.equals(likedevents.getId(), event1.getId())){
+                liked=true;
+                break;
+            }
+        }
+
+        return liked;
+
+
+    }
 }

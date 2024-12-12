@@ -38,8 +38,13 @@ public class SavedEventService {
         savedEvent.setTitle(event.getTitle());
         savedEvent.setDescription(event.getDescription());
         savedEvent.setDate(event.getDate());
+        savedEvent.setTime(event.getTime());
         savedEvent.setVenue(event.getVenue());
+        savedEvent.setVenueDescription(event.getVenueDescription());
+        savedEvent.setClub(event.getClub());
+        savedEvent.setImage(event.getImage());
         savedEvent.setUser(user);
+
 
         savedEventRepository.save(savedEvent);
 
@@ -71,7 +76,7 @@ public class SavedEventService {
     @Transactional
     public List<Event> getsavedEvents(Long userId) {
         List<Event> res = new ArrayList<>();  // Initialize the result list
-        List<SavedEvent> ses = savedEventRepository.findByUserId(userId); // Make sure the method is correctly named
+        List<SavedEvent> ses = savedEventRepository.findByUserId(userId);
 
         // Iterate over the saved events and map them to Event objects
         for (SavedEvent se : ses) {
@@ -79,18 +84,36 @@ public class SavedEventService {
             temp.setTitle(se.getTitle());
             temp.setDescription(se.getDescription());
             temp.setDate(se.getDate());
-            temp.setTime(null); // Set time to null or handle if necessary
+            temp.setTime(se.getTime());
             temp.setVenue(se.getVenue());
-            temp.setClub(null); // Set to null if no club data is available
-            temp.setVenueDescription(null); // Handle this if you want a default value
+            temp.setClub(se.getClub());
+            temp.setVenueDescription(se.getDescription());
 
-            temp.setImage(null); // Set image as null or handle accordingly
+            temp.setImage(se.getImage()); // Set image as null or handle accordingly
 
-            // Add the event to the result list
             res.add(temp);
         }
 
         return res; // Return the list of events
     }
 
+    public Boolean isSaved(Long userId, String eventTitle) {
+
+        Optional<User> user1 = userRepository.findById(userId);
+
+        if(!user1.isPresent()){
+            return false;
+        }
+
+        User user = user1.get();
+
+       Optional<SavedEvent> isSavedEvent = savedEventRepository.findByUserAndTitle(user,eventTitle);
+
+       if(isSavedEvent.isPresent()){
+           return true;
+       }
+
+       return false;
+
+    }
 }

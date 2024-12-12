@@ -46,5 +46,12 @@ public class FavouriteController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);  // General error
         }
     }
+
+    @GetMapping("/isliked/{eventId}/{userId}")
+    public ResponseEntity<Boolean> getisLiked(@PathVariable("eventId") Long eventId, @PathVariable("userId") Long userId){
+        boolean isLiked = favouriteService.isLiked(eventId,userId);
+
+        return new ResponseEntity<>(isLiked,HttpStatus.OK);
+    }
 }
 

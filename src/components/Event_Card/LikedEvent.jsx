@@ -20,13 +20,12 @@ const userId = localStorage.getItem("userId");
   const storedRoles = localStorage.getItem("roles");
   const roles = storedRoles ? JSON.parse(storedRoles) : [];
 
-  console.log("event card lopala roles "+ roles);
+
 
   const token = localStorage.getItem("authToken");  // Ensure the token is fetched from localStorage
 
 
   function handledislike(id) {
-alert("world");
 
       props.dislike(id);
 
