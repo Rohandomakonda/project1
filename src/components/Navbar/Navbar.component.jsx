@@ -5,6 +5,7 @@ import "./Navbar.styles.css";
 import Avatar from '@mui/material/Avatar';
 import FadeMenu from "../FadeMenu/FadeMenu.jsx";
 import CustomizedSnackbars from "../SnackBarCustom.jsx";
+
 function Navbar() {
   const [scrolling, setScrolling] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
