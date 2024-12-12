@@ -26,6 +26,7 @@ public class FavouriteService {
     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public void addFavorite(Long eventId, Long userId) {
+        boolean isLiked=false;
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new UsernameNotFoundException("Event not found"));
         LocalDate eventDate = LocalDate.parse(event.getDate(), dateFormatter);
@@ -36,8 +37,19 @@ public class FavouriteService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
+        List<LikeEventsResponse> alleventsLikeByUser = getAllLikedEvents(user.getId());
+        for(LikeEventsResponse likedevents : alleventsLikeByUser){
+            if(likedevents.getId()==event.getId()){
+                System.out.println("already liked");
+                isLiked=true;
+                break;
+            }
+        }
+
+        if (!isLiked) {
         user.getFavoriteEvents().add(event);
         userRepository.save(user);
+        }
     }
 
     public void removeFavorite(Long eventId, Long userId) {

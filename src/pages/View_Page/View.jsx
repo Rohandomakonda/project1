@@ -66,11 +66,11 @@ const View = () => {
         setEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
         setMyClubEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
         setOnGoEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
-        alert("Event deleted successfully");
+        //alert("Event deleted successfully");
       })
       .catch((error) => {
         console.error("Error deleting event:", error);
-        alert("Error deleting event: " + error.message);
+       // alert("Error deleting event: " + error.message);
       });
   };
 
