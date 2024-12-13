@@ -1,11 +1,11 @@
 /* Apply the background to the entire page */
-body{
+body {
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4;
+  background-color: black;  /* Dark background */
   min-height: 100%;
-  font-family: Arial, sans-serif; /* Optional for consistent font styling */
-  color: #333; /* Default text color */
+  font-family: Arial, sans-serif;
+  color: #f0f0f0;  /* Light text color for better readability on black background */
   box-sizing: border-box;
 }
 
@@ -26,7 +26,7 @@ body{
   font-size: 36px;
   margin-bottom: 20px;
   text-align: center;
-  color: #333;
+  color: #f0f0f0;  /* Light color for heading */
 }
 
 /* Event List Section */
@@ -40,7 +40,7 @@ body{
 
 /* Button Styling */
 button {
-  background-color: #28a745;
+  background-color: #28a745;  /* Green background for the button */
   color: #fff;
   font-size: 18px;
   padding: 12px 24px;
@@ -51,15 +51,29 @@ button {
 }
 
 button:hover {
-  background-color: #218838;
+  background-color: #218838;  /* Darker green on hover */
 }
 
-/* Card Container Styling */
+/* Ensure that the event card container does not have unwanted backgrounds */
 .card-container {
   background-color: transparent; /* Prevents any override from card-specific styles */
 }
 
 /* Ensure no white background in nested elements */
 .card, .event-card, .events-container {
-  background-color: transparent !important;
+  background-color: transparent !important; /* Ensures no white background */
+}
+
+/* Optional: Styling for the event cards to blend better with the dark theme */
+.event {
+  background-color: #333; /* Dark background for each event card */
+  color: #f0f0f0;  /* Light text color for card content */
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Shadow to give it some depth */
+  transition: transform 0.3s ease;
+}
+
+.event:hover {
+  transform: translateY(-5px); /* Lift effect on hover */
 }

@@ -3,15 +3,15 @@ body {
   font-family: "Arial", sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4;
-  color: #333;
+  background-color: #121212; /* Dark background */
+  color: #e0e0e0; /* Light text color */
 }
 
 /* Form Container */
 .form-container {
   max-width: 600px;
   margin: 50px auto;
-  background: #ffffff;
+  background: #1f1f1f; /* Dark background for form */
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -22,7 +22,7 @@ body {
 .form-container h1 {
   text-align: center;
   font-size: 28px;
-  color: #007bff;
+  color: #007bff; /* Blue color for title */
   margin-bottom: 20px;
 }
 
@@ -35,10 +35,11 @@ body {
   margin-bottom: 15px;
   padding: 12px 15px;
   font-size: 14px;
-  border: 1px solid #ddd;
+  border: 1px solid #444; /* Dark border */
   border-radius: 5px;
+  background-color: #333; /* Dark background for input fields */
+  color: #e0e0e0; /* Light text inside fields */
   transition: all 0.3s ease;
-  background-color: #f9f9f9;
 }
 
 /* Hover and Focus Effects */
@@ -49,7 +50,7 @@ body {
 .event-form textarea:focus,
 .event-form select:focus {
   border-color: #007bff;
-  background-color: #ffffff;
+  background-color: #444; /* Darker background on hover/focus */
   outline: none;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
@@ -57,12 +58,12 @@ body {
 /* File Input */
 .event-form input[type="file"] {
   border: none;
-  background-color: #f9f9f9;
+  background-color: #333; /* Dark background for file input */
   cursor: pointer;
 }
 
 .event-form input[type="file"]:hover {
-  background-color: #e9ecef;
+  background-color: #444; /* Darker on hover */
 }
 
 /* Select Dropdown */
@@ -124,7 +125,7 @@ body {
   width: 70px;
   height: 70px;
   border-radius: 5px;
-  border: 1px solid #ddd;
+  border: 1px solid #444; /* Dark border */
   object-fit: cover;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }

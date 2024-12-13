@@ -10,7 +10,6 @@ function Home() {
   const token = localStorage.getItem('authToken');
 
   useEffect(() => {
-
     axios.get("http://localhost:8080/public/events")
       .then((resp) => {
         setPublicEvents(resp.data);
@@ -32,7 +31,6 @@ function Home() {
     <div className="public-events">
       <h1>Public Events</h1>
       <div className="event-list">
-
         {publicEvents.map((event) => (
           <Event
             key={event.id}
@@ -48,7 +46,7 @@ function Home() {
           />
         ))}
       </div>
-     {!token && <button onClick={handleClick}>Get Started</button>}
+      {!token && <button onClick={handleClick}>Get Started</button>}
     </div>
   );
 }
