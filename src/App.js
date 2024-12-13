@@ -4,7 +4,7 @@ import View from "./pages/View_Page/View";
 import SavedEvents from "./pages/View_Page/savedEvents.jsx";
 import Form from "./pages/Add_Event_Page/Page1";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar/Navbar.component.jsx";
+import Navbar1 from "./components/Navbar/Navbar.component.jsx";
 import Home from "./pages/Home_Page/Home.component.jsx";
 import Update from "./pages/update_page/Update.jsx";
 import Login from "./pages/LoginPage/Login.jsx";
@@ -18,6 +18,7 @@ import ForgotP from "./pages/ForgotPassword_Page/ForgotP.jsx";
 import UpdateRec from "./pages/Recruitment/updateRecruitment.jsx";
 import Favourites from "./pages/View_Page/favourites.jsx";
 import SideNav from "./components/SideNav.jsx";
+import MenuAppBar from "./components/Navbar.jsx";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -40,6 +41,7 @@ function App() {
       <div className={`app ${isLoading ? "loading" : ""}`}>
         {!isLoading && (
           <>
+            <MenuAppBar/>
             <SideNav />
 
             <Routes>

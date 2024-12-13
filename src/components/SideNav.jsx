@@ -23,6 +23,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
 import {useNavigate} from "react-router-dom";
+import {useAppStore} from "../appStore.jsx";
 
 const drawerWidth = 240;
 
@@ -55,28 +56,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  variants: [
-    {
-      props: ({ open }) => open,
-      style: {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.enteringScreen,
-        }),
-      },
-    },
-  ],
-}));
+
+
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })((
   { theme }) => ({
@@ -84,11 +65,13 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   flexShrink: 0,
   whiteSpace: 'nowrap',
   boxSizing: 'border-box',
+  backgroundColor: 'black',
   variants: [
     {
       props: ({ open }) => open,
       style: {
         ...openedMixin(theme),
+        backgroundColor: 'black',
         '& .MuiDrawer-paper': openedMixin(theme),
       },
     },
@@ -102,20 +85,24 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   ],
 }));
 
-export default function MiniDrawer() {
+export default function SideNav() {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
+ // const [open, setOpen] = React.useState(true);
   const [viewOpen, setViewOpen] = React.useState(false);
   const [addOpen, setAddOpen] = React.useState(false);
   const navigate = useNavigate();
+ // const setOpen = useAppStore((state)=>state.updateOpen);
+  const open = useAppStore((state)=>state.dopen);
+  const token = localStorage.getItem('authToken');
+  const roles = localStorage.getItem("roles");
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+//   const handleDrawerOpen = () => {
+//     setOpen(true);
+//   };
+//
+//   const handleDrawerClose = () => {
+//     setOpen(false);
+//   };
 
   const toggleView = () => setViewOpen(!viewOpen);
   const toggleAdd = () => setAddOpen(!addOpen);
@@ -123,30 +110,9 @@ export default function MiniDrawer() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={[
-              {
-                marginRight: 5,
-              },
-              open && { display: 'none' },
-            ]}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            NITW Events App
-          </Typography>
-        </Toolbar>
-      </AppBar>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
         </DrawerHeader>
@@ -223,6 +189,7 @@ export default function MiniDrawer() {
           )}
         </List>
         <Divider />
+            {token && (roles.includes("CLUB_SEC") || roles.includes("ADMIN")) &&
         <List>
           <ListItemButton onClick={toggleAdd}>
             <ListItemText primary="Add" />
@@ -257,16 +224,8 @@ export default function MiniDrawer() {
                 </>
           )}
         </List>
+        }
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
-        <Typography sx={{ marginBottom: 2 }}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
-          enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-          imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
-        </Typography>
-      </Box>
     </Box>
   );
 }

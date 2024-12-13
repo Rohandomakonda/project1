@@ -58,7 +58,9 @@ public class FavouriteService {
 
         LocalDate eventDate = LocalDate.parse(event.getDate(), dateFormatter);
         if (eventDate.isBefore(LocalDate.now())) {
-            throw new IllegalStateException("Only upcoming or ongoing events can be removed from favorites.");
+            //throw new IllegalStateException("Only upcoming or ongoing events can be removed from favorites.");
+            System.out.println("deleting in removeFav");
+            eventRepository.deleteById(eventId);
         }
 
 
@@ -125,5 +127,13 @@ public class FavouriteService {
         return liked;
 
 
+    }
+
+    public void removeEvent(Long id) {
+        List<User> users = userRepository.findAll();
+
+        for(User user : users){
+            removeFavorite(id,user.getId());
+        }
     }
 }
