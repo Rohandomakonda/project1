@@ -116,13 +116,14 @@ const filteredEvents = events.filter((event) =>
   if (roles.includes("CLUB_SEC")) {
     return (
       <div className="container">
+                <div className="ongoing-events">
+                  <h2 className="center-text">My Club Events</h2>
+                  <Grid container spacing={2}>
+                    {loading ? renderSkeletons(3) : renderEvents(myClubEvents)}
+                  </Grid>
+                </div>
         {/* My Club Events Section */}
-        <div className="ongoing-events">
-          <h2 className="center-text">My Club Events</h2>
-          <Grid container spacing={2}>
-            {loading ? renderSkeletons(3) : renderEvents(myClubEvents)}
-          </Grid>
-        </div>
+
 
         {/* Search Bar */}
         <div className="search-container">
@@ -140,6 +141,7 @@ const filteredEvents = events.filter((event) =>
         <Grid container spacing={2}>
           {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
         </Grid>
+
       </div>
     );
   } else {

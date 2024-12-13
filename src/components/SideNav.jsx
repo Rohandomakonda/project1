@@ -27,7 +27,11 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-
+import ViewListIcon from '@mui/icons-material/ViewList';
+import AddIcon from '@mui/icons-material/Add';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import GroupsIcon from '@mui/icons-material/Groups';
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -200,6 +204,10 @@ export default function SideNav() {
         {/* View Section */}
         <List>
           <ListItemButton onClick={toggleView}>
+              <ListItemIcon>
+                  <ViewListIcon sx={{ color: 'white' }} />
+              </ListItemIcon>
+
             <ListItemText primary="View" sx={{ color: 'white' }} />
             {viewOpen ? <ExpandLessIcon sx={{ color: 'white' }} /> : <ExpandMoreIcon sx={{ color: 'white' }} />}
           </ListItemButton>
@@ -210,7 +218,7 @@ export default function SideNav() {
                   <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => navigate("/viewevents")}>
                     <ListItemButton sx={{ minHeight: 48, px: 2.5 }}>
                       <ListItemIcon>
-                        <InfoIcon sx={{ color: 'white' }} />
+                        <CalendarTodayIcon sx={{ color: 'white' }} />
                       </ListItemIcon>
                       <ListItemText primary={text} sx={{ color: 'white' }} />
                     </ListItemButton>
@@ -222,7 +230,7 @@ export default function SideNav() {
                   <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => navigate("/viewRecruitments")}>
                     <ListItemButton sx={{ minHeight: 48, px: 2.5 }}>
                       <ListItemIcon>
-                        <InfoIcon sx={{ color: 'white' }} />
+                        <InsertDriveFileIcon sx={{ color: 'white' }} />
                       </ListItemIcon>
                       <ListItemText primary={text} sx={{ color: 'white' }} />
                     </ListItemButton>
@@ -234,7 +242,7 @@ export default function SideNav() {
                   <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => navigate("/viewclubs")}>
                     <ListItemButton sx={{ minHeight: 48, px: 2.5 }}>
                       <ListItemIcon>
-                        <InfoIcon sx={{ color: 'white' }} />
+                        <GroupsIcon sx={{ color: 'white' }} />
                       </ListItemIcon>
                       <ListItemText primary={text} sx={{ color: 'white' }} />
                     </ListItemButton>
@@ -250,6 +258,10 @@ export default function SideNav() {
         {token && (roles.includes("CLUB_SEC") || roles.includes("ADMIN")) && (
           <List>
             <ListItemButton onClick={toggleAdd}>
+                <ListItemIcon>
+                   <AddIcon sx={{ color: 'white' }} />
+                                      </ListItemIcon>
+
               <ListItemText primary="Add" sx={{ color: 'white' }} />
               {addOpen ? <ExpandLessIcon sx={{ color: 'white' }} /> : <ExpandMoreIcon sx={{ color: 'white' }} />}
             </ListItemButton>
@@ -260,7 +272,7 @@ export default function SideNav() {
                     <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => navigate("/addevent")}>
                       <ListItemButton sx={{ minHeight: 48, px: 2.5 }}>
                         <ListItemIcon>
-                          <InfoIcon sx={{ color: 'white' }} />
+                          <CalendarTodayIcon sx={{ color: 'white' }} />
                         </ListItemIcon>
                         <ListItemText primary={text} sx={{ color: 'white' }} />
                       </ListItemButton>
@@ -272,7 +284,7 @@ export default function SideNav() {
                     <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => navigate("/recruitments")}>
                       <ListItemButton sx={{ minHeight: 48, px: 2.5 }}>
                         <ListItemIcon>
-                          <InfoIcon sx={{ color: 'white' }} />
+                          <InsertDriveFileIcon sx={{ color: 'white' }} />
                         </ListItemIcon>
                         <ListItemText primary={text} sx={{ color: 'white' }} />
                       </ListItemButton>

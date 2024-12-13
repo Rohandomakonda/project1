@@ -1,28 +1,20 @@
-/* App.css */
+/* General Body Styles */
 body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
     overflow-x: hidden;
-    background-color: #f4f4f4;
+    background-color: black; /* Dark background */
 }
 
-/* Add a background color to the whole app
-.app {
-    background-color: #f4f4f4;
-    transition: all 0.5s ease-in-out;
-    opacity: 1;
-}
-*/
-
-/* Loading animation before the page is ready */
+/* Loading Animation Styles */
 .loading-animation {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 24px;
-    color: #2a9d8f;
+    color: #2a9d8f; /* Greenish color for the loading text */
     animation: fadeIn 1.5s ease-in-out forwards;
     z-index: 1000;
 }
@@ -39,13 +31,13 @@ body {
     }
 }
 
-/* When the page is loaded, the content is faded in */
+/* When the page is loaded, content fades in */
 .app.loading {
     opacity: 0;
-    pointer-events: none;
+    pointer-events: none; /* Disable interaction while loading */
 }
 
-/* Slide-in animation for the navbar */
+/* Slide-in animation for the Navbar */
 .navbar {
     transform: translateY(-100%); /* Initially hidden */
     animation: slideDown 0.7s ease-out forwards;

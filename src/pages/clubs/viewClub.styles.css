@@ -4,7 +4,7 @@ html, body {
   padding: 0;
   width: 100%;
   height: 100%;
-  background-color: #121212; /* Dark background for the entire page */
+  background-color: black; /* Dark background for the entire page */
   overflow-x: hidden; /* Prevent horizontal scroll */
   color: #e0e0e0; /* Light text color for the page */
 }
