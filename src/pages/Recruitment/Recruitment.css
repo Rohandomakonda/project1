@@ -1,7 +1,7 @@
 /* General Styles */
 body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(120deg, #84fab0, #8fd3f4); /* Interactive gradient background */
+    background-color:black; /* Interactive gradient background */
     margin: 0;
     padding: 0;
     display: flex;

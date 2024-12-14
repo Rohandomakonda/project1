@@ -28,7 +28,7 @@ public class Event {
     @Lob
     private byte[] image;
 
-    @ManyToMany(mappedBy = "favoriteEvents")
+    @ManyToMany(mappedBy = "favoriteEvents",cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties("favoriteEvents")
     private List<User> favoritedByUsers;
 

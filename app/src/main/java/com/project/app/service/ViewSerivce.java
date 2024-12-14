@@ -27,7 +27,7 @@ public class ViewSerivce {
     @Autowired
     FavouriteService favouriteService;
 
-    @Transactional
+
     public List<Event> getAllEvents() {
         System.out.println("finding all");
 
@@ -45,7 +45,7 @@ public class ViewSerivce {
             System.out.println("can be deleted "+currentDate.isAfter(eventDate));
             if(currentDate.isAfter(eventDate)){
                 System.out.println("Deleting date on "+eventDate);
-                favouriteService.removeEvent(event.getId());
+                formRepo.deleteById(event.getId());
             }
         }
 

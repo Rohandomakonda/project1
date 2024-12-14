@@ -1,10 +1,12 @@
-import React, { useState, useEffect,useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import Event from "../../components/Event_Card/Event"; // Component for individual event cards
 import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
 import Skeleton from "@mui/material/Skeleton"; // Import MUI Skeleton
 import Grid from "@mui/material/Grid"; // Import MUI Grid
+import Box from "@mui/material/Box"; // Import MUI Box
 import "./View.styles.css";
+import TextField from '@mui/material/TextField';
 
 const View = () => {
   const [events, setEvents] = useState([]); // All events
@@ -54,7 +56,6 @@ const View = () => {
       .finally(() => setLoading(false));
   }, [club]);
 
-  // Delete event handler
   const handleDelete = (id) => {
     const token = localStorage.getItem("authToken");
 
@@ -66,28 +67,18 @@ const View = () => {
         setEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
         setMyClubEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
         setOnGoEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
-        //alert("Event deleted successfully");
       })
       .catch((error) => {
         console.error("Error deleting event:", error);
-       // alert("Error deleting event: " + error.message);
       });
   };
 
-  // Filter events by search term
-//   const filteredEvents = events.filter((event) =>
-//     ["title", "description", "venue", "club"].some((key) =>
-//       event[key]?.toLowerCase().includes(searchTerm.toLowerCase())
-//     )
-//   );
-const filteredEvents = events.filter((event) =>
+  const filteredEvents = events.filter((event) =>
     ["title", "description", "venue", "club"].some((key) =>
       event[key]?.toLowerCase().includes(searchTerm.toLowerCase())
     )
-);
+  );
 
-
-  // Skeleton placeholders for events
   const renderSkeletons = (count) =>
     Array.from(new Array(count)).map((_, index) => (
       <Grid item xs={12} sm={6} md={4} key={index}>
@@ -95,85 +86,78 @@ const filteredEvents = events.filter((event) =>
       </Grid>
     ));
 
-  // Render event cards
   const renderEvents = (eventList) =>
     eventList.length > 0 ? (
-      eventList.map((event) => (
-        <Grid item xs={12} sm={6} md={4} key={event.id}>
-          <Event
-            {...event}
-            image={`data:image/jpeg;base64,${event.image}`} // Image rendering
-            delete={handleDelete} // Delete handler
-            //if this event is in saved event then saved true else saved false
-            //if this event is in fav event then liked true else liked false
-          />
-        </Grid>
-      ))
+      <Grid container spacing={2} justifyContent={eventList.length < 3 ? "center" : "flex-start"}>
+        {eventList.map((event) => (
+          <Grid item xs={12} sm={6} md={4} key={event.id} sx={{ minWidth: "350px" }}>
+            <Event
+              {...event}
+              venue_description={event.venueDescription}
+              image={`data:image/jpeg;base64,${event.image}`} // Image rendering
+              delete={handleDelete}
+            />
+          </Grid>
+        ))}
+      </Grid>
     ) : (
       <p>No events found</p>
     );
 
-  if (roles.includes("CLUB_SEC")) {
-    return (
-      <div className="container">
-                <div className="ongoing-events">
-                  <h2 className="center-text">My Club Events</h2>
-                  <Grid container spacing={2}>
-                    {loading ? renderSkeletons(3) : renderEvents(myClubEvents)}
-                  </Grid>
-                </div>
-        {/* My Club Events Section */}
+  return (
+    <Box sx={{ mt: 12, p: 4 }}>
+      {roles.includes("CLUB_SEC") ? (
+        <>
+          <Box sx={{ mt: 40 }}>
+            <h2 className="center-text">My Club Events</h2>
+            <Grid container spacing={2}>
+              {loading ? renderSkeletons(3) : renderEvents(myClubEvents)}
+            </Grid>
+          </Box>
 
+          <Box sx={{ mb: 4 }} className="search-container">
+            <SearchIcon className="search-icon" />
+            <input
+              type="text"
+              placeholder="Search events"
+              className="search-bar"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </Box>
 
-        {/* Search Bar */}
-        <div className="search-container">
-          <SearchIcon className="search-icon" />
-          <input
-            type="text"
-            placeholder="Search events"
-            className="search-bar"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-
-        {/* All Events Section */}
-        <Grid container spacing={2}>
-          {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
-        </Grid>
-
-      </div>
-    );
-  } else {
-    return (
-      <div className="container">
-        {/* Ongoing Events Section */}
-        <div className="ongoing-events">
-          <h2 className="center-text">Ongoing Events</h2>
           <Grid container spacing={2}>
-            {loading ? renderSkeletons(3) : renderEvents(onGoEvents)}
+            {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
           </Grid>
-        </div>
+        </>
+      ) : (
+        <>
+          <Box sx={{ mb: 4 }}>
+            <h2 className="center-text">Ongoing Events</h2>
+            <Grid container spacing={2}>
+              {loading ? renderSkeletons(3) : renderEvents(onGoEvents)}
+            </Grid>
+          </Box>
 
-        {/* Search Bar */}
-        <div className="search-container">
-          <SearchIcon className="search-icon" />
-          <input
-            type="text"
-            placeholder="Search events"
-            className="search-bar"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
+          <Box sx={{ mb: 4 }} className="search-container">
+            <SearchIcon className="search-icon" />
+            <input
+              type="text"
+              placeholder="Search events"
+              className="search-bar"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
 
-        {/* All Events Section */}
-        <Grid container spacing={2}>
-          {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
-        </Grid>
-      </div>
-    );
-  }
+          </Box>
+
+          <Grid container spacing={2}>
+            {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
+          </Grid>
+        </>
+      )}
+    </Box>
+  );
 };
 
 export default View;

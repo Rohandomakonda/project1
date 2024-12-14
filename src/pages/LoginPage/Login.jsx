@@ -37,7 +37,7 @@ const Login = () => {
         localStorage.setItem("authToken", token);
         localStorage.setItem("name",name);
         localStorage.setItem("club",club);
-         localStorage.setItem("userId",userId);
+        localStorage.setItem("userId",userId);
 
        setSnackbarOpen(true); // Show success Snackbar
         setLoading(false);

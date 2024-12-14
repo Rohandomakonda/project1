@@ -45,6 +45,7 @@ export default function MenuAppBar() {
   };
 
   const handleClose = () => {
+      navigate('/profile');
     setAnchorEl(null);
   };
 
@@ -69,6 +70,7 @@ export default function MenuAppBar() {
           setError(false);
           setTimeout(() => navigate("/"), 3000);
           alert("Logout successful");
+          setAnchorEl(null);
 
         }
       } catch (error) {

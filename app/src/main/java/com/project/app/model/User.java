@@ -44,8 +44,8 @@ public class User {
     @ManyToMany
     @JoinTable(
             name = "user_favorite_events",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "event_id")
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     @JsonIgnoreProperties("favoritedByUsers")
     private List<Event> favoriteEvents;
