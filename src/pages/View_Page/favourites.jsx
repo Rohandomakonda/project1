@@ -4,6 +4,7 @@ import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
 import Skeleton from "@mui/material/Skeleton"; // Import MUI Skeleton
 import Grid from "@mui/material/Grid"; // Import MUI Grid
+import Box from "@mui/material/Box"; // Use MUI Box for consistent layout
 import "./View.styles.css";
 
 const Favourites = () => {
@@ -17,7 +18,7 @@ const Favourites = () => {
   useEffect(() => {
     setLoading(true);
     const token = localStorage.getItem("authToken");
-    console.log("auth token is "+ token);
+    console.log("auth token is " + token);
     console.log("userId" + userId);
     if (!token) {
       alert("Session expired. Please log in again.");
@@ -25,14 +26,13 @@ const Favourites = () => {
       return;
     }
 
-
     axios
       .get("http://localhost:8080/getalllikedevents", {
         headers: { Authorization: `Bearer ${token}` },
         params: { userId },
       })
       .then((response) => {
-          console.log("response data is "+response.data);
+        console.log("response data is " + response.data);
         setEvents(response.data); // Update events list
       })
       .catch((error) => {
@@ -50,7 +50,7 @@ const Favourites = () => {
   }, [userId]);
 
   const handleDislike = (id) => {
-      alert("hello");
+    alert("hello");
     const token = localStorage.getItem("authToken");
 
     axios
@@ -91,8 +91,6 @@ const Favourites = () => {
             {...event}
             image={`data:image/jpeg;base64,${event.image}`} // Image rendering
             dislike={handleDislike} // Delete handler
-            //if this event is in saved event then saved true else saved false
-            //if this event is in fav event then liked true else liked false
           />
         </Grid>
       ))
@@ -100,11 +98,18 @@ const Favourites = () => {
       <p>No events found</p>
     );
 
+   const calculateMarginTop = (eventList) => {
+      const numberOfColumns = 3; // Assuming you want 3 columns
+      const numberOfRows = Math.ceil(eventList.length / numberOfColumns);
+      return   (numberOfRows - 1) * 48; // Increase mt by 38 for each additional row
+    };
+
+
   if (roles.includes("USER")) {
     return (
-      <div className="container">
+      <Box sx={{ mt: calculateMarginTop(filteredEvents),ml:15 }}>
         {/* Search Bar */}
-        <div className="search-container">
+        <Box sx={{ mb: 4 }} className="search-container">
           <SearchIcon className="search-icon" />
           <input
             type="text"
@@ -113,13 +118,13 @@ const Favourites = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-        </div>
+        </Box>
 
         {/* All Events Section */}
         <Grid container spacing={2}>
           {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
         </Grid>
-      </div>
+      </Box>
     );
   } else {
     return null; // Render nothing for unauthorized users

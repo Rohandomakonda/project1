@@ -5,8 +5,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import Skeleton from "@mui/material/Skeleton"; // Import MUI Skeleton
 import Grid from "@mui/material/Grid"; // Import MUI Grid
 import Box from "@mui/material/Box"; // Import MUI Box
-import "./View.styles.css";
-import TextField from '@mui/material/TextField';
+import TextField from '@mui/material/TextField'; // Import MUI TextField
+import Particles from "react-tsparticles"; // Import the particles component
 
 const View = () => {
   const [events, setEvents] = useState([]); // All events
@@ -104,12 +104,59 @@ const View = () => {
       <p>No events found</p>
     );
 
+  const calculateMarginTop = (eventList, eventList2) => {
+    const numberOfColumns = 3;
+    const numberOfRows = Math.ceil(eventList.length / numberOfColumns);
+    const n1 = Math.ceil(eventList2.length / numberOfColumns);
+    return 140 + (n1 - 1) * 40 + (numberOfRows - 1) * 40; // Increase mt by 30 for each additional row
+  };
+
   return (
-    <Box sx={{ mt: 12, p: 4 }}>
+    <Box sx={{ mt: calculateMarginTop(filteredEvents, myClubEvents), position: "relative" }}>
+      {/* Particles Background */}
+      <Particles
+        options={{
+          background: {
+            color: { value: "#000000" }, // Black background
+          },
+          particles: {
+            color: { value: "#ffffff" }, // White particles
+            line_linked: {
+              color: "#ffffff", // White lines connecting particles
+            },
+            number: {
+              density: {
+                enable: true,
+                area: 800,
+              },
+              value: 50,
+            },
+            size: {
+              value: 3,
+            },
+            move: {
+              enable: true,
+              speed: 2,
+              direction: "random",
+              out_mode: "out",
+            },
+          },
+        }}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100vh", // Full viewport height
+          zIndex: -1, // Behind all other content
+        }}
+      />
+
+      {/* Content */}
       {roles.includes("CLUB_SEC") ? (
         <>
-          <Box sx={{ mt: 40 }}>
-            <h2 className="center-text">My Club Events</h2>
+          <Box sx={{ mt: 2 }}>
+            <h2 className="center-text" style={{ color: "white" }}>My Club Events</h2>
             <Grid container spacing={2}>
               {loading ? renderSkeletons(3) : renderEvents(myClubEvents)}
             </Grid>
@@ -126,14 +173,17 @@ const View = () => {
             />
           </Box>
 
-          <Grid container spacing={2}>
-            {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
-          </Grid>
+          <Box>
+            <h2 className="center-text" style={{ color: "white" }}>All Events</h2>
+            <Grid container spacing={2}>
+              {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
+            </Grid>
+          </Box>
         </>
       ) : (
         <>
-          <Box sx={{ mb: 4 }}>
-            <h2 className="center-text">Ongoing Events</h2>
+          <Box sx={{ mt: 2 }}>
+            <h2 className="center-text" style={{ color: "white" }}>Ongoing Events</h2>
             <Grid container spacing={2}>
               {loading ? renderSkeletons(3) : renderEvents(onGoEvents)}
             </Grid>
@@ -148,12 +198,14 @@ const View = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-
           </Box>
 
-          <Grid container spacing={2}>
-            {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
-          </Grid>
+          <Box>
+            <h2 className="center-text" style={{ color: "white" }}>All Events</h2>
+            <Grid container spacing={2}>
+              {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
+            </Grid>
+          </Box>
         </>
       )}
     </Box>

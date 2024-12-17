@@ -4,6 +4,7 @@ import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
 import Skeleton from "@mui/material/Skeleton"; // Import MUI Skeleton
 import Grid from "@mui/material/Grid"; // Import MUI Grid
+import Box from "@mui/material/Box"; // Use MUI Box for consistent layout
 import "./View.styles.css";
 
 const SavedEvents = () => {
@@ -47,24 +48,23 @@ const SavedEvents = () => {
     setRoles(userRoles ? JSON.parse(userRoles) : []);
   }, [userId]);
 
- const handleunsave = (title) => {
-   const token = localStorage.getItem("authToken");
+  const handleunsave = (title) => {
+    const token = localStorage.getItem("authToken");
 
-   axios
-     .delete(`http://localhost:8080/unsave`, {
-       headers: { Authorization: `Bearer ${token}` },
-       params: { userId: userId, eventTitle: title }, // Send eventId for deletion
-     })
-     .then(() => {
-       setEvents((prevEvents) => prevEvents.filter((event) => event.title !== title));
-       alert("Event unsaved successfully");
-     })
-     .catch((error) => {
-       console.error("Error unsaving event:", error);
-       alert("Error unsaving event: " + error.message);
-     });
- };
-
+    axios
+      .delete(`http://localhost:8080/unsave`, {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { userId: userId, eventTitle: title }, // Send eventId for deletion
+      })
+      .then(() => {
+        setEvents((prevEvents) => prevEvents.filter((event) => event.title !== title));
+        alert("Event unsaved successfully");
+      })
+      .catch((error) => {
+        console.error("Error unsaving event:", error);
+        alert("Error unsaving event: " + error.message);
+      });
+  };
 
   // Filter events based on the search term
   const filteredEvents = events.filter((event) =>
@@ -90,8 +90,6 @@ const SavedEvents = () => {
             {...event}
             image={`data:image/jpeg;base64,${event.image}`} // Image rendering
             unsave={handleunsave} // Delete handler
-           //if this event is in saved event then saved true else saved false
-                       //if this event is in fav event then liked true else liked false
           />
         </Grid>
       ))
@@ -99,11 +97,18 @@ const SavedEvents = () => {
       <p>No events found</p>
     );
 
+  // Dynamic marginTop calculation based on the number of rows
+  const calculateMarginTop = (eventList) => {
+    const numberOfColumns = 3; // Assuming you want 3 columns
+    const numberOfRows = Math.ceil(eventList.length / numberOfColumns);
+    return (numberOfRows - 1) * 48; // Increase mt by 48 for each additional row
+  };
+
   if (roles.includes("USER")) {
     return (
-      <div className="container">
+      <Box sx={{ mt: calculateMarginTop(filteredEvents), ml: 15 }}>
         {/* Search Bar */}
-        <div className="search-container">
+        <Box sx={{ mb: 4 }} className="search-container">
           <SearchIcon className="search-icon" />
           <input
             type="text"
@@ -112,13 +117,13 @@ const SavedEvents = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-        </div>
+        </Box>
 
         {/* All Events Section */}
         <Grid container spacing={2}>
           {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
         </Grid>
-      </div>
+      </Box>
     );
   } else {
     return null; // Render nothing for unauthorized users

@@ -1,13 +1,5 @@
 /* Ensure body and html take up full width and height */
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  background-color: black; /* Dark background for the entire page */
-  overflow-x: hidden; /* Prevent horizontal scroll */
-  color: #e0e0e0; /* Light text color for the page */
-}
+
 
 /* Reset box-sizing */
 * {

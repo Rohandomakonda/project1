@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Event from "../../components/Event_Card/Event";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./Home.styles.css";
+import { Box, Button } from "@mui/material"; // Import Box and Button from MUI
 
 function Home() {
   const [publicEvents, setPublicEvents] = useState([]);
@@ -15,7 +15,7 @@ function Home() {
         setPublicEvents(resp.data);
       })
       .catch((err) => {
-        alert("getError " + err);
+        alert("Error fetching events: " + err);
       });
   }, []);
 
@@ -27,10 +27,33 @@ function Home() {
     navigate("/register");
   };
 
+  // Function to calculate the margin-top based on the number of events
+  const calculateMarginTop = (events) => {
+    const numberOfColumns = 3;  // Maximum number of events per row
+    const numberOfRows = Math.ceil(events.length / numberOfColumns);  // Calculate number of rows
+    return 100 + (numberOfRows - 1) * 30;  // Starting from 100px, increase by 30px for each extra row
+  };
+
   return (
-    <div className="public-events">
+    <Box
+      className="public-events"
+      sx={{
+        padding: 2,
+        mt: calculateMarginTop(publicEvents),
+        textAlign: 'center'  // This centers the title
+      }}
+    >
       <h1>Public Events</h1>
-      <div className="event-list">
+      <Box
+        className="event-list"
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',  // Centers the cards horizontally
+          flexWrap: 'wrap',
+          gap: 2,
+          justifyItems: 'center'
+        }}
+      >
         {publicEvents.map((event) => (
           <Event
             key={event.id}
@@ -45,9 +68,13 @@ function Home() {
             delete={handleDelete}
           />
         ))}
-      </div>
-      {!token && <button onClick={handleClick}>Get Started</button>}
-    </div>
+      </Box>
+      {!token && (
+        <Button onClick={handleClick} variant="contained" sx={{ marginTop: 2 }}>
+          Get Started
+        </Button>
+      )}
+    </Box>
   );
 }
 

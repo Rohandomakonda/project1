@@ -32,6 +32,8 @@ import AddIcon from '@mui/icons-material/Add';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import GroupsIcon from '@mui/icons-material/Groups';
+import SaveAltIcon from '@mui/icons-material/SaveAlt';
+import GradeIcon from '@mui/icons-material/Grade';
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -295,6 +297,35 @@ export default function SideNav() {
             )}
           </List>
         )}
+         {token && (roles.includes("USER") ) && (
+         <List>
+                  {['Saved Events'].map((text) => (
+                    <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => navigate("/getallsavedevents")}>
+                      <ListItemButton sx={{ minHeight: 48, px: 2.5 }}>
+                        <ListItemIcon>
+                          <SaveAltIcon sx={{ color: 'white' }} />
+                        </ListItemIcon>
+                        <ListItemText primary={text} sx={{ color: 'white' }} />
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
+                </List>)}
+                {token && (roles.includes("USER") ) && (
+                         <List>
+                                {['Liked Events'].map((text) => (
+                                    <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => navigate("/getalllikedevents")}>
+                                      <ListItemButton sx={{ minHeight: 48, px: 2.5 }}>
+                                        <ListItemIcon>
+                                          <GradeIcon sx={{ color: 'white' }} />
+                                        </ListItemIcon>
+                                        <ListItemText primary={text} sx={{ color: 'white' }} />
+                                      </ListItemButton>
+                                    </ListItem>
+                                  ))}
+                                </List>)}
+
+
+
       </Drawer>
     </Box>
   );

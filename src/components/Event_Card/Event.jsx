@@ -8,7 +8,8 @@ import { useNavigate } from "react-router-dom";
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import axios from "axios";
-import "./Event.styles.css";
+import Box from '@mui/material/Box';  // Import Box from MUI
+//import "./Event.styles.css";
 
 function Event(props) {
   const navigate = useNavigate();
@@ -138,16 +139,19 @@ function Event(props) {
   }
 
   return (
-    <div onClick={handleFlip}>
-      <div className={`card ${isFlipped ? "is-flipped" : ""}`}>
+    <Box onClick={handleFlip} sx={{ml:20}}>
+      <Box
+        className={`card ${isFlipped ? "is-flipped" : ""}`}
+        sx={{ position: 'relative' }}
+      >
         {/* Front of the card */}
-        <div
+        <Box
           className="card-face card-front"
-          style={{ backgroundImage: `url(${props.image})` }}
-        ></div>
+          sx={{ backgroundImage: `url(${props.image})`, height: '100%', backgroundSize: 'cover' }}
+        ></Box>
 
         {/* Back of the card */}
-        <div className="card-face card-back">
+        <Box className="card-face card-back" sx={{ padding: 2 }}>
           <h2 className="event-title">{props.title}</h2>
           <p className="event-description_caption">Description</p>
           <p className="event-description">{props.description}</p>
@@ -166,19 +170,19 @@ function Event(props) {
 
           {/* Check if the user has 'CLUB_SEC' or 'ADMIN' roles */}
           {(roles.includes("CLUB_SEC") && club === props.club || roles.includes("ADMIN")) && (
-            <div className="button-container">
+            <Box className="button-container" sx={{ display: 'flex', gap: 1 }}>
               <Fab color="error" aria-label="delete" onClick={handleDelete}>
                 <DeleteIcon />
               </Fab>
               <Fab color="secondary" aria-label="edit" onClick={handleUpdate}>
                 <EditIcon />
               </Fab>
-            </div>
+            </Box>
           )}
 
           {/* Check if the user has 'USER' role and toggle like and bookmark buttons */}
           {roles.includes("USER") && (
-            <div className="button-container">
+            <Box className="button-container" sx={{ display: 'flex', gap: 1 }}>
               <Fab
                 color={isLiked ? "error" : "default"}  // Red color for like button
                 aria-label="like"
@@ -193,11 +197,11 @@ function Event(props) {
               >
                 {isSaved ? <BookmarkIcon /> : <BookmarkBorderIcon />}
               </Fab>
-            </div>
+            </Box>
           )}
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 

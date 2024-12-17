@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Recruitment from "../../components/Recruitment_Card/Recruitment.jsx"; // Assuming you have this component
+import Recruitment from "../../components/Recruitment_Card/Recruitment"; // Assuming you have this component
 import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
 import Skeleton from "@mui/material/Skeleton"; // Import MUI Skeleton
 import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box"; // Use MUI Box for consistent layout
 import "./View.styles.css";
 
 const ViewRecruitments = () => {
@@ -13,7 +14,6 @@ const ViewRecruitments = () => {
   const [myRecruitments, setMyRecruitments] = useState([]);
   const storedRoles = localStorage.getItem("roles");
 
-  // Parse the roles stored in localStorage
   const roles = storedRoles ? JSON.parse(storedRoles) : [];
   const club = localStorage.getItem("club");
 
@@ -55,13 +55,13 @@ const ViewRecruitments = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
-        setRecruitments((prev) => prev.filter((event) => event.id !== id));
-        setMyRecruitments((prev) => prev.filter((event) => event.id !== id));
+        setRecruitments((prev) => prev.filter((recruitment) => recruitment.id !== id));
+        setMyRecruitments((prev) => prev.filter((recruitment) => recruitment.id !== id));
 
         alert("Recruitment deleted successfully");
       })
       .catch((error) => {
-        alert("Error deleting event: " + error.message);
+        alert("Error deleting recruitment: " + error.message);
       });
   };
 
@@ -97,66 +97,77 @@ const ViewRecruitments = () => {
       <p>No recruitments found</p>
     );
   };
+
   const renderSkeletons = (count) =>
-      Array.from(new Array(count)).map((_, index) => (
-        <Grid item xs={12} sm={6} md={4} key={index}>
-          <Skeleton variant="rectangular" width="100%" height={150} />
-        </Grid>
-      ));
+    Array.from(new Array(count)).map((_, index) => (
+      <Grid item xs={12} sm={6} md={4} key={index}>
+        <Skeleton variant="rectangular" width="100%" height={150} />
+      </Grid>
+    ));
+
+  const calculateMarginTop = (recruitmentList, recruitmentList2) => {
+    const numberOfColumns = 3;
+    const numberOfRows = Math.ceil(recruitmentList.length / numberOfColumns) + Math.ceil(recruitmentList2.length / numberOfColumns);
+    return 100 + (numberOfRows - 1) * 38; // Increase mt by 38 for each additional row
+  };
 
   if (roles.includes("CLUB_SEC")) {
-      return (
-        <div className="container">
-          {/* My Club Events Section */}
-          <div className="ongoing-events">
-            <h2 className="center-text">My Club Recruitments</h2>
-            <Grid container spacing={2}>
-              {loading ? renderSkeletons(3) : renderRecruitmentList(myRecruitments)}
-            </Grid>
-          </div>
+    return (
+      <Box sx={{ mt: calculateMarginTop(filteredRecruitments, myRecruitments) }}>
+        {/* My Club Recruitments Section */}
+        <Box sx={{ mt: 2 }}>
+          <h2 className="center-text"style={{color: "white"}}>My Club Recruitments</h2>
+          <Grid container spacing={2}>
+            {loading ? renderSkeletons(3) : renderRecruitmentList(myRecruitments)}
+          </Grid>
+        </Box>
 
-          {/* Search Bar */}
-          <div className="search-container">
-            <SearchIcon className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search events"
-              className="search-bar"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
+        {/* Search Bar */}
+        <Box sx={{ mb: 4 }} className="search-container">
+          <SearchIcon className="search-icon" />
+          <input
+            type="text"
+            placeholder="Search recruitments"
+            className="search-bar"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </Box>
 
-          {/* All Events Section */}
+        {/* All Recruitments Section */}
+        <Box>
+          <h2 className="center-text"style={{color: "white"}}>All Recruitments</h2>
           <Grid container spacing={2}>
             {loading ? renderSkeletons(6) : renderRecruitmentList(filteredRecruitments)}
           </Grid>
-        </div>
-      );
-    } else {
-      return (
-        <div className="container">
+        </Box>
+      </Box>
+    );
+  } else {
+    return (
+      <Box sx={{ mt: calculateMarginTop(filteredRecruitments, myRecruitments) }}>
+        {/* Search Bar */}
+        <Box sx={{ mb: 4 }} className="search-container">
+          <SearchIcon className="search-icon" />
+          <input
+            type="text"
+            placeholder="Search recruitments"
+            className="search-bar"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </Box>
 
-
-          {/* Search Bar */}
-          <div className="search-container">
-            <SearchIcon className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search events"
-              className="search-bar"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-
-          {/* All Events Section */}
+        {/* All Recruitments Section */}
+        <Box>
+          <h2 className="center-text"style={{color: "white"}}>All Recruitments</h2>
           <Grid container spacing={2}>
-            {loading ? renderSkeletons(6) :  renderRecruitmentList(filteredRecruitments)}
+            {loading ? renderSkeletons(6) : renderRecruitmentList(filteredRecruitments)}
           </Grid>
-        </div>
-      );
-    }
+        </Box>
+      </Box>
+    );
+  }
 };
 
 export default ViewRecruitments;

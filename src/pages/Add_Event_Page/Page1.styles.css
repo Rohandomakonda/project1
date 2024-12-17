@@ -1,11 +1,5 @@
 /* General Styles */
-body {
-  font-family: "Arial", sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: black; /* Dark background */
-  color: #e0e0e0; /* Light text color */
-}
+
 
 /* Form Container */
 .form-container {

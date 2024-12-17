@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./Update.styles.css";
+//import "./Update.styles.css";
 import CircularProgress from "@mui/material/CircularProgress";
 import CustomizedSnackbars from "../../components/SnackBarCustom.jsx";
 import TextField from '@mui/material/TextField';

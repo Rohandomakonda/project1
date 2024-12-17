@@ -4,7 +4,7 @@ body {
     padding: 0;
     font-family: Arial, sans-serif;
     overflow-x: hidden;
-    background-color: black !important; /* Dark background */
+
     color : white;
 }
 
@@ -19,6 +19,22 @@ body {
     animation: fadeIn 1.5s ease-in-out forwards;
     z-index: 1000;
 }
+/* App.css or relevant CSS file */
+/* src/App.css */
+/* src/App.css */
+
+
+#tsparticles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* This ensures particles are behind other content */
+}
+
+
+
 
 /* Fade-in animation for loading screen */
 @keyframes fadeIn {

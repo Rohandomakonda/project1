@@ -1,13 +1,5 @@
 /* Apply the background to the entire page */
-body {
-  margin: 0;
-  padding: 0;
-  background-color: black; /* Dark background */
-  min-height: 100%;
-  font-family: Arial, sans-serif;
-  color: #f0f0f0; /* Light text color for better readability on dark background */
-  box-sizing: border-box;
-}
+
 
 /* Main Container for Public Events */
 .public-events {

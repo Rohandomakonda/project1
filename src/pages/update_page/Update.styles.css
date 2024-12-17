@@ -1,11 +1,5 @@
 /* General page styling */
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  background-color: black;
-}
+
 
 /* Ensure the form is below the navbar */
 .form-container {
