@@ -1,0 +1,8 @@
+.view-events {
+  padding: 20px;
+  transition: filter 0.3s ease;
+}
+
+.view-events.blurred {
+  filter: blur(5px); /* Apply blur effect when isBlurred is true */
+}

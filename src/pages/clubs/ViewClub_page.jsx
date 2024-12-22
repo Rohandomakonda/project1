@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import Club from "../../components/Club_Card/Club.jsx";
-import "./viewClub.styles.css";
+//import "./viewClub.styles.css";
 
 function ViewClub() {
   const [clubs, setClubs] = useState([]);

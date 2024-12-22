@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import "./Navbar.styles.css";
+//import "./Navbar.styles.css";
 import Avatar from '@mui/material/Avatar';
 import FadeMenu from "../FadeMenu/FadeMenu.jsx";
 import CustomizedSnackbars from "../SnackBarCustom.jsx";

@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:5173")
 public class RecruitmentController {
 
     @Autowired

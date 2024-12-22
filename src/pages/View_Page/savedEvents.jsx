@@ -4,14 +4,27 @@ import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
 import Skeleton from "@mui/material/Skeleton"; // Import MUI Skeleton
 import Grid from "@mui/material/Grid"; // Import MUI Grid
-import Box from "@mui/material/Box"; // Use MUI Box for consistent layout
-import "./View.styles.css";
+import Box from "@mui/material/Box"; // Import MUI Box
+import TextField from '@mui/material/TextField';
+import { curve, heroBackground, robot } from "../../assets";
+import { useNavigate } from "react-router-dom";
+import Section from "../../components/Section.jsx";
+import Button from"../../components/Button";
+import { BackgroundCircles, BottomLine, Gradient } from "../../components/design/Hero";
+import { heroIcons } from "../../constants";
+import { ScrollParallax } from "react-just-parallax";
+import { useRef } from "react";
+import { GradientLight } from "../../components/design/Benefits";
+import ClipPath from "../../assets/svg/ClipPath";
+import cardImage from "../../assets/benefits/card-6.svg";
+
 
 const SavedEvents = () => {
   const [events, setEvents] = useState([]); // All events
   const [loading, setLoading] = useState(false); // Loading state
   const [searchTerm, setSearchTerm] = useState(""); // Search term
   const [roles, setRoles] = useState([]); // User roles
+     const parallaxRef=useRef(null);
 
   const userId = localStorage.getItem("userId");
 
@@ -106,24 +119,91 @@ const SavedEvents = () => {
 
   if (roles.includes("USER")) {
     return (
-      <Box sx={{ mt: calculateMarginTop(filteredEvents), ml: 15 }}>
-        {/* Search Bar */}
-        <Box sx={{ mb: 4 }} className="search-container">
-          <SearchIcon className="search-icon" />
-          <input
-            type="text"
-            placeholder="Search events"
-            className="search-bar"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </Box>
 
-        {/* All Events Section */}
-        <Grid container spacing={2}>
-          {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
-        </Grid>
-      </Box>
+
+
+            <Section
+                          className="pt-[12rem] -mt-[5.25rem]"
+                          crosses
+                          crossesOffset="lg:translate-y-[5.25rem]"
+                          customPaddings
+                          id="hero"
+                        >
+                          <div className="container relative mt-20" ref={parallaxRef} >
+                            <div className="relative z-1 max-w-[62rem] mx-auto text-center mb-[3.875rem] md:mb-20 lg:mb-[6.25rem]">
+                             <h1 className="h1 mb-6">
+                                {` `}
+                                 <span className="inline-block relative">
+                                              Saved Events{" "}
+                                              <img
+                                                src={curve}
+                                                className="absolute top-full left-0 w-full xl:-mt-2"
+                                                width={624}
+                                                height={28}
+                                                alt="Curve"
+                                              />
+                                            </span>
+
+                              </h1>
+                                 <Box sx={{ mb: 4 }} className="search-container">
+                                   <SearchIcon className="search-icon" />
+                                   <input
+                                     type="text"
+                                     placeholder="Search events"
+                                     className="search-bar"
+                                     value={searchTerm}
+                                     onChange={(e) => setSearchTerm(e.target.value)}
+                                     style={{
+                                       border: "2px solid white", // White border
+                                       borderRadius: "8px", // Optional: rounded corners
+                                       padding: "0.5rem 1rem", // Optional: spacing inside the input
+                                       color: "white", // White text
+                                       backgroundColor: "transparent", // Transparent background
+                                     }}
+                                   />
+                                 </Box>
+
+
+                              </div>
+
+
+
+
+                                              <BackgroundCircles  />
+
+
+
+
+
+                                              </div>
+         <div className="container relative z-2">
+
+
+                                                            <div className="flex flex-wrap gap-10 mb-10">
+                                                             {filteredEvents.map((event) => (
+                                                               <SavedEvent
+                                                                 key={event.id}
+                                                                 id={event.id}
+                                                                 title={event.title}
+                                                                 description={event.description}
+                                                                 date={event.date}
+                                                                 time={event.time}
+                                                                 venue={event.venue}
+                                                                 image={`data:image/jpeg;base64,${event.image}`} // Fix here: Use template literal properly
+                                                                 club={event.club}
+                                                                 unsave={handleunsave}
+
+                                                               />
+                                                             ))}
+
+
+                                                                                  </div>
+                                                                                </div>
+
+
+
+        </Section>
+
     );
   } else {
     return null; // Render nothing for unauthorized users

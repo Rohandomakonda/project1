@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from '@mui/icons-material/Edit';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -8,7 +8,49 @@ import { useNavigate } from "react-router-dom";
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import axios from "axios";
-import "./Event.styles.css";
+import Box from '@mui/material/Box';  // Import Box from MUI
+import { benefits } from "../../constants";
+import Button from "../../components/Button"
+import { GradientLight } from "../design/Benefits";
+import ClipPath from "../../assets/svg/ClipPath";
+import {
+  benefitIcon1,
+  benefitIcon2,
+  benefitIcon3,
+  benefitIcon4,
+  benefitImage2,
+  chromecast,
+  disc02,
+  discord,
+  discordBlack,
+  facebook,
+  figma,
+  file02,
+  framer,
+  homeSmile,
+  instagram,
+  notification2,
+  notification3,
+  notification4,
+  notion,
+  photoshop,
+  plusSquare,
+  protopie,
+  raindrop,
+  recording01,
+  recording03,
+  roadmap1,
+  roadmap2,
+  roadmap3,
+  roadmap4,
+  searchMd,
+  slack,
+  sliders04,
+  telegram,
+  twitter,
+  yourlogo,
+} from "../../assets";
+
 
 function LikedEvent(props) {
   const navigate = useNavigate();
@@ -106,61 +148,153 @@ const userId = localStorage.getItem("userId");
   }
 
   return (
-    <div onClick={handleFlip}>
-      <div className={`card ${isFlipped ? "is-flipped" : ""}`}>
-        {/* Front of the card */}
-        <div
-          className="card-face card-front"
-          style={{ backgroundImage: `url(${props.image})` }}
-        ></div>
+ <div
+           style={{
+             perspective: "1000px", // Enables 3D perspective
+             width: "300px", // Set a fixed width for the card
+             height: "400px", // Set a fixed height for the card
+             margin: "auto", // Center the card horizontally
+           }}
+           onClick={handleFlip} // Flip the card on click
+         >
+           <div
+             style={{
+               position: "relative",
+               width: "100%",
+               height: "100%",
+               transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
+               transformStyle: "preserve-3d",
+               transition: "transform 0.6s ease",
+             }}
+           >
+            {/* Front Side */}
+            <div
+              style={{
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                backfaceVisibility: "hidden",
+                zIndex: isFlipped ? 0 : 1, // Ensure front side has a higher z-index when not flipped
+              }}
+            >
+              <div
+                className="block relative p-0.5 bg-no-repeat bg-[length:100%_100%] md:max-w-[24rem]"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  backgroundImage: `url(${benefits[2].backgroundUrl})`,
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "1rem",
+                  boxSizing: "border-box",
+                }}
+              >
+                <h5 className="h2 mb-5 z-3">{props.title}</h5>
+                <p className="body-2 mb-3 text-n-3 z-3">Description</p>
+                <p className="body-2 mb-3 text-n-3 z-3">{props.description}</p>
+                <p className="body-2 mb-3 text-n-3 z-3">Date: {props.date}</p>
+                <p className="body-2 mb-3 text-n-3 z-3">Time: {props.time}</p>
+                <p className="body-2 text-n-3 z-3">Venue: {props.venue_description}</p>
+                <a
+                  className="body-2 text-n-3 z-3"
+                  href={`https://www.google.com/maps/search/?api=1&query=${props.venue}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {props.venue}
+                </a>
+                <p className="body-2 text-n-3 z-3">Club: {props.club}</p>
 
-        {/* Back of the card */}
-        <div className="card-face card-back">
-          <h2 className="event-title">{props.title}</h2>
-          <p className="event-description_caption">Description</p>
-          <p className="event-description">{props.description}</p>
-          <p className="event-date">Date: {props.date}</p>
-          <p className="event-time">Time: {props.time}</p>
-          <p className="event-description">Venue: {props.venue_description}</p>
-          <a
-            className="event-venue"
-            href={generateGoogleMapsLink(props.venue)}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {props.venue}
-          </a>
-          <p className="event-club">Club: {props.club}</p>
+                <div className="flex items-center mt-auto">
+                  {(roles.includes("CLUB_SEC") && club === props.club || roles.includes("ADMIN")) && (
+                    <Box className="button-container z-3" sx={{ display: 'flex', gap: 1 }}>
+                      <Fab color="error" aria-label="delete" onClick={handleDelete}>
+                        <DeleteIcon />
+                      </Fab>
+                      <Fab color="secondary" aria-label="edit" onClick={handleUpdate}>
+                        <EditIcon />
+                      </Fab>
+                    </Box>
+                  )}
 
-          {/* Check if the user has 'CLUB_SEC' or 'ADMIN' roles */}
-          {(roles.includes("CLUB_SEC") && club === props.club || roles.includes("ADMIN")) && (
-            <div className="button-container">
-              <Fab color="error" aria-label="delete" onClick={handleDelete}>
-                <DeleteIcon />
-              </Fab>
-              <Fab color="secondary" aria-label="edit" onClick={handleUpdate}>
-                <EditIcon />
-              </Fab>
-            </div>
-          )}
-
-          {/* Check if the user has 'USER' role and toggle like and bookmark buttons */}
-          {roles.includes("USER") && (
-            <div className="button-container">
-                       <Fab
-                         color="default"  // Red color for like button
+                  {roles.includes("USER") && (
+                    <Box className="button-container z-3" sx={{ display: 'flex', gap: 20 }}>
+ <Fab
+                         color="error"  // Red color for like button
                          aria-label="like"
                          onClick={() => handledislike(props.id)}  // Wrap the function call in a callback
                        >
                          <FavoriteIcon />
                        </Fab>
+                    </Box>
+                    )}
+                    <GradientLight className="z-3"/>
 
+                </div>
+              </div>
 
+              {/* Overlay for hover effect */}
+              <div
+                className="absolute inset-0.5 bg-n-8"
+                style={{
+                  clipPath: "url(#benefits)", // Ensure this applies correctly
+                  zIndex: 2, // Keep it above the background but below text
+                }}
+              >
+                <div
+                  className="absolute inset-0 opacity-0 transition-opacity hover:opacity-20"
+                  style={{
+                    zIndex: 2, // Ensure it's only visible during hover
+                  }}
+                >
+                  <img
+                    src={benefitImage2}
+                    width={380}
+                    height={362}
+                    alt={props.title}
+                    className="w-full h-full object-cover"
+                    style={{
+                      zIndex: 3,
+                    }}
+                  />
+                </div>
+              </div>
+
+              <ClipPath />
             </div>
-          )}
-        </div>
-      </div>
-    </div>
+
+
+             {/* Back Side */}
+             <div
+               style={{
+                 position: "absolute",
+                 width: "100%",
+                 height: "100%",
+                 backfaceVisibility: "hidden",
+                 transform: "rotateY(180deg)",
+                 backgroundImage: `url(${benefits[2].backgroundUrl})`,
+                 display: "flex",
+                 justifyContent: "center",
+                 alignItems: "center",
+                 zIndex: isFlipped ? 1 : 0, // Ensure back side has a higher z-index when flipped
+               }}
+             >
+               <img
+                 src={props.image}
+                 alt="Event Backside"
+                 style={{
+                   maxWidth: "90%",
+                   maxHeight: "90%",
+                   objectFit: "contain",
+                 }}
+               />
+             </div>
+           </div>
+         </div>
+
+
+
+
   );
 }
 

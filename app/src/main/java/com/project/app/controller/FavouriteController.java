@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:5173")
 public class FavouriteController {
 
    @Autowired

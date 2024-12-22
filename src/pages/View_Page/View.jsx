@@ -5,8 +5,19 @@ import SearchIcon from "@mui/icons-material/Search";
 import Skeleton from "@mui/material/Skeleton"; // Import MUI Skeleton
 import Grid from "@mui/material/Grid"; // Import MUI Grid
 import Box from "@mui/material/Box"; // Import MUI Box
-import TextField from '@mui/material/TextField'; // Import MUI TextField
-import Particles from "react-tsparticles"; // Import the particles component
+import TextField from '@mui/material/TextField';
+import { curve, heroBackground, robot } from "../../assets";
+import { useNavigate } from "react-router-dom";
+import Section from "../../components/Section.jsx";
+import Button from"../../components/Button";
+import { BackgroundCircles, BottomLine, Gradient } from "../../components/design/Hero";
+import { heroIcons } from "../../constants";
+import { ScrollParallax } from "react-just-parallax";
+import { useRef } from "react";
+import { GradientLight } from "../../components/design/Benefits";
+import ClipPath from "../../assets/svg/ClipPath";
+import cardImage from "../../assets/benefits/card-6.svg";
+
 
 const View = () => {
   const [events, setEvents] = useState([]); // All events
@@ -17,6 +28,16 @@ const View = () => {
   const storedRoles = localStorage.getItem("roles");
   const roles = storedRoles ? JSON.parse(storedRoles) : [];
   const club = localStorage.getItem("club");
+   const parallaxRef=useRef(null);
+// const [isBlurred, setIsBlurred] = useState(false);
+//   useEffect(() => {
+//     if (window.location.pathname === '/addEvent') {
+//       setIsBlurred(true);
+//     } else {
+//       setIsBlurred(false);
+//     }
+//   }, [window.location.pathname]);
+
 
   useEffect(() => {
     setLoading(true);
@@ -86,129 +107,243 @@ const View = () => {
       </Grid>
     ));
 
-  const renderEvents = (eventList) =>
-    eventList.length > 0 ? (
-      <Grid container spacing={2} justifyContent={eventList.length < 3 ? "center" : "flex-start"}>
-        {eventList.map((event) => (
-          <Grid item xs={12} sm={6} md={4} key={event.id} sx={{ minWidth: "350px" }}>
+  return (
+
+       <Section
+
+                  className="pt-[12rem] -mt-[5.25rem] `view-events "
+                  crosses
+                  crossesOffset="lg:translate-y-[5.25rem]"
+                  customPaddings
+                  id="hero"
+                >
+                  <div className="container relative mt-20" ref={parallaxRef} >
+                    <div className="relative z-1 max-w-[62rem] mx-auto text-center mb-[3.875rem] md:mb-20 lg:mb-[6.25rem]">
+                     <h1 className="h1 mb-6">
+                        {` `}
+                         <span className="inline-block relative">
+                                      All Events{" "}
+                                      <img
+                                        src={curve}
+                                        className="absolute top-full left-0 w-full xl:-mt-2"
+                                        width={624}
+                                        height={28}
+                                        alt="Curve"
+                                      />
+                                    </span>
+
+                      </h1>
+                         <Box sx={{ mb: 4 }} className="search-container">
+                                                            <SearchIcon className="search-icon" />
+                                                            <input
+                                                              type="text"
+                                                              placeholder="Search events"
+                                                              className="search-bar"
+                                                              value={searchTerm}
+                                                              onChange={(e) => setSearchTerm(e.target.value)}
+                                                              style={{
+                                                                border: "2px solid white", // White border
+                                                                borderRadius: "8px", // Optional: rounded corners
+                                                                padding: "0.5rem 1rem", // Optional: spacing inside the input
+                                                                color: "white", // White text
+                                                                backgroundColor: "transparent", // Transparent background
+                                                              }}
+                                                            />
+                                                          </Box>
+
+                      </div>
+
+
+
+
+                                      <BackgroundCircles  />
+
+
+
+
+
+                                      </div>
+ <div className="container relative z-2">
+
+
+                                                    <div className="flex flex-wrap gap-10 mb-10">
+                                                     {filteredEvents.map((event) => (
+                                                       <Event
+                                                         key={event.id}
+                                                         id={event.id}
+                                                         title={event.title}
+                                                         description={event.description}
+                                                         date={event.date}
+                                                         time={event.time}
+                                                         venue={event.venue}
+                                                         image={`data:image/jpeg;base64,${event.image}`} // Fix here: Use template literal properly
+                                                         club={event.club}
+                                                         delete={handleDelete}
+
+                                                       />
+                                                     ))}
+
+
+                                                                          </div>
+                                                                        </div>
+
+  {roles.includes("CLUB_SEC") ? (
+    myClubEvents.length > 0 ? (
+      <div className="container relative mt-20" ref={parallaxRef}>
+        <div className="relative z-1 max-w-[62rem] mx-auto text-center mb-[3.875rem] md:mb-20 lg:mb-[6.25rem]">
+          <h1 className="h1 mb-6">
+            <span className="inline-block relative">
+              My Club Events{" "}
+              <img
+                src={curve}
+                className="absolute top-full left-0 w-full xl:-mt-2"
+                width={624}
+                height={28}
+                alt="Curve"
+              />
+            </span>
+          </h1>
+        </div>
+        <div className="container relative z-2">
+          <div className="flex flex-wrap gap-10 mb-10">
+            {myClubEvents.map((event) => (
+              <Event
+                key={event.id}
+                id={event.id}
+                title={event.title}
+                description={event.description}
+                date={event.date}
+                time={event.time}
+                venue={event.venue}
+                image={`data:image/jpeg;base64,${event.image}`}
+                club={event.club}
+                delete={handleDelete}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    ) : null
+  ) : onGoEvents.length > 0 ? (
+    <div className="container relative mt-20" ref={parallaxRef}>
+      <div className="relative z-1 max-w-[62rem] mx-auto text-center mb-[3.875rem] md:mb-20 lg:mb-[6.25rem]">
+        <h1 className="h1 mb-6">
+          <span className="inline-block relative">
+            Ongoing Events{" "}
+            <img
+              src={curve}
+              className="absolute top-full left-0 w-full xl:-mt-2"
+              width={624}
+              height={28}
+              alt="Curve"
+            />
+          </span>
+        </h1>
+      </div>
+      <div className="container relative z-2">
+        <div className="flex flex-wrap gap-10 mb-10">
+          {onGoEvents.map((event) => (
             <Event
-              {...event}
-              venue_description={event.venueDescription}
-              image={`data:image/jpeg;base64,${event.image}`} // Image rendering
+              key={event.id}
+              id={event.id}
+              title={event.title}
+              description={event.description}
+              date={event.date}
+              time={event.time}
+              venue={event.venue}
+              image={`data:image/jpeg;base64,${event.image}`}
+              club={event.club}
               delete={handleDelete}
             />
-          </Grid>
-        ))}
-      </Grid>
-    ) : (
-      <p>No events found</p>
-    );
+          ))}
+        </div>
+      </div>
+    </div>
+  ) : null}
 
-  const calculateMarginTop = (eventList, eventList2) => {
-    const numberOfColumns = 3;
-    const numberOfRows = Math.ceil(eventList.length / numberOfColumns);
-    const n1 = Math.ceil(eventList2.length / numberOfColumns);
-    return 140 + (n1 - 1) * 40 + (numberOfRows - 1) * 40; // Increase mt by 30 for each additional row
-  };
 
-  return (
-    <Box sx={{ mt: calculateMarginTop(filteredEvents, myClubEvents), position: "relative" }}>
-      {/* Particles Background */}
-      <Particles
-        options={{
-          background: {
-            color: { value: "#000000" }, // Black background
-          },
-          particles: {
-            color: { value: "#ffffff" }, // White particles
-            line_linked: {
-              color: "#ffffff", // White lines connecting particles
-            },
-            number: {
-              density: {
-                enable: true,
-                area: 800,
-              },
-              value: 50,
-            },
-            size: {
-              value: 3,
-            },
-            move: {
-              enable: true,
-              speed: 2,
-              direction: "random",
-              out_mode: "out",
-            },
-          },
-        }}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100vh", // Full viewport height
-          zIndex: -1, // Behind all other content
-        }}
-      />
 
-      {/* Content */}
-      {roles.includes("CLUB_SEC") ? (
-        <>
-          <Box sx={{ mt: 2 }}>
-            <h2 className="center-text" style={{ color: "white" }}>My Club Events</h2>
-            <Grid container spacing={2}>
-              {loading ? renderSkeletons(3) : renderEvents(myClubEvents)}
-            </Grid>
-          </Box>
 
-          <Box sx={{ mb: 4 }} className="search-container">
-            <SearchIcon className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search events"
-              className="search-bar"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </Box>
 
-          <Box>
-            <h2 className="center-text" style={{ color: "white" }}>All Events</h2>
-            <Grid container spacing={2}>
-              {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
-            </Grid>
-          </Box>
-        </>
-      ) : (
-        <>
-          <Box sx={{ mt: 2 }}>
-            <h2 className="center-text" style={{ color: "white" }}>Ongoing Events</h2>
-            <Grid container spacing={2}>
-              {loading ? renderSkeletons(3) : renderEvents(onGoEvents)}
-            </Grid>
-          </Box>
 
-          <Box sx={{ mb: 4 }} className="search-container">
-            <SearchIcon className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search events"
-              className="search-bar"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </Box>
 
-          <Box>
-            <h2 className="center-text" style={{ color: "white" }}>All Events</h2>
-            <Grid container spacing={2}>
-              {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
-            </Grid>
-          </Box>
-        </>
-      )}
-    </Box>
+
+                </Section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//     <Box sx={{ mt: calculateMarginTop(filteredEvents, myClubEvents), position: "relative" }}>
+//
+//       {roles.includes("CLUB_SEC") ? (
+//         <>
+//           <Box sx={{ mt: 2 }}>
+//             <h2 className="center-text" style={{ color: "white" }}>My Club Events</h2>
+//             <Grid container spacing={2}>
+//               {loading ? renderSkeletons(3) : renderEvents(myClubEvents)}
+//             </Grid>
+//           </Box>
+//
+//           <Box sx={{ mb: 4 }} className="search-container">
+//             <SearchIcon className="search-icon" />
+//             <input
+//               type="text"
+//               placeholder="Search events"
+//               className="search-bar"
+//               value={searchTerm}
+//               onChange={(e) => setSearchTerm(e.target.value)}
+//             />
+//           </Box>
+//
+//           <Box>
+//             <h2 className="center-text" style={{ color: "white" }}>All Events</h2>
+//             <Grid container spacing={2}>
+//               {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
+//             </Grid>
+//           </Box>
+//         </>
+//       ) : (
+//         <>
+//           <Box sx={{ mt: 2 }}>
+//             <h2 className="center-text" style={{ color: "white" }}>Ongoing Events</h2>
+//             <Grid container spacing={2}>
+//               {loading ? renderSkeletons(3) : renderEvents(onGoEvents)}
+//             </Grid>
+//           </Box>
+//
+//           <Box sx={{ mb: 4 }} className="search-container">
+//             <SearchIcon className="search-icon" />
+//             <input
+//               type="text"
+//               placeholder="Search events"
+//               className="search-bar"
+//               value={searchTerm}
+//               onChange={(e) => setSearchTerm(e.target.value)}
+//             />
+//           </Box>
+//
+//           <Box>
+//             <h2 className="center-text" style={{ color: "white" }}>All Events</h2>
+//             <Grid container spacing={2}>
+//               {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
+//             </Grid>
+//           </Box>
+//         </>
+//       )}
+//     </Box>
   );
 };
 

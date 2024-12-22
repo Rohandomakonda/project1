@@ -2,6 +2,15 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+
+
+
+
+
+
+
+
+
 const ChangePassword = ({ email }) => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

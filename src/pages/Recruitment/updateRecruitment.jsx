@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import "./updateRecruitment.css";
+//import "./updateRecruitment.css";
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 
