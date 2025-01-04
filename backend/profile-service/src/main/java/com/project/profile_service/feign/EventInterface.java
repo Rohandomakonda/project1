@@ -11,6 +11,6 @@ import java.util.Optional;
 
 @FeignClient(name="ADDEVENT-SERVICE")
 public interface EventInterface {
-    @GetMapping("/getById/{id}")
+    @GetMapping("api/events/getById/{id}")
     public ResponseEntity<Event> getById(@PathVariable Long id);
 }

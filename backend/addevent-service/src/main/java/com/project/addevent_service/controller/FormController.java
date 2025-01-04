@@ -17,6 +17,7 @@ import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("api/events")
 public class FormController {
 
     @Autowired

@@ -27,7 +27,7 @@ public class SavedController {
         savedEventService.saveEvent(eventId, Long.valueOf(userid));
         return ResponseEntity.ok("Event saved successfully!");
     }
-    @DeleteMapping("/unsave")
+    @DeleteMapping("/saved-events/unsave")
     public ResponseEntity<String> unsaveEvent(@RequestParam("eventTitle") String eventTitle, @RequestHeader("X-User-ID") String userId) {
         System.out.println("Received request to unsave event with title: " + eventTitle + " for user ID: " + userId);
         Long userid = userContext.getUserId(userId).getBody();
@@ -40,14 +40,14 @@ public class SavedController {
     }
 
 
-    @GetMapping("/getallsavedevents")
+    @GetMapping("/saved-events/getallsavedevents")
     public ResponseEntity<List<Event>> getsavedevents(@RequestHeader("X-User-ID") String userId) {
         System.out.println("get saved Events");
         Long userid = userContext.getUserId(userId).getBody();
         return new ResponseEntity<>(savedEventService.getsavedEvents(userid), HttpStatus.OK);
     }
 
-    @GetMapping("/issaved")
+    @GetMapping("/saved-events/issaved")
     public ResponseEntity<Boolean> isSaved(@RequestHeader("X-User-ID") String userId,@RequestParam("eventTitle") String eventTitle){
         Long userid = userContext.getUserId(userId).getBody();
         return new ResponseEntity<>( savedEventService.isSaved(userid,eventTitle),HttpStatus.OK);

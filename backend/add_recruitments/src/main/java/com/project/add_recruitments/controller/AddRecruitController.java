@@ -13,7 +13,8 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:5173")
+@RequestMapping("/api/recruitments")
 public class AddRecruitController {
 
     @Autowired
@@ -22,12 +23,12 @@ public class AddRecruitController {
 
 
 
-    @GetMapping("/api/getAllRecruitments")
+    @GetMapping("/getAllRecruitments")
     public List<Recruitment> getAllRecruitments(){
         return recruitmentService.getAllRecruitments();
     }
 
-    @PostMapping(value = "/api/postRecruitment",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/postRecruitment",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Recruitment> addRecruitment(
 
             @RequestParam("title") String title,

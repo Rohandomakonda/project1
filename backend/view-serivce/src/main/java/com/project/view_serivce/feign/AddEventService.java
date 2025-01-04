@@ -10,24 +10,24 @@ import java.util.List;
 @FeignClient(name = "ADDEVENT-SERVICE")
 public interface AddEventService {
 
-    @GetMapping("/getEvents")
+    @GetMapping("api/events/getEvents")
     public ResponseEntity<List<Event>> getAllEvents();
 
-    @DeleteMapping("/deleteEvent/{id}")
+    @DeleteMapping("api/events/deleteEvent/{id}")
     public ResponseEntity<?> deleteById(@PathVariable long id);
 
-    @GetMapping("/getEventImage/{id}")
+    @GetMapping("api/events/getEventImage/{id}")
     public ResponseEntity<byte[]> getEventImage(@PathVariable long id);
 
-    @GetMapping("/getEventsByClub/{name}")
+    @GetMapping("api/events/getEventsByClub/{name}")
     public ResponseEntity<List<Event>> getEventsByClub(@PathVariable String name);
 
-    @GetMapping("/getPublicEvents")
+    @GetMapping("api/events/getPublicEvents")
     public ResponseEntity<List<Event>> getPublicEvents();
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("api/events/getById/{id}")
     public ResponseEntity<Event> getById(@PathVariable long id);
 
-    @PutMapping("/getUpdatedEvent/{id}")
+    @PutMapping("api/events/getUpdatedEvent/{id}")
     public void updateEvent(@PathVariable long id,@RequestBody Event updatedEvent);
 }

@@ -18,7 +18,7 @@ public class FavouriteController {
     @Autowired
     private UserContext usercontext;
 
-    @GetMapping
+    @GetMapping("getFavouritesByUser")
     public ResponseEntity<List<Event>> getUserFavorites(@RequestHeader("X-User-ID") String userId) {
         Long userid = usercontext.getUserId(userId).getBody();
         System.out.println("user id is "+userid);
@@ -30,7 +30,7 @@ public class FavouriteController {
         return ResponseEntity.ok(events);
     }
 
-    @PostMapping("/{eventId}")
+    @PostMapping("favourites/{eventId}")
     public ResponseEntity<?> addFavorite(
             @PathVariable Long eventId,
             @RequestHeader("X-User-ID") String userId) {
@@ -41,7 +41,7 @@ public class FavouriteController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{eventId}")
+    @DeleteMapping("favourites/{eventId}")
     public ResponseEntity<Void> removeFavorite(@PathVariable("eventId") Long eventId,@RequestHeader("X-User-ID") String userId) {
         Long userid = usercontext.getUserId(userId).getBody();
         favoriteEventService.removeFavorite(eventId,userid);
