@@ -21,6 +21,7 @@ public class Event {
     private String venueDescription;
     private boolean isPublic;
 
+
     @Lob
     private byte[] image;
 
