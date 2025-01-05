@@ -1,66 +1,131 @@
-server:
-  port: 8765
+
+
+# spring:
+#   application:
+#     name: api-gateway
+#   cloud:
+#     gateway:
+#       routes:
+#         - id: auth-service
+#           uri: lb://AUTH-SERVICE
+#           predicates:
+#             - Path=/api/auth/**
+
+#         - id: view-serivce
+#           uri: lb://view-serivce
+#           predicates:
+#             - Path=/api/events/public/**
+
+#         - id: view-serivce-protected
+#           uri: lb://view-serivce
+#           predicates:
+#             - Path=/api/events/**
+#           filters:
+#             - name: AuthenticationFilter
+#               args: {}
+
+#         - id: add_recruitments
+#           uri: lb://add_recruitments
+#           predicates:
+#             - Path=/api/add_recruitments/**
+#           filters:
+#             - name: AuthenticationFilter
+#               args: {}
+
+#         - id: add-serivce
+#           uri: lb://addevent-serivce
+#           predicates:
+#             - Path=/api/events/**
+#           filters:
+#             - name: AuthenticationFilter
+#               args: {}
+
+#         - id: profile-service
+#           uri: lb://profile-service
+#           predicates:
+#             - Path=/api/profile/**
+#           filters:
+#             - name: AuthenticationFilter
+#               args: {}
+
+#         - id: clubs
+#           uri: lb://CLUBS
+#           predicates:
+#             - Path=/api/clubs/public/**
+
+#         - id: clubs
+          # uri: lb://CLUBS
+          # predicates:
+          #   - Path=/api/clubs/**
+          # filters:
+          #   - name: AuthenticationFilter
+          #     args: {}
+
 
 spring:
   application:
     name: api-gateway
   cloud:
     gateway:
+      # Put CORS configuration before routes
+      globalcors:
+        add-to-simple-url-handler-mapping: true  # Add this line
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:5173"
+            allowedMethods:
+              - "GET"
+              - "POST"
+              - "PUT"
+              - "DELETE"
+              - "OPTIONS"
+            allowedHeaders:
+              - "Authorization"
+              - "Content-Type"
+              - "Accept"
+            allowCredentials: true
+            maxAge: 3600
       routes:
-        - id: auth-service
+        # Public routes first
+        - id: auth-public
           uri: lb://AUTH-SERVICE
           predicates:
             - Path=/api/auth/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Origin  # Add this line
 
-        - id: view-serivce
+        - id: events-public
           uri: lb://view-serivce
           predicates:
             - Path=/api/events/public/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Origin
 
-        - id: view-serivce-protected
+        - id: clubs-public
+          uri: lb://CLUBS
+          predicates:
+            - Path=/api/clubs/public/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Origin
+
+        # Protected routes after
+        - id: events-protected
           uri: lb://view-serivce
           predicates:
             - Path=/api/events/**
           filters:
-            - name: AuthenticationFilter
-              args: {}
+            - AuthenticationFilter
+            - DedupeResponseHeader=Access-Control-Allow-Origin
+        # - id: clubs
+        #   uri: lb://CLUBS
+        #   predicates:
+        #     - Path=/api/clubs/**
+        #   filters:
+        #     - name: AuthenticationFilter
+        #       args: {}
+        #     - DedupeResponseHeader=Access-Control-Allow-Origin
 
-        - id: add_recruitments
-          uri: lb://add_recruitments
-          predicates:
-            - Path=/api/add_recruitments/**
-          filters:
-            - name: AuthenticationFilter
-              args: {}
-
-        - id: add-serivce
-          uri: lb://addevent-serivce
-          predicates:
-            - Path=/api/events/**
-          filters:
-            - name: AuthenticationFilter
-              args: {}
-
-        - id: profile-service
-          uri: lb://profile-service
-          predicates:
-            - Path=/api/profile/**
-          filters:
-            - name: AuthenticationFilter
-              args: {}
-
-        - id: clubs
-          uri: lb://CLUBS
-          predicates:
-            - Path=/api/clubs/public/**
-
-        - id: clubs
-          uri: lb://CLUBS
-          predicates:
-            - Path=/api/clubs/**
-          filters:
-            - name: AuthenticationFilter
-              args: {}
 
 eureka:
   instance:
@@ -72,3 +137,5 @@ eureka:
 
 jwt:
   secret: H8hS3jF5kL9qW7nE4zR6tU5yB2vM8pC1
+
+       

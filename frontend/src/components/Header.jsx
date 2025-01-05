@@ -16,7 +16,7 @@ const Header = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 const [roles, setRoles] = useState(() => {
     const storedRoles = localStorage.getItem("roles");
-    //return storedRoles ? JSON.parse(storedRoles) : [];
+    return storedRoles ? JSON.parse(storedRoles) : [];
   });
 const token = localStorage.getItem('authToken');
   const name = localStorage.getItem('name');

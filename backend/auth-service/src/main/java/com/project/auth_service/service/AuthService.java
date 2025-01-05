@@ -28,6 +28,7 @@ import com.project.auth_service.feign.NotificationClient;
 
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -187,13 +188,16 @@ public class AuthService {
             System.out.println("is user present?? "+user.isPresent());
 
             //if user is not present then create a new one
+            Set<Role> roles = new HashSet<>();
+        roles.add(Role.USER);
             User user2;
             if(!user.isPresent()){
                
                 User newUser = new User();
                 newUser.setEmail(email);
                 newUser.setName(name);
-                newUser.setRoles(null); 
+                newUser.setRoles(roles); 
+                newUser.setVerified(true);
                 repo.save(newUser);
                 user2=newUser;
             }
@@ -202,17 +206,19 @@ public class AuthService {
             }
 
             System.out.println("user2 is "+user2.getEmail());
-
+            
             UserDetails userDetails = new org.springframework.security.core.userdetails.User(
                 user2.getEmail(),
-                user2.getPassword(),
+                user2.getPassword() != null ? user2.getPassword() : "",
                 user2.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.name())).collect(Collectors.toList())
-        );
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                userDetails, null, userDetails.getAuthorities()
-        );
-
+                );
+                System.out.println("userDetails is done ");
+                
+                Authentication authentication = new UsernamePasswordAuthenticationToken(
+                    userDetails, null, userDetails.getAuthorities()
+                    );
+                    
+                    System.out.println("authentication is set ");
         // Step 4: Generate access and refresh tokens using JwtTokenProvider
         String accessToken = tokenProvider.generateAccessToken(authentication);
         String refreshToken = tokenProvider.generateRefreshToken(user2.getEmail());

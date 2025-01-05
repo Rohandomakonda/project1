@@ -66,7 +66,7 @@ const Login = () => {
     try {
       setLoading(true);
       // Send the token to your backend
-      console.log(response);
+      console.log(response.credential);
 
       const backendResponse = await axios.post(
         "http://localhost:8765/api/auth/google",
@@ -80,7 +80,7 @@ const Login = () => {
       localStorage.setItem("authToken", accessToken);
       localStorage.setItem("name", name);
       localStorage.setItem("club", club);
-      localStorage.setItem("googleAccessToken", response.access_token); // Store Google token for Calendar API
+      localStorage.setItem("googleAccessToken", response.credential); // Store Google token for Calendar API
 
       setSnackbarOpen(true);
       setLoading(false);
@@ -100,7 +100,8 @@ const Login = () => {
   };
 
   return (
-    
+    <GoogleOAuthProvider clientId="916755134531-fvnijil1m46cfuu84fgfm9uionutvr66.apps.googleusercontent.com">
+      
       <div className="pt-[12rem] -mt-[5.25rem] flex items-center justify-center min-h-screen w-full">
         <div className="container relative w-full max-w-screen-lg flex justify-center items-center">
           <div className="relative z-1 text-center">
@@ -225,7 +226,11 @@ const Login = () => {
                         <span className="mx-4 text-white">or</span>
                         <div className="flex-1 border-t border-gray-300"></div>
                       </div>
-                     <GoogleSignIn/>
+                     {/* <GoogleSignIn/> */}
+                     <GoogleSignIn
+                     handleGoogleSuccess={handleGoogleSuccess}
+                     handleGoogleError={handleGoogleError}
+                     />
                       <CustomizedSnackbars
                         open={snackbarOpen}
                         onClose={() => setSnackbarOpen(false)}
@@ -254,6 +259,7 @@ const Login = () => {
         </div>
         <GradientLight className="z-1 opacity-20" />
       </div>
+      </GoogleOAuthProvider>
   );
 };
 

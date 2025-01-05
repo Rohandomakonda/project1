@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CalendarEventDto {
-    private String summary;
+    private String title;
     private String description;
     private String startDateTime;
     private String endDateTime;
