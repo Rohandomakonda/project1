@@ -1,7 +1,7 @@
 package com.project.auth_service.controller;
 
-import com.project.auth_service.model.Role;
 import com.project.auth_service.service.AuthService;
+import com.project.auth_service.service.GoogleTokenValidator;
 import com.project.auth_service.dto.AuthResponse;
 import com.project.auth_service.dto.EmailReq;
 import com.project.auth_service.dto.LoginRequest;
@@ -20,11 +20,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = "http://localhost:5173")
 public class AuthController {
+
+    @Autowired
+    private GoogleTokenValidator googleTokenValidator;
 
     @Autowired
     private JwtTokenProvider tokenProvider;
@@ -130,7 +135,30 @@ public class AuthController {
             }
 
         return ResponseEntity.ok("new Password and confirm password doesn't match");
-
-
     }
+
+
+    @PostMapping("/google")
+    public ResponseEntity<?> authenticateWithGoogle(@RequestBody Map<String, String> requestBody) {
+        String token = requestBody.get("token");
+        System.out.println("token from requestBody is " + token);
+        if (token == null || token.isEmpty()) {
+            return new ResponseEntity<>("Token is missing", HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            // Pass the token to your authentication service
+            if(authService.authenticateWithGoogle(token)!=null)
+            return new ResponseEntity<>(authService.authenticateWithGoogle(token), HttpStatus.OK);
+            else{
+                return new ResponseEntity<>("token not null but invalid", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error processing the token", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+
 }

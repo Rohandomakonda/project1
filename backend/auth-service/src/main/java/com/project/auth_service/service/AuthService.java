@@ -20,7 +20,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+
 import com.project.auth_service.feign.NotificationClient;
 
 
@@ -46,7 +49,7 @@ public class AuthService {
     private final OtpService otpservice;
 
     @Autowired
-    private NotificationClient notificationclient;
+    private GoogleTokenValidator googleTokenValidator;
 
 
     public AuthService(AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtTokenProvider tokenProvider, AuthRepo repo,OtpService otpservice) {
@@ -158,11 +161,74 @@ public class AuthService {
         String otp = otpservice.generateAndStoreOtp(email);
         NotificationRequest req = new NotificationRequest(email,otp);
 
-        notificationclient.sendEmail(req);
+       // notificationclient.sendEmail(req);
 
 
         return user ;
     }
+
+    public AuthResponse authenticateWithGoogle(String token) {
+        try {
+            // Validate the Google ID token
+            System.out.println("received token is "+token);
+            System.out.println("hello ");
+            System.out.println("validate is "+googleTokenValidator.validateToken(token));
+            var payload = googleTokenValidator.validateToken(token);
+            System.out.println("payload is "+payload);
+
+            String email = payload.getEmail();
+            String name = (String) payload.get("name");
+
+            System.out.println(email + " email to name " + name);
+
+            // Check if user exists or create a new one
+            Optional<User> user = repo.findByEmail(email);
+
+            System.out.println("is user present?? "+user.isPresent());
+
+            //if user is not present then create a new one
+            User user2;
+            if(!user.isPresent()){
+               
+                User newUser = new User();
+                newUser.setEmail(email);
+                newUser.setName(name);
+                newUser.setRoles(null); 
+                repo.save(newUser);
+                user2=newUser;
+            }
+            else{
+                user2=user.get();
+            }
+
+            System.out.println("user2 is "+user2.getEmail());
+
+            UserDetails userDetails = new org.springframework.security.core.userdetails.User(
+                user2.getEmail(),
+                user2.getPassword(),
+                user2.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.name())).collect(Collectors.toList())
+        );
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities()
+        );
+
+        // Step 4: Generate access and refresh tokens using JwtTokenProvider
+        String accessToken = tokenProvider.generateAccessToken(authentication);
+        String refreshToken = tokenProvider.generateRefreshToken(user2.getEmail());
+
+        // Step 5: Return the AuthResponse
+        return new AuthResponse(accessToken, refreshToken, user2.getId(), user2.getEmail(),user2.getName(),user2.getRoles(),user2.getClub());
+  
+        } catch (Exception e) {
+           System.out.println("Invalid Google token");
+        }
+        
+        return null;
+    }
+
+    
+
 
     public boolean verifyEmail(String email, String otp) {
 
@@ -216,7 +282,7 @@ public class AuthService {
                     .orElseThrow(() -> new RuntimeException("User not found"));
             user.setPassword(passwordEncoder.encode(newP));
             repo.save(user);
-            notificationclient.sendPasswordChangeEmail(user.getEmail(),"Password has been changed");
+           // notificationclient.sendPasswordChangeEmail(user.getEmail(),"Password has been changed");
             return true;
         }
 

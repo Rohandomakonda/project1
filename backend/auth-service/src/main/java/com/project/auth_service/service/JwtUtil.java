@@ -14,6 +14,7 @@ public class JwtUtil {
     private String jwtSecret;
 
     public Long extractClaims(String token) {
+        @SuppressWarnings("deprecation")
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
