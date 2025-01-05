@@ -31,7 +31,7 @@ public class GoogleCalendarService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         
         Map<String, Object> event = new HashMap<>();
-        event.put("summary", eventDTO.getSummary());
+        event.put("title", eventDTO.getTitle());
         event.put("description", eventDTO.getDescription());
         
         Map<String, String> start = new HashMap<>();

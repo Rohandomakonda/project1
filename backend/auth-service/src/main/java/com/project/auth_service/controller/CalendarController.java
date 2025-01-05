@@ -13,7 +13,7 @@ import com.project.auth_service.dto.CalendarEventDto;
 import com.project.auth_service.service.GoogleCalendarService;
 
 @RestController
-@RequestMapping("/api/calendar")
+@RequestMapping("/api/auth/calendar")
 @CrossOrigin(origins = "http://localhost:5173")
 public class CalendarController {
     
