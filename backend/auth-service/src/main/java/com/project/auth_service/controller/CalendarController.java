@@ -26,7 +26,9 @@ public class CalendarController {
     public ResponseEntity<Void> createEvent(
             @RequestBody CalendarEventDto event,
             @RequestHeader("Authorization") String authHeader) {
+        System.out.println(authHeader);
         String token = authHeader.replace("Bearer ", "");
+        System.out.println(token);
         calendarService.createEvent(event, token);
         return ResponseEntity.ok().build();
     }

@@ -13,4 +13,24 @@ public class CalendarEventDto {
     private String startDateTime;
     private String endDateTime;
     private String location;
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public String getStartDateTime() {
+        return this.startDateTime;
+    }
+
+    public String getEndDateTime() {
+    return this.endDateTime;
+    }
+
+    public String getLocation() {
+        return this.location;
+    }
 }

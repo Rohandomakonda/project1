@@ -7,4 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EmailReq {
     String email;
+
+    public String getEmail() {
+        return this.email;
+    }
 }

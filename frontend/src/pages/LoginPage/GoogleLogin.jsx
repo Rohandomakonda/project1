@@ -1,13 +1,7 @@
 import React from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-<<<<<<< HEAD
 import axios from "axios";
-const GoogleSignIn = () => {
-  const handleSuccess = async (response) => {
-    console.log(response);
-=======
 
->>>>>>> 82d4541ce2147b3794b0733245ea3506b2f62a88
 
 const GoogleSignIn = ({handleGoogleSuccess,handleGoogleError}) => {
 
