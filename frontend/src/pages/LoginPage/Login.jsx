@@ -26,17 +26,20 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("hi");
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:8080/api/auth/login",
+        "http://localhost:8765/api/auth/login",
         credentials
       );
       console.log(response.data.roles);
-      const token = response.data.accessToken;
+      const token = response.data.access_token;
       const roles = response.data.roles;
       const name = response.data.name;
       const club = response.data.club;
+ console.log(response.data);
+ console.log(roles);
 
       const userId = response.data.id;
 
@@ -47,12 +50,14 @@ const Login = () => {
         localStorage.setItem("name", name);
         localStorage.setItem("club", club);
         localStorage.setItem("userId", userId);
+console.log("localstorage set");
+alert("logging in");
 
+      setSnackbarOpen(true);
+      setLoading(false);
+      setError(false);
+      setTimeout(() => navigate("/"), 1500);
 
-        setSnackbarOpen(true); // Show success Snackbar
-        setLoading(false);
-        setError(false);
-        setTimeout(() => navigate("/"), 1500);
       }
     } catch (error) {
       console.error("Login failed:", error);
@@ -100,8 +105,8 @@ const Login = () => {
   };
 
   return (
-    <GoogleOAuthProvider clientId="916755134531-fvnijil1m46cfuu84fgfm9uionutvr66.apps.googleusercontent.com">
-      
+
+       <GoogleOAuthProvider clientId="916755134531-fvnijil1m46cfuu84fgfm9uionutvr66.apps.googleusercontent.com">
       <div className="pt-[12rem] -mt-[5.25rem] flex items-center justify-center min-h-screen w-full">
         <div className="container relative w-full max-w-screen-lg flex justify-center items-center">
           <div className="relative z-1 text-center">
@@ -116,7 +121,7 @@ const Login = () => {
                 borderRadius: "8px",
                 backgroundColor: "rgba(0, 0, 0, 0.5)",
               }}
-              onSubmit={handleSubmit}
+
             >
               <h2 className="text-white text-xl font-bold mb-5">Login</h2>
 
@@ -216,7 +221,7 @@ const Login = () => {
                         <CircularProgress color="inherit" />
                       ) : (
                         <>
-                          <Button className="submit w-full mt-5" type="submit">
+                          <Button className="submit w-full mt-5" onClick={handleSubmit}>
                             Login
                           </Button>
                         </>
@@ -259,7 +264,8 @@ const Login = () => {
         </div>
         <GradientLight className="z-1 opacity-20" />
       </div>
-      </GoogleOAuthProvider>
+      </ GoogleOAuthProvider>
+
   );
 };
 

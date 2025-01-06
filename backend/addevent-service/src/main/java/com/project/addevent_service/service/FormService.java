@@ -56,7 +56,7 @@ public class FormService {
         message.setVenue(event.getVenue());
         message.setClub(event.getClub());
 
-        kafkaTemplate.send("new-events", message);
+        //kafkaTemplate.send("new-events", message);
 
         System.out.println("sent to kafka");
 

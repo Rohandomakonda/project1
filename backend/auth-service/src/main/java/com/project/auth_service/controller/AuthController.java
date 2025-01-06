@@ -157,6 +157,10 @@ public class AuthController {
             return new ResponseEntity<>("Error processing the token", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @GetMapping("/getusername/{id}")
+    public String getUserbyId(@PathVariable Long id){
+        return  authService.getUserbyId(id);
+    }
 
 
 }

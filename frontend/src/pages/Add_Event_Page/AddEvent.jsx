@@ -75,27 +75,27 @@ import usePost from "../../customhooks/usePost";
     }
 
     // Post request with axios
-//     axios
-//       .post("http://localhost:8080/addevents", formData, {
-//         headers: {
-//           "Content-Type": "multipart/form-data",
-//           Authorization: `Bearer ${token}`, // Authorization header
-//         },
-//       })
-//       .then((response) => {
-//         alert("Event added successfully!");
-//         console.log("Response Data:", response.data);
-//         navigate("/viewevents"); // Redirect to events page
-//       })
-//       .catch((error) => {
-//         console.error("Error adding event:", error);
-//         if (error.response) {
-//           alert("Failed to add event: " + error.response.data.message);
-//         } else {
-//           alert("An error occurred while adding the event.");
-//         }
-//       });
-     const {loading,error} = usePost("addevents",token,formData,null);
+    axios
+      .post("http://localhost:8765/api/events/addevents", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`, // Authorization header
+        },
+      })
+      .then((response) => {
+        alert("Event added successfully!");
+        console.log("Response Data:", response.data);
+        navigate("/viewevents"); // Redirect to events page
+      })
+      .catch((error) => {
+        console.error("Error adding event:", error);
+        if (error.response) {
+          alert("Failed to add event: " + error.response.data.message);
+        } else {
+          alert("An error occurred while adding the event.");
+        }
+      });
+     //const {loading,error} = usePost("addevents",token,formData,null);
   };
 
   return (

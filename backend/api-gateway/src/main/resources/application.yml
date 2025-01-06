@@ -113,18 +113,18 @@ spring:
         - id: events-protected
           uri: lb://view-serivce
           predicates:
-            - Path=/api/events/**
+            - Path=/api/viewevents/**
           filters:
             - AuthenticationFilter
             - DedupeResponseHeader=Access-Control-Allow-Origin
-        # - id: clubs
-        #   uri: lb://CLUBS
-        #   predicates:
-        #     - Path=/api/clubs/**
-        #   filters:
-        #     - name: AuthenticationFilter
-        #       args: {}
-        #     - DedupeResponseHeader=Access-Control-Allow-Origin
+
+        - id: add-serivce
+          uri: lb://addevent-service
+          predicates:
+                   - Path=/api/events/**
+          filters:
+            - AuthenticationFilter
+            - DedupeResponseHeader=Access-Control-Allow-Origin
 
 
 eureka:

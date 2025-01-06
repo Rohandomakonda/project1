@@ -159,8 +159,8 @@ public class AuthService {
         user.setVerified(false);
         repo.save(user);
 
-        String otp = otpservice.generateAndStoreOtp(email);
-        NotificationRequest req = new NotificationRequest(email,otp);
+//        String otp = otpservice.generateAndStoreOtp(email);
+//        NotificationRequest req = new NotificationRequest(email,otp);
 
        // notificationclient.sendEmail(req);
 
@@ -297,4 +297,8 @@ public class AuthService {
     }
 
 
+    public String getUserbyId(Long id) {
+        User u= repo.findById(id).get();
+        return u.getName();
+    }
 }
