@@ -218,6 +218,8 @@ const View = () => {
                 image={`data:image/jpeg;base64,${event.image}`}
                 club={event.club}
                 delete={handleDelete}
+                likes={event.likes}
+                 saves={event.saves}
               />
             ))}
           </div>
@@ -254,6 +256,8 @@ const View = () => {
               image={`data:image/jpeg;base64,${event.image}`}
               club={event.club}
               delete={handleDelete}
+              likes={event.likes}
+              saves={event.saves}
             />
           ))}
         </div>

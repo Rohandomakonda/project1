@@ -10,9 +10,11 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import axios from "axios";
 import Box from '@mui/material/Box';  // Import Box from MUI
 import { benefits } from "../../constants";
-import Button from "../Button"
+import Button from "../../components/Button"
 import { GradientLight } from "../design/Benefits";
 import ClipPath from "../../assets/svg/ClipPath";
+import Typography from '@mui/material/Typography';
+import CommentIcon from '@mui/icons-material/Comment';
 import {
   benefitIcon1,
   benefitIcon2,
@@ -244,7 +246,7 @@ function Event(props) {
           >
             {props.venue}
           </a>
-          <p className="body-2 text-n-3 z-3">Club: {props.club}</p>
+          <p className="body-2 mb-3 text-n-3 z-3">Club: {props.club}</p>
 
           <div className="flex items-center mt-auto">
             {(roles.includes("CLUB_SEC") && club === props.club || roles.includes("ADMIN")) && (
@@ -259,23 +261,93 @@ function Event(props) {
             )}
 
             {roles.includes("USER") && (
-              <Box className="button-container z-3" sx={{ display: 'flex', gap: 20 }}>
-                <Fab
-                  color={isLiked ? "error" : "default"} // Red color for like button
-                  aria-label="like"
-                  onClick={handleLike}
-                >
-                  {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-                </Fab>
+              <Box className="button-container z-4" sx={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+                    {/* Like Button with Like Count */}
+                    <Box sx={{ position: 'relative', textAlign: 'center' }}>
+                                          <Typography
+                                            variant="body2"
+                                            color="white"
+                                            sx={{
+                                              position: 'absolute',
+                                              top: '-20px', // Adjust the position above the icon
+                                              left: '50%',
+                                              transform: 'translateX(-50%)',
+                                              zIndex: 10, // Ensure the text is above the button
+                                            }}
+                                          >
+                                            {props.saves}
+                                          </Typography>
+                                          <Fab
+                                            color={isSaved ? "primary" : "default"} // Default color for bookmark
+                                            aria-label="bookmark"
+                                            onClick={handleBookmark}
+                                            sx={{
+                                              position: 'relative', // Ensure layering consistency
+                                              zIndex: 1, // Lower than text
+                                            }}
+                                          >
+                                            {isSaved ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+                                          </Fab>
+                                        </Box>
 
-                <Fab
-                  color={isSaved ? "primary" : "default"} // Default color for bookmark
-                  aria-label="bookmark"
-                  onClick={handleBookmark}
-                >
-                  {isSaved ? <BookmarkIcon /> : <BookmarkBorderIcon />}
-                </Fab>
-              </Box>
+
+
+
+
+                    <Box sx={{ position: 'relative', textAlign: 'center' }}>
+                      <Typography
+                        variant="body2"
+                        color="white"
+                        sx={{
+                          position: 'absolute',
+                          top: '-20px', // Adjust the position above the icon
+                          left: '50%',
+                          transform: 'translateX(-50%)',
+                          zIndex: 10, // Ensure the text is above the button
+                        }}
+                      >
+                        {props.likes}
+                      </Typography>
+                      <Fab
+                        color={isLiked ? "error" : "default"} // Red color for like button
+                        aria-label="like"
+                        onClick={handleLike}
+                        sx={{
+                          position: 'relative', // Ensure layering consistency
+                          zIndex: 1, // Lower than text
+                        }}
+                      >
+                        {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                      </Fab>
+
+                    </Box>
+
+                     <Box sx={{ position: 'relative', textAlign: 'center' }}>
+
+                                          <Fab
+
+                                            sx={{
+                                              position: 'relative', // Ensure layering consistency
+                                              zIndex: 1, // Lower than text
+                                            }}
+                                          >
+                                          <CommentIcon />
+
+                                          </Fab>
+
+                                        </Box>
+
+                    {/* Save Button with Save Count */}
+
+                  </Box>
+                          //here i want to diaplay the props.like and porps.saves with white text below the favourite and save icon repectively
+
+
+                      //here i want to diaplay the props.like and porps.saves with white text below the favourite and save icon repectively
+
+
+
+
               )}
               <GradientLight className="z-3"/>
 

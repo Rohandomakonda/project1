@@ -113,6 +113,35 @@ public class FormService {
             throw new RuntimeException("Event not found with id " + id);
         }
     }
+
+    public void inclikes(long eventId) {
+        Event event = repo.findById(eventId).orElseThrow(() -> new RuntimeException("Event not found"));
+        event.setLikes(event.getLikes()+1);
+        repo.save(event);
+    }
+    public  void declikes(Long eventId) {
+        Event event = repo.findById(eventId).orElseThrow(() -> new RuntimeException("Event not found"));
+        event.setLikes(event.getLikes()-1);
+        repo.save(event);
+
+
+    }
+    public void incsaves(Long eventId) {
+        Event event = repo.findById(eventId).orElseThrow(() -> new RuntimeException("Event not found"));
+        event.setSaves(event.getSaves()+1);
+        repo.save(event);
+    }
+    public void decsaves(String eventId) {
+
+        Optional<Event> event = repo.findByTitle(eventId);
+        if(event.isPresent()){
+            Event e=event.get();
+            e.setSaves(e.getSaves()-1);
+            repo.save(e);
+        }
+
+
+    }
 }
 
 

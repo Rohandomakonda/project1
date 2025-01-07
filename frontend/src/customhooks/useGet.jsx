@@ -9,9 +9,9 @@ const useGet = (endpoint, token) => {
   useEffect(() => {
     let isMounted = true; // Prevent state updates on unmounted components
     setLoading(true);
-    console.log(`http://localhost:8080/${endpoint}`);
-    axios   
-      .get(`http://localhost:8080/${endpoint}`, {
+    console.log(`http://localhost:8765/api/${endpoint}`);
+    axios
+      .get(`http://localhost:8765/api/${endpoint}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((resp) => {

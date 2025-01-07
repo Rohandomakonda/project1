@@ -20,10 +20,27 @@ public class Event {
     private String club;
     private String venueDescription;
     private boolean isPublic;
+    private Long likes=0l;
+    private Long saves=0l;
 
 
     @Lob
     private byte[] image;
+
+
+    public Long getLikes() {
+        return likes;
+    }
+    public void setLikes(Long l) {
+        this.likes=l;
+    }
+    public Long getSaves() {
+        return saves;
+    }
+    public void setSaves(Long s) {
+        this.saves=s;
+    }
+
 
     public Long getId() {
         return id;

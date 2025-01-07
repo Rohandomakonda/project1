@@ -10,7 +10,7 @@ import useGet from "../../customhooks/useGet.jsx";
 
 function Home() {
   const token = localStorage.getItem("authToken");
-  const {data : publicEvents, loading, error } = useGet("public/events", token); 
+  const {data : publicEvents, loading, error } = useGet("events/public/events", null);
   const parallaxRef = useRef(null);
   const navigate = useNavigate();
 

@@ -99,8 +99,7 @@ spring:
           uri: lb://view-serivce
           predicates:
             - Path=/api/events/public/**
-          filters:
-            - DedupeResponseHeader=Access-Control-Allow-Origin
+
 
         - id: clubs-public
           uri: lb://CLUBS

@@ -98,6 +98,27 @@ public class FormController {
         service.updateEvent(id,updatedEvent);
         return ResponseEntity.ok("updated Event");
     }
+    @PostMapping("/inclikes/{id}")
+    public void inclikes(@PathVariable long eventid){
+      service.inclikes(eventid);
+
+    }
+    @PostMapping("/declikes/{id}")
+    public void declikes(@PathVariable long eventid){
+        service.declikes(eventid);
+
+    }
+    @PostMapping("/decsaves/{id}")
+    public void decsaves(@PathVariable String eventid){
+
+        service.decsaves(eventid);
+
+    }
+    @PostMapping("/incsaves/{id}")
+    public void incsaves(@PathVariable long eventid){
+        service.incsaves(eventid);
+
+    }
 
 
 }

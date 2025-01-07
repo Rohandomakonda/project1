@@ -5,6 +5,7 @@ package com.project.profile_service.service;
 
 import com.project.profile_service.dto.Event;
 import com.project.profile_service.feign.EventInterface;
+import com.project.profile_service.feign.EventService;
 import com.project.profile_service.model.SavedEvent;
 import com.project.profile_service.repo.SavedEventRepository;
 import jakarta.persistence.Lob;
@@ -27,6 +28,9 @@ public class SavedEventService {
     @Autowired
     private EventInterface eventInterface;
 
+    @Autowired
+    private EventService eventService;
+
     public void saveEvent(Long eventId, Long userId) {
         Event event = eventInterface.getById(eventId).getBody();
 
@@ -43,6 +47,7 @@ public class SavedEventService {
             savedEvent.setClub(event.getClub());
             savedEvent.setImage(event.getImage());
             savedEvent.setUserId(userId);
+            eventService.incsaves(eventId);
 
 
 
@@ -64,6 +69,8 @@ public class SavedEventService {
 
         // Delete the event from the saved events list
         savedEventRepository.delete(se1);
+        eventService.decsaves(eventTitle);
+
         System.out.println("Event unsaved successfully!");
     }
 

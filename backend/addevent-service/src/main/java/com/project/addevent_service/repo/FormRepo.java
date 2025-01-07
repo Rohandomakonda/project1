@@ -6,6 +6,7 @@ package com.project.addevent_service.repo;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import com.project.addevent_service.model.Event;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,4 +20,6 @@ public interface FormRepo extends JpaRepository<Event,Long> {
     List<Event> findByisPublicTrue();
 
     List<Event> findByClub(String name);
+
+    Optional<Event> findByTitle(String eventId);
 }

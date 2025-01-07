@@ -2,6 +2,7 @@ package com.project.profile_service.service;
 
 import com.project.profile_service.dto.Event;
 import com.project.profile_service.feign.EventInterface;
+import com.project.profile_service.feign.EventService;
 import com.project.profile_service.model.FavoriteEvent;
 import com.project.profile_service.repo.FavoriteEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,10 @@ public class FavoriteEventService {
 
     @Autowired
     private EventInterface eventInterface;
+
+
+    @Autowired
+    private EventService eventservice;
 
     public List<Event> getUserFavorites(Long userId) {
             System.out.println("going to get list of event ids");
@@ -58,12 +63,14 @@ public class FavoriteEventService {
         FavoriteEvent favorite = new FavoriteEvent();
         favorite.setUserId(userId);
         favorite.setEventId(eventId);
+       eventservice.inclikes(eventId);
         favoriteEventRepository.save(favorite);
     }
 
 
     @Transactional
     public void removeFavorite(Long eventId,Long userId) {
+        eventservice.declikes(eventId);
         favoriteEventRepository.deleteByUserIdAndEventId(userId, eventId);
     }
 

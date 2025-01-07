@@ -20,5 +20,11 @@ public class FavoriteEvent {
     private Long eventId;
 
 
+    public void setUserId(Long userId) {
+        this.userId=userId;
+    }
 
+    public void setEventId(Long eventId) {
+        this.eventId=eventId;
+    }
 }
