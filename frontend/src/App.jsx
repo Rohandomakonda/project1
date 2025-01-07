@@ -18,6 +18,7 @@ import SavedEvents from "./pages/View_Page/savedEvents.jsx";
 import Header from "./components/Header";
 import ButtonGradient from "./assets/svg/ButtonGradient";
 import "./index.css";
+import Comments from "./pages/comments/comments.jsx";
 
 function App() {
   return (
@@ -101,6 +102,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ViewRecruitment />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/comments/:eventId"
+            element={
+              <ProtectedRoute>
+                <Comments />
               </ProtectedRoute>
             }
           />

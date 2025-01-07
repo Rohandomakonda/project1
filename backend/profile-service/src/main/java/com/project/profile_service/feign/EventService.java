@@ -4,18 +4,18 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-@FeignClient("addevent-service")
+@FeignClient("event-service")
 public interface EventService {
-    @PostMapping("/inclikes/{id}")
+    @PostMapping("api/events/inclikes/{id}")
     public void inclikes(@PathVariable long eventid);
 
-    @PostMapping("/declikes/{id}")
+    @PostMapping("api/events/declikes/{id}")
     public void declikes(@PathVariable long eventid);
 
-    @PostMapping("/decsaves/{id}")
+    @PostMapping("api/events/decsaves/{id}")
     public void decsaves(@PathVariable String eventtitle);
 
-    @PostMapping("/incsaves/{id}")
+    @PostMapping("api/events/incsaves/{id}")
     public void incsaves(@PathVariable long eventid);
 
 }

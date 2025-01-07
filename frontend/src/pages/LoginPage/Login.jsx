@@ -79,13 +79,14 @@ alert("logging in");
       );
       console.log("sent to backend");
 
-      const { accessToken, roles, name, club } = backendResponse.data;
+      const { access_token, roles, name, club,id } = backendResponse.data;
 
       localStorage.setItem("roles", JSON.stringify(roles));
-      localStorage.setItem("authToken", accessToken);
+      localStorage.setItem("authToken", access_token);
       localStorage.setItem("name", name);
       localStorage.setItem("club", club);
       localStorage.setItem("googleAccessToken", response.credential); // Store Google token for Calendar API
+      localStorage.setItem("userId",id);
 
       setSnackbarOpen(true);
       setLoading(false);
@@ -132,7 +133,7 @@ alert("logging in");
                       className="block relative p-0.5 bg-no-repeat bg-[length:100%_100%] w-full max-w-[50rem]" // Increased max-width to 50rem
                       onSubmit={handleSubmit}
                     >
-                      <TextField
+                      <TextFixeld
                         id="outlined-email"
                         className="MuiTextField-root pb-5"
                         label="Email"

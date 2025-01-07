@@ -50,11 +50,11 @@ const View = () => {
     }
 
     // Fetch events and ongoing events in parallel
-    const fetchEvents = axios.get("http://localhost:8080/viewevents", {
+    const fetchEvents = axios.get("http://localhost:8765/api/events/viewevents", {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    const fetchOngoingEvents = axios.get("http://localhost:8080/ongoingevents", {
+    const fetchOngoingEvents = axios.get("http://localhost:8765/api/events/ongoingevents", {
       headers: { Authorization: `Bearer ${token}` },
     });
 

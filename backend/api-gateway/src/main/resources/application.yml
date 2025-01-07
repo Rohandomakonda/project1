@@ -96,7 +96,7 @@ spring:
             - DedupeResponseHeader=Access-Control-Allow-Origin  # Add this line
 
         - id: events-public
-          uri: lb://view-serivce
+          uri: lb://event-service
           predicates:
             - Path=/api/events/public/**
 
@@ -109,16 +109,9 @@ spring:
             - DedupeResponseHeader=Access-Control-Allow-Origin
 
         # Protected routes after
-        - id: events-protected
-          uri: lb://view-serivce
-          predicates:
-            - Path=/api/viewevents/**
-          filters:
-            - AuthenticationFilter
-            - DedupeResponseHeader=Access-Control-Allow-Origin
 
-        - id: add-serivce
-          uri: lb://addevent-service
+        - id: event-serivce
+          uri: lb://event-service
           predicates:
                    - Path=/api/events/**
           filters:

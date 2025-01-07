@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from '@mui/icons-material/Edit';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import Fab from '@mui/material/Fab';
+import EditIcon from "@mui/icons-material/Edit";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import Fab from "@mui/material/Fab";
 import { useNavigate } from "react-router-dom";
-import BookmarkIcon from '@mui/icons-material/Bookmark';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import axios from "axios";
-import Box from '@mui/material/Box';  // Import Box from MUI
+import Box from "@mui/material/Box"; // Import Box from MUI
 import { benefits } from "../../constants";
-import Button from "../../components/Button"
+import Button from "../../components/Button";
 import { GradientLight } from "../design/Benefits";
 import ClipPath from "../../assets/svg/ClipPath";
-import Typography from '@mui/material/Typography';
-import CommentIcon from '@mui/icons-material/Comment';
+import Typography from "@mui/material/Typography";
+import CommentIcon from "@mui/icons-material/Comment";
 import {
   benefitIcon1,
   benefitIcon2,
@@ -52,10 +52,6 @@ import {
   twitter,
   yourlogo,
 } from "../../assets";
-
-
-
-
 
 function Event(props) {
   const navigate = useNavigate();
@@ -98,7 +94,7 @@ function Event(props) {
 
   // Toggle the liked state
   function handleLike(e) {
-      e.stopPropagation();
+    e.stopPropagation();
     if (isLiked) {
       axios
         .delete(`http://localhost:8080/dislike/${props.id}/${userId}`, {
@@ -132,7 +128,7 @@ function Event(props) {
 
   // Toggle the saved/bookmarked state
   function handleBookmark(e) {
-      e.stopPropagation();
+    e.stopPropagation();
     if (isSaved) {
       axios
         .delete(`http://localhost:8080/unsave`, {
@@ -178,247 +174,251 @@ function Event(props) {
   }
 
   function generateGoogleMapsLink(venue) {
-    const baseURL = "https://www.google.com/maps/search/?api=1&query=NITWARANGAL+";
+    const baseURL =
+      "https://www.google.com/maps/search/?api=1&query=NITWARANGAL+";
     return baseURL + encodeURIComponent(venue);
   }
 
   function handleFlip() {
     setIsFlipped(!isFlipped);
   }
-  function handlelogin(e){
-        e.stopPropagation();
-        navigate("/login");
-      }
+  function handlelogin(e) {
+    e.stopPropagation();
+    navigate("/login");
+  }
+
+  const handleComment = () =>{
+    navigate(`/comments/${props.id}`);
+  }
 
   return (
-   <div
-     style={{
-       perspective: "1000px", // Enables 3D perspective
-       width: "300px", // Set a fixed width for the card
-       height: "400px", // Set a fixed height for the card
-       margin: "auto", // Center the card horizontally
-     }}
-     onClick={handleFlip} // Flip the card on click
-   >
-     <div
-       style={{
-         position: "relative",
-         width: "100%",
-         height: "100%",
-         transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
-         transformStyle: "preserve-3d",
-         transition: "transform 0.6s ease",
-       }}
-     >
-      {/* Front Side */}
+    <div
+      style={{
+        perspective: "1000px", // Enables 3D perspective
+        width: "300px", // Set a fixed width for the card
+        height: "400px", // Set a fixed height for the card
+        margin: "auto", // Center the card horizontally
+      }}
+      onClick={handleFlip} // Flip the card on click
+    >
       <div
         style={{
-          position: "absolute",
+          position: "relative",
           width: "100%",
           height: "100%",
-          backfaceVisibility: "hidden",
-          zIndex: isFlipped ? 0 : 1, // Ensure front side has a higher z-index when not flipped
+          transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
+          transformStyle: "preserve-3d",
+          transition: "transform 0.6s ease",
         }}
       >
+        {/* Front Side */}
         <div
-          className="block relative p-0.5 bg-no-repeat bg-[length:100%_100%] md:max-w-[24rem]"
           style={{
+            position: "absolute",
             width: "100%",
             height: "100%",
-            backgroundImage: `url(${benefits[2].backgroundUrl})`,
-            display: "flex",
-            flexDirection: "column",
-            padding: "1rem",
-            boxSizing: "border-box",
-          }}
-        >
-          <h5 className="h2 mb-5 z-3">{props.title}</h5>
-          <p className="body-2 mb-3 text-n-3 z-3">Description</p>
-          <p className="body-2 mb-3 text-n-3 z-3">{props.description}</p>
-          <p className="body-2 mb-3 text-n-3 z-3">Date: {props.date}</p>
-          <p className="body-2 mb-3 text-n-3 z-3">Time: {props.time}</p>
-          <p className="body-2 text-n-3 z-3">Venue: {props.venue_description}</p>
-          <a
-            className="body-2 text-n-3 z-3"
-            href={`https://www.google.com/maps/search/?api=1&query=${props.venue}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {props.venue}
-          </a>
-          <p className="body-2 mb-3 text-n-3 z-3">Club: {props.club}</p>
-
-          <div className="flex items-center mt-auto">
-            {(roles.includes("CLUB_SEC") && club === props.club || roles.includes("ADMIN")) && (
-              <Box className="button-container z-3" sx={{ display: 'flex', gap: 1 }}>
-                <Fab color="error" aria-label="delete" onClick={handleDelete}>
-                  <DeleteIcon />
-                </Fab>
-                <Fab color="secondary" aria-label="edit" onClick={handleUpdate}>
-                  <EditIcon />
-                </Fab>
-              </Box>
-            )}
-
-            {roles.includes("USER") && (
-              <Box className="button-container z-4" sx={{ display: 'flex', gap: 4, alignItems: 'center' }}>
-                    {/* Like Button with Like Count */}
-                    <Box sx={{ position: 'relative', textAlign: 'center' }}>
-                                          <Typography
-                                            variant="body2"
-                                            color="white"
-                                            sx={{
-                                              position: 'absolute',
-                                              top: '-20px', // Adjust the position above the icon
-                                              left: '50%',
-                                              transform: 'translateX(-50%)',
-                                              zIndex: 10, // Ensure the text is above the button
-                                            }}
-                                          >
-                                            {props.saves}
-                                          </Typography>
-                                          <Fab
-                                            color={isSaved ? "primary" : "default"} // Default color for bookmark
-                                            aria-label="bookmark"
-                                            onClick={handleBookmark}
-                                            sx={{
-                                              position: 'relative', // Ensure layering consistency
-                                              zIndex: 1, // Lower than text
-                                            }}
-                                          >
-                                            {isSaved ? <BookmarkIcon /> : <BookmarkBorderIcon />}
-                                          </Fab>
-                                        </Box>
-
-
-
-
-
-                    <Box sx={{ position: 'relative', textAlign: 'center' }}>
-                      <Typography
-                        variant="body2"
-                        color="white"
-                        sx={{
-                          position: 'absolute',
-                          top: '-20px', // Adjust the position above the icon
-                          left: '50%',
-                          transform: 'translateX(-50%)',
-                          zIndex: 10, // Ensure the text is above the button
-                        }}
-                      >
-                        {props.likes}
-                      </Typography>
-                      <Fab
-                        color={isLiked ? "error" : "default"} // Red color for like button
-                        aria-label="like"
-                        onClick={handleLike}
-                        sx={{
-                          position: 'relative', // Ensure layering consistency
-                          zIndex: 1, // Lower than text
-                        }}
-                      >
-                        {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-                      </Fab>
-
-                    </Box>
-
-                     <Box sx={{ position: 'relative', textAlign: 'center' }}>
-
-                                          <Fab
-
-                                            sx={{
-                                              position: 'relative', // Ensure layering consistency
-                                              zIndex: 1, // Lower than text
-                                            }}
-                                          >
-                                          <CommentIcon />
-
-                                          </Fab>
-
-                                        </Box>
-
-                    {/* Save Button with Save Count */}
-
-                  </Box>
-                          //here i want to diaplay the props.like and porps.saves with white text below the favourite and save icon repectively
-
-
-                      //here i want to diaplay the props.like and porps.saves with white text below the favourite and save icon repectively
-
-
-
-
-              )}
-              <GradientLight className="z-3"/>
-
-
-            {token == null && (
-              <Box className="button-container z-3" sx={{ display: 'center' }}>
-                <Button onClick={handlelogin}>Login to like</Button>
-              </Box>
-            )}
-          </div>
-        </div>
-
-        {/* Overlay for hover effect */}
-        <div
-          className="absolute inset-0.5 bg-n-8"
-          style={{
-            clipPath: "url(#benefits)", // Ensure this applies correctly
-            zIndex: 2, // Keep it above the background but below text
+            backfaceVisibility: "hidden",
+            zIndex: isFlipped ? 0 : 1, // Ensure front side has a higher z-index when not flipped
           }}
         >
           <div
-            className="absolute inset-0 opacity-0 transition-opacity hover:opacity-20"
+            className="block relative p-0.5 bg-no-repeat bg-[length:100%_100%] md:max-w-[24rem]"
             style={{
-              zIndex: 2, // Ensure it's only visible during hover
+              width: "100%",
+              height: "100%",
+              backgroundImage: `url(${benefits[2].backgroundUrl})`,
+              display: "flex",
+              flexDirection: "column",
+              padding: "1rem",
+              boxSizing: "border-box",
             }}
           >
-            <img
-              src={benefitImage2}
-              width={380}
-              height={362}
-              alt={props.title}
-              className="w-full h-full object-cover"
-              style={{
-                zIndex: 3,
-              }}
-            />
+            <h5 className="h2 mb-5 z-3">{props.title}</h5>
+            <p className="body-2 mb-3 text-n-3 z-3">Description</p>
+            <p className="body-2 mb-3 text-n-3 z-3">{props.description}</p>
+            <p className="body-2 mb-3 text-n-3 z-3">Date: {props.date}</p>
+            <p className="body-2 mb-3 text-n-3 z-3">Time: {props.time}</p>
+            <p className="body-2 text-n-3 z-3">
+              Venue: {props.venue_description}
+            </p>
+            <a
+              className="body-2 text-n-3 z-3"
+              href={`https://www.google.com/maps/search/?api=1&query=${props.venue}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {props.venue}
+            </a>
+            <p className="body-2 mb-3 text-n-3 z-3">Club: {props.club}</p>
+
+            <div className="flex items-center mt-auto">
+              {((roles.includes("CLUB_SEC") && club === props.club) ||
+                roles.includes("ADMIN")) && (
+                <Box
+                  className="button-container z-3"
+                  sx={{ display: "flex", gap: 1 }}
+                >
+                  <Fab color="error" aria-label="delete" onClick={handleDelete}>
+                    <DeleteIcon />
+                  </Fab>
+                  <Fab
+                    color="secondary"
+                    aria-label="edit"
+                    onClick={handleUpdate}
+                  >
+                    <EditIcon />
+                  </Fab>
+                </Box>
+              )}
+
+              {roles.includes("USER") && (
+                <Box
+                  className="button-container z-4"
+                  sx={{ display: "flex", gap: 4, alignItems: "center" }}
+                >
+                  {/* Like Button with Like Count */}
+                  <Box sx={{ position: "relative", textAlign: "center" }}>
+                    <Typography
+                      variant="body2"
+                      color="white"
+                      sx={{
+                        position: "absolute",
+                        top: "-20px", // Adjust the position above the icon
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        zIndex: 10, // Ensure the text is above the button
+                      }}
+                    >
+                      {props.saves}
+                    </Typography>
+                    <Fab
+                      color={isSaved ? "primary" : "default"} // Default color for bookmark
+                      aria-label="bookmark"
+                      onClick={handleBookmark}
+                      sx={{
+                        position: "relative", // Ensure layering consistency
+                        zIndex: 1, // Lower than text
+                      }}
+                    >
+                      {isSaved ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+                    </Fab>
+                  </Box>
+
+                  <Box sx={{ position: "relative", textAlign: "center" }}>
+                    <Typography
+                      variant="body2"
+                      color="white"
+                      sx={{
+                        position: "absolute",
+                        top: "-20px", // Adjust the position above the icon
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        zIndex: 10, // Ensure the text is above the button
+                      }}
+                    >
+                      {props.likes}
+                    </Typography>
+                    <Fab
+                      color={isLiked ? "error" : "default"} // Red color for like button
+                      aria-label="like"
+                      onClick={handleLike}
+                      sx={{
+                        position: "relative", // Ensure layering consistency
+                        zIndex: 1, // Lower than text
+                      }}
+                    >
+                      {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                    </Fab>
+                  </Box>
+
+                  <Box sx={{ position: "relative", textAlign: "center" }}>
+                    <Fab
+                      onClick={handleComment}
+                      sx={{
+                        position: "relative", // Ensure layering consistency
+                        zIndex: 1, // Lower than text
+                      }}
+                    >
+                      <CommentIcon />
+                    </Fab>
+                  </Box>
+
+                  {/* Save Button with Save Count */}
+                </Box>
+                //here i want to diaplay the props.like and porps.saves with white text below the favourite and save icon repectively
+
+                //here i want to diaplay the props.like and porps.saves with white text below the favourite and save icon repectively
+              )}
+              <GradientLight className="z-3" />
+
+              {token == null && (
+                <Box
+                  className="button-container z-3"
+                  sx={{ display: "center" }}
+                >
+                  <Button onClick={handlelogin}>Login to like</Button>
+                </Box>
+              )}
+            </div>
           </div>
+
+          {/* Overlay for hover effect */}
+          <div
+            className="absolute inset-0.5 bg-n-8"
+            style={{
+              clipPath: "url(#benefits)", // Ensure this applies correctly
+              zIndex: 2, // Keep it above the background but below text
+            }}
+          >
+            <div
+              className="absolute inset-0 opacity-0 transition-opacity hover:opacity-20"
+              style={{
+                zIndex: 2, // Ensure it's only visible during hover
+              }}
+            >
+              <img
+                src={benefitImage2}
+                width={380}
+                height={362}
+                alt={props.title}
+                className="w-full h-full object-cover"
+                style={{
+                  zIndex: 3,
+                }}
+              />
+            </div>
+          </div>
+
+          <ClipPath />
         </div>
 
-        <ClipPath />
+        {/* Back Side */}
+        <div
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            backfaceVisibility: "hidden",
+            transform: "rotateY(180deg)",
+            backgroundImage: `url(${benefits[2].backgroundUrl})`,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: isFlipped ? 1 : 0, // Ensure back side has a higher z-index when flipped
+          }}
+        >
+          <img
+            src={props.image}
+            alt="Event Backside"
+            style={{
+              maxWidth: "90%",
+              maxHeight: "90%",
+              objectFit: "contain",
+            }}
+          />
+        </div>
       </div>
-
-
-       {/* Back Side */}
-       <div
-         style={{
-           position: "absolute",
-           width: "100%",
-           height: "100%",
-           backfaceVisibility: "hidden",
-           transform: "rotateY(180deg)",
-           backgroundImage: `url(${benefits[2].backgroundUrl})`,
-           display: "flex",
-           justifyContent: "center",
-           alignItems: "center",
-           zIndex: isFlipped ? 1 : 0, // Ensure back side has a higher z-index when flipped
-         }}
-       >
-         <img
-           src={props.image}
-           alt="Event Backside"
-           style={{
-             maxWidth: "90%",
-             maxHeight: "90%",
-             objectFit: "contain",
-           }}
-         />
-       </div>
-     </div>
-   </div>
-
+    </div>
   );
 }
 
