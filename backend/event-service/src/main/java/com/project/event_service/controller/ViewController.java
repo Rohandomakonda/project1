@@ -1,6 +1,7 @@
 package com.project.event_service.controller;
 
 
+import com.project.event_service.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +19,8 @@ public class ViewController {
 
     @Autowired
     private ViewService viewservice;
+
+
 
 
     @GetMapping("/viewevents")

@@ -1,10 +1,11 @@
 package com.project.event_service.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
 
 
 @Data
@@ -16,6 +17,21 @@ public class Comment {
     private String msg;
     private Long EventId;
     private Long UserId;
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false) // Automatically set during creation, not updatable
+    private LocalDateTime createdAt;
+
+    public Long getUserId() {
+        return UserId;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 
 
     // public void setMsg(String m) {

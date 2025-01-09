@@ -18,6 +18,9 @@ public class ViewService {
 
     @Autowired
     private FormRepo formRepo;
+
+    @Autowired
+    private CommentService commentService;
    
 
     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -37,8 +40,10 @@ public class ViewService {
             LocalDate eventDate = LocalDate.parse(eventdate, dateFormatter);
             // LocalDateTime eventDateTime = LocalDateTime.of(eventDate, LocalDate.parse(eventTimeString).atStartOfDay().toLocalTime()); // Combine date and time if needed
 
+
             if(currentDate.isAfter(eventDate)){
                 System.out.println("Deleting date on "+eventDate);
+                 commentService.deletedeventcomments(event.getId());
                 deleteEvent(event.getId());
             }
         }
@@ -57,6 +62,7 @@ public class ViewService {
     }
 
     public void deleteEvent(long id) {
+        commentService.deletedeventcomments(id);
         formRepo.deleteById(id);
     }
 
@@ -85,6 +91,7 @@ public class ViewService {
     }
 
     public List<Event> getPublicEvents(){
+
         return formRepo.findByisPublicTrue();
     }
 
@@ -115,6 +122,7 @@ public class ViewService {
     }
 
     public List<Event> getEventsByClub(String name) {
+
         return formRepo.findByClub(name);
     }
 

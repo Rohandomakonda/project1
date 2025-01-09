@@ -27,6 +27,10 @@ public class Event {
     @Lob
     private byte[] image;
 
+    public long getId() {
+        return id;
+    }
+
     // public Long getId() {
     //     return id;
     // }

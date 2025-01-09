@@ -13,5 +13,7 @@ public interface CommentRepo extends JpaRepository<Comment, Integer> {
     // Write a query which returns the list of objects where EventId == postid
     @Query("SELECT c FROM Comment c WHERE c.EventId = :postid")
     List<Comment> findByEventId(@Param("postid") Long postid);
+
+    Comment findById(Long cid);
 }
 
