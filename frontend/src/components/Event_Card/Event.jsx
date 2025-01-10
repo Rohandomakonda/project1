@@ -16,6 +16,7 @@ import ClipPath from "../../assets/svg/ClipPath";
 import Typography from "@mui/material/Typography";
 import CommentIcon from "@mui/icons-material/Comment";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import { LoginSignout } from "../../pages/LoginPage/GoogleCalendarEvent";  
 import {
   benefitIcon1,
   benefitIcon2,
@@ -66,31 +67,32 @@ function Event(props) {
 
   const token = localStorage.getItem("authToken");
 
-
-
-const gapi = window.gapi;
+  const gapi = window.gapi;
   const google = window.google;
 
-  const CLIENT_ID = '916755134531-fvnijil1m46cfuu84fgfm9uionutvr66.apps.googleusercontent.com';
-  const API_KEY = 'AIzaSyDEE9dMPEqB-GZG-JFpUWznyLXAcePptOc';
-  const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
-  const SCOPES = 'https://www.googleapis.com/auth/calendar openid email profile';
+  const CLIENT_ID =
+    "916755134531-fvnijil1m46cfuu84fgfm9uionutvr66.apps.googleusercontent.com";
+  const API_KEY = "AIzaSyDEE9dMPEqB-GZG-JFpUWznyLXAcePptOc";
+  const DISCOVERY_DOC =
+    "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest";
+  const SCOPES =
+    "https://www.googleapis.com/auth/calendar openid email profile";
 
-  const accessToken = localStorage.getItem('access_token');
-  const expiresIn = localStorage.getItem('expires_in');
+  const accessToken = localStorage.getItem("access_token");
+  const expiresIn = localStorage.getItem("expires_in");
 
   let gapiInited = false,
     gisInited = false,
     tokenClient;
 
   useEffect(() => {
-      initializeGapiClient()
+    initializeGapiClient();
     gapiLoaded();
     gisLoaded();
   }, []);
 
   function gapiLoaded() {
-    gapi.load('client', initializeGapiClient);
+    gapi.load("client", initializeGapiClient);
   }
 
   async function initializeGapiClient() {
@@ -115,25 +117,22 @@ const gapi = window.gapi;
       scope: SCOPES,
       callback: (response) => {
         if (response.error) {
-          console.error('Error during authentication:', response);
+          console.error("Error during authentication:", response);
           return;
         }
 
         const { access_token, expires_in } = gapi.client.getToken();
-        console.log('Access Token:', access_token);
+        console.log("Access Token:", access_token);
 
         // Store tokens in localStorage
-        localStorage.setItem('access_token', access_token);
-        localStorage.setItem('expires_in', expires_in);
+        localStorage.setItem("access_token", access_token);
+        localStorage.setItem("expires_in", expires_in);
 
         // Optionally, you can trigger any additional logic (like fetching events) here
       },
     });
     gisInited = true;
   }
-
-
-
 
   useEffect(() => {
     // Fetch whether the event is liked by the user
@@ -260,37 +259,38 @@ const gapi = window.gapi;
   const handleComment = () => {
     navigate(`/comments/${props.id}`);
   };
-function subtractTimeBy530(time24) {
-  const [hours, minutes] = time24.split(':').map(Number); // Split time into hours and minutes
-  const totalMinutes = hours * 60 + minutes; // Convert to total minutes
-  const adjustedMinutes = (totalMinutes - 330 + 1440) % 1440; // Subtract 330 (5:30 in minutes), handle wrap-around
+  function subtractTimeBy530(time24) {
+    const [hours, minutes] = time24.split(":").map(Number); // Split time into hours and minutes
+    const totalMinutes = hours * 60 + minutes; // Convert to total minutes
+    const adjustedMinutes = (totalMinutes - 330 + 1440) % 1440; // Subtract 330 (5:30 in minutes), handle wrap-around
 
-  const newHours = Math.floor(adjustedMinutes / 60); // Convert back to hours
-  const newMinutes = adjustedMinutes % 60; // Get remaining minutes
+    const newHours = Math.floor(adjustedMinutes / 60); // Convert back to hours
+    const newMinutes = adjustedMinutes % 60; // Get remaining minutes
 
-  // Format as HH:MM
-  return `${newHours.toString().padStart(2, '0')}:${newMinutes.toString().padStart(2, '0')}`;
-}
+    // Format as HH:MM
+    return `${newHours.toString().padStart(2, "0")}:${newMinutes
+      .toString()
+      .padStart(2, "0")}`;
+  }
+  const date = props.date?.toString() || "";
+  const time = subtractTimeBy530(props.time);
+  function addManualEvent() {
 
-function addManualEvent() {
-    const date = props.date?.toString() || '';
-    const time = subtractTimeBy530(props.time);
-
-console.log(`${date}T${time}:00.000Z`);
+    console.log(`${date}T${time}:00.000Z`);
     const event = {
-      kind: 'calendar#event',
+      kind: "calendar#event",
       summary: `${props.title}`,
       location: `${props.venue}`,
       description: `${props.description}`,
       start: {
         dateTime: `${date}T${time}:00.000Z`,
-        timeZone: 'Asia/Kolkata',
+        timeZone: "Asia/Kolkata",
       },
       end: {
         dateTime: `${date}T${time}:00.000Z`,
-        timeZone: 'Asia/Kolkata',
+        timeZone: "Asia/Kolkata",
       },
-      attendees: [{ email: 'sampleemail@gmail.com' }],
+      attendees: [{ email: "sampleemail@gmail.com" }],
       reminders: {
         useDefault: true,
       },
@@ -298,46 +298,40 @@ console.log(`${date}T${time}:00.000Z`);
 
     gapi.client.calendar.events
       .insert({
-        calendarId: 'primary',
+        calendarId: "primary",
         resource: event,
       })
       .then((response) => {
-        console.log('Event created:', response);
-//         window.open(response.result.htmlLink);
-//alert("event marked on google calendar successfully");
+        console.log("Event created:", response);
+        //         window.open(response.result.htmlLink);
+        //alert("event marked on google calendar successfully");
       })
       .catch((error) => {
-        console.error('Error creating event:', error);
+        console.error("Error creating event:", error);
       });
   }
 
+  const handleGglCalendar = async (e) => {
+    e.stopPropagation();
+    //  if (!gisInited || !tokenClient) {
+    //     console.error("GIS not initialized or token client missing.");
+    //     return;
+    //   }
 
+    if (!accessToken || !expiresIn) {
+      // Prompt user for authentication
+      tokenClient.requestAccessToken({ prompt: "consent" });
+    } else {
+      // Use existing token
+      tokenClient.requestAccessToken({ prompt: "" });
+    }
 
-const handleGglCalendar = async (e) => {
+    // Add the event after ensuring the token
+    console.log(" goiung to add event");
 
-  e.stopPropagation();
- if (!gisInited || !tokenClient) {
-    console.error("GIS not initialized or token client missing.");
-    return;
-  }
-
-
-
-  if (!accessToken || !expiresIn) {
-    // Prompt user for authentication
-    tokenClient.requestAccessToken({ prompt: 'consent' });
-  } else {
-    // Use existing token
-    tokenClient.requestAccessToken({ prompt: '' });
-  }
-
-  // Add the event after ensuring the token
-  console.log(" goiung to add event");
-
-  addManualEvent();
-  console.log(" event  added ");
-};
-
+    addManualEvent();
+    console.log(" event  added ");
+  };
 
   return (
     <div
@@ -491,7 +485,7 @@ const handleGglCalendar = async (e) => {
                     </Fab>
                   </Box>
 
-                  <Box sx={{ position: "relative", textAlign: "center" }}>
+                  {/* <Box sx={{ position: "relative", textAlign: "center" }}>
                     <Fab
                       onClick={handleGglCalendar}
                       sx={{
@@ -501,7 +495,13 @@ const handleGglCalendar = async (e) => {
                     >
                       <CalendarTodayIcon />
                     </Fab>
-                  </Box>
+                  </Box> */}
+                     <LoginSignout
+                    title={props.title}
+                    venue={props.venue}
+                    date = {date}
+                    time = {time}
+    />
 
                   {/* Save Button with Save Count */}
                 </Box>

@@ -91,7 +91,7 @@ public class ViewService {
     }
 
     public List<Event> getPublicEvents(){
-
+            //List<Event> updated = getAllEvents();
         return formRepo.findByisPublicTrue();
     }
 
