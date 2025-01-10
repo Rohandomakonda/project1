@@ -13,6 +13,7 @@ import { GradientLight } from "../../components/design/Benefits";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import GoogleLoginButton from "../../components/GoogleLoginButton/GoogleLoginButton.jsx";
 import GoogleSignIn from "./GoogleLogin.jsx";
+import { LoginSignout } from "./GoogleCalendarEvent.jsx";
 
 const Login = () => {
 
@@ -71,8 +72,9 @@ alert("logging in");
     try {
       setLoading(true);
       // Send the token to your backend
-      console.log(response.credential);
-
+      console.log("token is "+response.credential);
+      
+   
       const backendResponse = await axios.post(
         "http://localhost:8765/api/auth/google",
         { token: response.credential }
@@ -91,12 +93,33 @@ alert("logging in");
       setSnackbarOpen(true);
       setLoading(false);
       setError(false);
-      setTimeout(() => navigate("/"), 1500);
+     // setTimeout(() => navigate("/"), 1500);
     } catch (error) {
       console.error("Google login failed:", error);
       setLoading(false);
       setSnackbarOpen(true);
       setError(true);
+    }
+
+    console.log("going to tokenClient");
+    tokenClient.callback = async (resp) => {
+      if (resp.error) {
+        throw (resp);
+      }
+      await listUpcomingEvents();
+      const { access_token, expires_in } = gapi.client.getToken();
+      console.log("got access_token "+access_token);
+      localStorage.setItem('access_token', access_token);
+      localStorage.setItem('expires_in', expires_in)
+    };
+
+    if (!(access_token && expires_in)) {
+      // Prompt the user to select a Google Account and ask for consent to share their data
+      // when establishing a new session.
+      tokenClient.requestAccessToken({ prompt: 'consent' });
+    } else {
+      // Skip display of account chooser and consent dialog for an existing session.
+      tokenClient.requestAccessToken({ prompt: '' });
     }
   };
 
@@ -107,7 +130,7 @@ alert("logging in");
 
   return (
 
-       <GoogleOAuthProvider clientId="916755134531-fvnijil1m46cfuu84fgfm9uionutvr66.apps.googleusercontent.com">
+      <GoogleOAuthProvider clientId="916755134531-fvnijil1m46cfuu84fgfm9uionutvr66.apps.googleusercontent.com">
       <div className="pt-[12rem] -mt-[5.25rem] flex items-center justify-center min-h-screen w-full">
         <div className="container relative w-full max-w-screen-lg flex justify-center items-center">
           <div className="relative z-1 text-center">
@@ -133,7 +156,7 @@ alert("logging in");
                       className="block relative p-0.5 bg-no-repeat bg-[length:100%_100%] w-full max-w-[50rem]" // Increased max-width to 50rem
                       onSubmit={handleSubmit}
                     >
-                      <TextFixeld
+                      <TextField
                         id="outlined-email"
                         className="MuiTextField-root pb-5"
                         label="Email"
@@ -237,6 +260,7 @@ alert("logging in");
                      handleGoogleSuccess={handleGoogleSuccess}
                      handleGoogleError={handleGoogleError}
                      />
+                     
                       <CustomizedSnackbars
                         open={snackbarOpen}
                         onClose={() => setSnackbarOpen(false)}

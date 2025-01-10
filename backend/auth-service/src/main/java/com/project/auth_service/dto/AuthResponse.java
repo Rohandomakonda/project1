@@ -22,6 +22,8 @@ public class AuthResponse {
     private Set<Role> roles;
     @JsonProperty("club")
     private String club;
+    
+    private String googleAccessToken;
 
     public AuthResponse(String accessToken, String refreshToken, Long id, String email, String name, Set<Role> roles,String club) {
         this.accessToken = accessToken;

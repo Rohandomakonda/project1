@@ -19,6 +19,7 @@ import Header from "./components/Header";
 import ButtonGradient from "./assets/svg/ButtonGradient";
 import "./index.css";
 import Comments from "./pages/comments/comments.jsx";
+import { LoginSignout } from "./pages/LoginPage/GoogleCalendarEvent.jsx";
 
 function App() {
   return (
@@ -39,6 +40,12 @@ function App() {
                 {" "}
                 <Form />
               </ProtectedRoute>
+            }
+          />
+           <Route
+            path="/calendar"
+            element={
+                <LoginSignout />
             }
           />
           <Route

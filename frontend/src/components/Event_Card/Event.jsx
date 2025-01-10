@@ -15,6 +15,7 @@ import { GradientLight } from "../design/Benefits";
 import ClipPath from "../../assets/svg/ClipPath";
 import Typography from "@mui/material/Typography";
 import CommentIcon from "@mui/icons-material/Comment";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import {
   benefitIcon1,
   benefitIcon2,
@@ -187,9 +188,70 @@ function Event(props) {
     navigate("/login");
   }
 
-  const handleComment = () =>{
+  const handleComment = () => {
     navigate(`/comments/${props.id}`);
-  }
+  };
+
+  const handleGglCalendar = async(e) => {
+    e.stopPropagation();
+    
+    const ggl_token = localStorage.getItem("googleAccessToken");
+    if (!ggl_token) {
+      alert("Please login with Google to add events to your calendar");
+      return;
+    }
+  
+    // Format the date and time properly
+    const startDateTime = new Date(`${props.date}T${props.time}`);
+    const endDateTime = new Date(startDateTime.getTime() + (60 * 60 * 1000));
+  
+    const event = {
+      summary: props.title,
+      location: props.venue,
+      description: props.description,
+      start: {
+        dateTime: startDateTime.toISOString(),
+        timeZone: "Asia/Kolkata",
+      },
+      end: {
+        dateTime: endDateTime.toISOString(),
+        timeZone: "Asia/Kolkata",
+      },
+      reminders: {
+        useDefault: false,
+        overrides: [
+          { method: "email", minutes: 24 * 60 },
+          { method: "popup", minutes: 20 },
+        ],
+      },
+    };
+  
+    try {
+      const response = await axios.post(
+        "https://www.googleapis.com/calendar/v3/calendars/primary/events",
+        event,
+        {
+          headers: {
+            Authorization: `Bearer ${ggl_token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      
+      if (response.data) {
+        alert("Event added to Google Calendar successfully!");
+      }
+    } catch (error) {
+      console.error("Error adding event to Google Calendar:", error);
+      if (error.response?.status === 401) {
+        alert("Your Google session has expired. Please login again.");
+        // Optionally redirect to login
+        navigate('/login');
+      } else {
+        alert("Failed to add event to Google Calendar. Please try again.");
+      }
+    }
+  };
 
   return (
     <div
@@ -340,6 +402,18 @@ function Event(props) {
                       }}
                     >
                       <CommentIcon />
+                    </Fab>
+                  </Box>
+
+                  <Box sx={{ position: "relative", textAlign: "center" }}>
+                    <Fab
+                      onClick={handleGglCalendar}
+                      sx={{
+                        position: "relative", // Ensure layering consistency
+                        zIndex: 1, // Lower than text
+                      }}
+                    >
+                      <CalendarTodayIcon />
                     </Fab>
                   </Box>
 
