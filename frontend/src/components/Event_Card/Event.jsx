@@ -66,6 +66,75 @@ function Event(props) {
 
   const token = localStorage.getItem("authToken");
 
+
+
+const gapi = window.gapi;
+  const google = window.google;
+
+  const CLIENT_ID = '916755134531-fvnijil1m46cfuu84fgfm9uionutvr66.apps.googleusercontent.com';
+  const API_KEY = 'AIzaSyDEE9dMPEqB-GZG-JFpUWznyLXAcePptOc';
+  const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
+  const SCOPES = 'https://www.googleapis.com/auth/calendar openid email profile';
+
+  const accessToken = localStorage.getItem('access_token');
+  const expiresIn = localStorage.getItem('expires_in');
+
+  let gapiInited = false,
+    gisInited = false,
+    tokenClient;
+
+  useEffect(() => {
+      initializeGapiClient()
+    gapiLoaded();
+    gisLoaded();
+  }, []);
+
+  function gapiLoaded() {
+    gapi.load('client', initializeGapiClient);
+  }
+
+  async function initializeGapiClient() {
+    await gapi.client.init({
+      apiKey: API_KEY,
+      discoveryDocs: [DISCOVERY_DOC],
+    });
+    gapiInited = true;
+
+    // Set the token if already present in localStorage
+    if (accessToken && expiresIn) {
+      gapi.client.setToken({
+        access_token: accessToken,
+        expires_in: parseInt(expiresIn, 10), // Ensure `expires_in` is an integer
+      });
+    }
+  }
+
+  function gisLoaded() {
+    tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: CLIENT_ID,
+      scope: SCOPES,
+      callback: (response) => {
+        if (response.error) {
+          console.error('Error during authentication:', response);
+          return;
+        }
+
+        const { access_token, expires_in } = gapi.client.getToken();
+        console.log('Access Token:', access_token);
+
+        // Store tokens in localStorage
+        localStorage.setItem('access_token', access_token);
+        localStorage.setItem('expires_in', expires_in);
+
+        // Optionally, you can trigger any additional logic (like fetching events) here
+      },
+    });
+    gisInited = true;
+  }
+
+
+
+
   useEffect(() => {
     // Fetch whether the event is liked by the user
     axios
@@ -191,67 +260,84 @@ function Event(props) {
   const handleComment = () => {
     navigate(`/comments/${props.id}`);
   };
+function subtractTimeBy530(time24) {
+  const [hours, minutes] = time24.split(':').map(Number); // Split time into hours and minutes
+  const totalMinutes = hours * 60 + minutes; // Convert to total minutes
+  const adjustedMinutes = (totalMinutes - 330 + 1440) % 1440; // Subtract 330 (5:30 in minutes), handle wrap-around
 
-  const handleGglCalendar = async(e) => {
-    e.stopPropagation();
-    
-    const ggl_token = localStorage.getItem("googleAccessToken");
-    if (!ggl_token) {
-      alert("Please login with Google to add events to your calendar");
-      return;
-    }
-  
-    // Format the date and time properly
-    const startDateTime = new Date(`${props.date}T${props.time}`);
-    const endDateTime = new Date(startDateTime.getTime() + (60 * 60 * 1000));
-  
+  const newHours = Math.floor(adjustedMinutes / 60); // Convert back to hours
+  const newMinutes = adjustedMinutes % 60; // Get remaining minutes
+
+  // Format as HH:MM
+  return `${newHours.toString().padStart(2, '0')}:${newMinutes.toString().padStart(2, '0')}`;
+}
+
+function addManualEvent() {
+    const date = props.date?.toString() || '';
+    const time = subtractTimeBy530(props.time);
+
+console.log(`${date}T${time}:00.000Z`);
     const event = {
-      summary: props.title,
-      location: props.venue,
-      description: props.description,
+      kind: 'calendar#event',
+      summary: `${props.title}`,
+      location: `${props.venue}`,
+      description: `${props.description}`,
       start: {
-        dateTime: startDateTime.toISOString(),
-        timeZone: "Asia/Kolkata",
+        dateTime: `${date}T${time}:00.000Z`,
+        timeZone: 'Asia/Kolkata',
       },
       end: {
-        dateTime: endDateTime.toISOString(),
-        timeZone: "Asia/Kolkata",
+        dateTime: `${date}T${time}:00.000Z`,
+        timeZone: 'Asia/Kolkata',
       },
+      attendees: [{ email: 'sampleemail@gmail.com' }],
       reminders: {
-        useDefault: false,
-        overrides: [
-          { method: "email", minutes: 24 * 60 },
-          { method: "popup", minutes: 20 },
-        ],
+        useDefault: true,
       },
     };
-  
-    try {
-      const response = await axios.post(
-        "https://www.googleapis.com/calendar/v3/calendars/primary/events",
-        event,
-        {
-          headers: {
-            Authorization: `Bearer ${ggl_token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      
-      if (response.data) {
-        alert("Event added to Google Calendar successfully!");
-      }
-    } catch (error) {
-      console.error("Error adding event to Google Calendar:", error);
-      if (error.response?.status === 401) {
-        alert("Your Google session has expired. Please login again.");
-        // Optionally redirect to login
-        navigate('/login');
-      } else {
-        alert("Failed to add event to Google Calendar. Please try again.");
-      }
-    }
-  };
+
+    gapi.client.calendar.events
+      .insert({
+        calendarId: 'primary',
+        resource: event,
+      })
+      .then((response) => {
+        console.log('Event created:', response);
+//         window.open(response.result.htmlLink);
+//alert("event marked on google calendar successfully");
+      })
+      .catch((error) => {
+        console.error('Error creating event:', error);
+      });
+  }
+
+
+
+const handleGglCalendar = async (e) => {
+
+  e.stopPropagation();
+ if (!gisInited || !tokenClient) {
+    console.error("GIS not initialized or token client missing.");
+    return;
+  }
+
+
+
+  if (!accessToken || !expiresIn) {
+    // Prompt user for authentication
+    tokenClient.requestAccessToken({ prompt: 'consent' });
+  } else {
+    // Use existing token
+    tokenClient.requestAccessToken({ prompt: '' });
+  }
+
+  // Add the event after ensuring the token
+  console.log(" goiung to add event");
+
+  addManualEvent();
+  console.log(" event  added ");
+};
+
 
   return (
     <div

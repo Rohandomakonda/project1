@@ -1,4 +1,4 @@
-package com.project.profile_service.feign;
+package com.project.event_service.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;

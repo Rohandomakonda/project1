@@ -20,8 +20,10 @@
 // export default GoogleSignIn;
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const GoogleSignIn = () => {
+    const navigate=useNavigate();
   const handleGoogleSuccess = async (response) => {
     try {
       //setLoading(true);
@@ -46,11 +48,11 @@ const GoogleSignIn = () => {
       localStorage.setItem("googleAccessToken", googleAccessToken); // Store the calendar-enabled access token
       localStorage.setItem("userId", id);
   
-     // setSnackbarOpen(true);
-      //setLoading(false);
-      //setError(false);
+//      setSnackbarOpen(true);
+//       setLoading(false);
+//       setError(false);
       alert("success")
-      //setTimeout(() => navigate("/"), 1500);
+    navigate("/");
     } catch (error) {
       console.error("Google login failed:", error);
       alert("failed")

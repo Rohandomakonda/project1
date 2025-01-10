@@ -1,6 +1,7 @@
 package com.project.event_service.controller;
 
-import com.project.profile_service.feign.UserContext;
+
+import com.project.event_service.feign.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

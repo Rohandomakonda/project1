@@ -9,7 +9,7 @@
         <module name="api-gateway" />
         <module name="service-registry" />
       </profile>
-      <profile name="Annotation profile for notification-service" enabled="true">
+      <profile name="Annotation profile for auth-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -18,8 +18,8 @@
         </processorPath>
         <module name="clubs" />
         <module name="add_recruitments" />
-        <module name="profile-service" />
         <module name="auth-service" />
+        <module name="profile-service" />
         <module name="event-service" />
         <module name="notification-service" />
       </profile>

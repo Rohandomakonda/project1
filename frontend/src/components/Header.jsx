@@ -8,7 +8,6 @@ import Avatar from '@mui/material/Avatar';
 import {HamburgerMenu} from "./design/Header";
 import {  useNavigate } from 'react-router-dom';
 
-
 const Header = () => {
   const [openNavigation,setOpenNavigation]=useState(false);
   const { pathname, hash } = useLocation();

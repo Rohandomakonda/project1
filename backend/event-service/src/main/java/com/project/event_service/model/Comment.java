@@ -33,6 +33,18 @@ public class Comment {
         return createdAt;
     }
 
+    public void setMsg(String m) {
+        this.msg=m;
+    }
+
+    public void setUserId(long uid) {
+        this.UserId=uid;
+    }
+
+    public void setEventId(long eid) {
+        this.EventId=eid;
+    }
+
 
     // public void setMsg(String m) {
     //     this.msg=m;

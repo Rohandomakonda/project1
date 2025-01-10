@@ -59,7 +59,7 @@ const SignUp = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8080/api/auth/register", formData);
+      const response = await axios.post("http://localhost:8765/api/auth/register", formData);
      // alert("Registration successful! Check your email for the OTP.");
       setSnackbarOpen(true); // Show success Snackbar
       setLoading(false);
@@ -82,7 +82,7 @@ const SignUp = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const response = await axios.post("http://localhost:8080/api/auth/verify", {
+      const response = await axios.post("http://localhost:8765/api/auth/verify", {
         email: formData.email, // Use the registered email
         otp, // OTP entered by the user
       });
