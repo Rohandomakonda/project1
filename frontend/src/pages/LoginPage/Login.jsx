@@ -89,7 +89,6 @@ alert("logging in");
       localStorage.setItem("club", club);
       localStorage.setItem("googleAccessToken", response.credential); // Store Google token for Calendar API
       localStorage.setItem("userId",id);
-
       setSnackbarOpen(true);
       setLoading(false);
       setError(false);

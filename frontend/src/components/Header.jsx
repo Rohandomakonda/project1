@@ -75,8 +75,7 @@ const token = localStorage.getItem('authToken');
              },
            }
          );
-         localStorage.removeItem('authToken');
-         localStorage.removeItem('roles'); // Clear roles on logout
+         localStorage.clear();
          setIsAuthenticated(false);
          setRoles([]);
          setSnackbarOpen(true); // Show success Snackbar
