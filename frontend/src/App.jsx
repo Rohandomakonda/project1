@@ -20,8 +20,10 @@ import ButtonGradient from "./assets/svg/ButtonGradient";
 import "./index.css";
 import Comments from "./pages/comments/comments.jsx";
 import { LoginSignout } from "./pages/LoginPage/GoogleCalendarEvent.jsx";
-
+import {useState} from "react";
+import DashBoard from "./DashBoard.jsx";
 function App() {
+   
   return (
     <Router>
       <div className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden">
@@ -42,6 +44,16 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                {" "}
+                <DashBoard />
+              </ProtectedRoute>
+            }
+          />
+
            <Route
             path="/calendar"
             element={
