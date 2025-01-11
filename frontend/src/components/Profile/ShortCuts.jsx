@@ -3,7 +3,7 @@ import { shortcutLink } from "../../responsive-dashboard-with-dark-mode/constant
 import { IoIosAdd, IoIosArrowForward } from "react-icons/io";
 const ShortCuts=()=>{
     
-    return <div className="flex gap-4 flex-col  bg-white rounded-lg p-4 dark:bg-gray-600">
+    return <div className="flex gap-4 flex-col  bg-white rounded-lg p-4 dark:bg-gray-700">
        <Title>ShortCuts</Title>
        {shortcutLink.map((list,index)=>{
         return <div key={index} className="flex justify-between items-center cursor-pointer rounded-sm"> 

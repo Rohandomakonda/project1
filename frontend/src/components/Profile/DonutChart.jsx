@@ -3,7 +3,7 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import { desktopOS, valueFormatter } from './webUsageStats.js';
 
  const DonutChart=({darkMode})=>{
-    return <div className="py-6 bg-white rounded-lg p-5 flex dark:bg-gray-600 ">
+    return <div className="py-6 bg-white rounded-lg p-5 flex dark:bg-gray-700 ">
            <PieChart 
       series={[
         {
