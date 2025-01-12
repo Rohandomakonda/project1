@@ -4,6 +4,7 @@ import com.project.profile_service.dto.Event;
 import com.project.profile_service.feign.UserContext;
 import com.project.profile_service.service.FavoriteEventService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,5 +48,13 @@ public class FavouriteController {
         Long userid = usercontext.getUserId(userId).getBody();
         favoriteEventService.removeFavorite(eventId,userid);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/isliked/{eventId}")
+    public ResponseEntity<Boolean> getisLiked(@PathVariable("eventId") Long eventId, @RequestHeader("X-User-ID") String userId){
+        Long userid = usercontext.getUserId(userId).getBody();
+        boolean isLiked = favoriteEventService.isLiked(eventId,userid);
+
+        return new ResponseEntity<>(isLiked,HttpStatus.OK);
     }
 }

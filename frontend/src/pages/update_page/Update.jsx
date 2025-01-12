@@ -63,12 +63,14 @@ function Update() {
   // Fetch event details on component mount
   useEffect(() => {
     const token = localStorage.getItem("authToken");
+    console.log(token);
     axios
-      .get(`http://localhost:8080/getEvent/${id}`, {
+      .get(`http://localhost:8765/api/events/getEvent/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
         const event = response.data;
+        console.log(event.description);
         setDetails({
           title: event.title || "",
           description: event.description || "",
@@ -79,11 +81,17 @@ function Update() {
           club: event.club || "",
           isPublic: event.isPublic !== undefined ? event.isPublic : false, // Ensure default boolean
         });
+        
       })
       .catch((error) => {
         console.error("Error fetching event details:", error);
       });
   }, [id]);
+
+    // Log details.description when details state changes
+    useEffect(() => {
+      console.log("Updated Details Description:", details.description);
+    }, [details]);
 
   // Handle form submission
   const handleSubmit = (e) => {
@@ -93,7 +101,7 @@ function Update() {
     const token = localStorage.getItem("authToken");
 
     axios
-      .put(`http://localhost:8080/updateEvent/${id}`, details, {
+      .put(`http://localhost:8765/api/events/updateEvent/${id}`, details, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((resp) => {
@@ -171,7 +179,7 @@ function Update() {
                           name="description"
                           multiline
                           rows={4} // Set the number of rows for the text area
-
+                          value = {details.description}
                           onChange={handleChange}
                           required
                           variant="outlined"
@@ -233,7 +241,7 @@ function Update() {
                            name="venueDescription"
                            required
                            variant="outlined"
-
+                           value = {details.venueDescription}
                            onChange={handleChange}
                            sx={{
                              "& .MuiOutlinedInput-root": {

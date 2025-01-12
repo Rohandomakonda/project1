@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FavoriteEventService {
@@ -72,6 +73,19 @@ public class FavoriteEventService {
     public void removeFavorite(Long eventId,Long userId) {
         eventservice.declikes(eventId);
         favoriteEventRepository.deleteByUserIdAndEventId(userId, eventId);
+    }
+
+    public boolean isLiked(Long eventId,Long userId) {
+        boolean liked=false;
+        List<Long> listofeventids = favoriteEventRepository.findByUserId(userId);
+
+        if(listofeventids == null){
+            return false;
+        }
+
+        return liked;
+
+
     }
 
 }

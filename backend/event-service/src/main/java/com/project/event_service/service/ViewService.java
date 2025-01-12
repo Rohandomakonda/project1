@@ -33,20 +33,20 @@ public class ViewService {
         List<Event> all_events =  formRepo.findAll();
         LocalDate currentDate = LocalDate.now();
 
-        for(Event event : all_events){
-            String eventdate =  event.getDate();
-           // String eventTime = event.getTime();
+        // for(Event event : all_events){
+        //     String eventdate =  event.getDate();
+        //    // String eventTime = event.getTime();
 
-            LocalDate eventDate = LocalDate.parse(eventdate, dateFormatter);
-            // LocalDateTime eventDateTime = LocalDateTime.of(eventDate, LocalDate.parse(eventTimeString).atStartOfDay().toLocalTime()); // Combine date and time if needed
+        //     LocalDate eventDate = LocalDate.parse(eventdate, dateFormatter);
+        //     // LocalDateTime eventDateTime = LocalDateTime.of(eventDate, LocalDate.parse(eventTimeString).atStartOfDay().toLocalTime()); // Combine date and time if needed
 
 
-            if(currentDate.isAfter(eventDate)){
-                System.out.println("Deleting date on "+eventDate);
-                 commentService.deletedeventcomments(event.getId());
-                deleteEvent(event.getId());
-            }
-        }
+        //     if(currentDate.isAfter(eventDate)){
+        //         System.out.println("Deleting date on "+eventDate);
+        //          commentService.deletedeventcomments(event.getId());
+        //         deleteEvent(event.getId());
+        //     }
+        // }
 
         return formRepo.findAll();
 

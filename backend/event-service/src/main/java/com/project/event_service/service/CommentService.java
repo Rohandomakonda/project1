@@ -4,7 +4,7 @@ package com.project.event_service.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.project.event_service.dto.CommentResponse;
-import com.project.event_service.feign.AuthClient;
+import com.project.event_service.feign.UserContext;
 import com.project.event_service.model.Comment;
 import com.project.event_service.repo.CommentRepo;
 
@@ -19,7 +19,7 @@ public class CommentService {
     private CommentRepo commentRepo;
 
     @Autowired
-    private AuthClient cta;
+    private UserContext cta;
 
     public List<CommentResponse> getcomments(long postid){
         List<Comment> m1 = commentRepo.findByEventId(postid);

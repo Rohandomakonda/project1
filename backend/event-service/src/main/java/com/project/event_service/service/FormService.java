@@ -5,9 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.project.event_service.dto.NotificationDTO;
+import com.project.event_service.dto.User;
+import com.project.event_service.feign.NotificationClient;
+import com.project.event_service.feign.UserContext;
 import com.project.event_service.model.Event;
 import com.project.event_service.repo.FormRepo;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -20,6 +26,12 @@ public class FormService {
     @Autowired
     private KafkaTemplate<String,Event> kafkaTemplate;
 
+    
+    @Autowired
+    private NotificationClient notificationService;
+
+    @Autowired
+    private UserContext userContext;
 
 
     @Transactional
@@ -50,6 +62,13 @@ public class FormService {
         message.setClub(event.getClub());
 
         //kafkaTemplate.send("new-events", message);
+        // Notify all relevant users through notification service
+        List<User> userIds = userContext.getAllUsers();
+        for (User users : userIds) {
+            NotificationDTO dto = new NotificationDTO(event.getId(), users.getId(), false);
+            notificationService.createEventNotification(dto);
+        }
+
 
         System.out.println("sent to kafka");
 

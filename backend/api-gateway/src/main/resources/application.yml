@@ -118,6 +118,14 @@ spring:
             - AuthenticationFilter
             - DedupeResponseHeader=Access-Control-Allow-Origin
 
+        - id: notification-serivce
+          uri: lb://notification-service
+          predicates:
+                   - Path=/api/notifications/**
+          filters:
+            - AuthenticationFilter
+            - DedupeResponseHeader=Access-Control-Allow-Origin        
+
 
 eureka:
   instance:

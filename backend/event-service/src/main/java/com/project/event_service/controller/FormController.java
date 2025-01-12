@@ -23,6 +23,7 @@ public class FormController {
     @Autowired
     private FormService service;
 
+
     @PostMapping(value="/addevents",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Event> addEvent(
 
@@ -39,8 +40,6 @@ public class FormController {
         // Save event and image
         System.out.println("adding");
         Event event = service.saveEvent(title, description, date, time,venueDescription, venue, club, isPublic, image);
-
-
 
         return ResponseEntity.ok(event);
     }

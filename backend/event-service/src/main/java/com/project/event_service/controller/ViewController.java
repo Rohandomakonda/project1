@@ -92,7 +92,7 @@ public class ViewController {
         viewservice.updateEvent(id,event);
     }
 
-    @GetMapping("api/events/getById/{id}")
+    @GetMapping("getById/{id}")
     public ResponseEntity<Event> getById(@PathVariable Long id){
         Event event = viewservice.getEventById(id);
         return ResponseEntity.ok(event);

@@ -137,7 +137,7 @@ function Event(props) {
   useEffect(() => {
     // Fetch whether the event is liked by the user
     axios
-      .get(`http://localhost:8080/isliked/${props.id}/${userId}`, {
+      .get(`http://localhost:8765/api/profile/isliked/${props.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -149,7 +149,7 @@ function Event(props) {
 
     // Fetch whether the event is saved/bookmarked by the user
     axios
-      .get(`http://localhost:8080/issaved`, {
+      .get(`http://localhost:8765/api/profile/issaved`, {
         headers: { Authorization: `Bearer ${token}` },
         params: { userId: userId, eventTitle: props.title },
       })
@@ -166,7 +166,7 @@ function Event(props) {
     e.stopPropagation();
     if (isLiked) {
       axios
-        .delete(`http://localhost:8080/dislike/${props.id}/${userId}`, {
+        .delete(`http://localhost:8765/api/profile/favourites/${props.id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -181,7 +181,7 @@ function Event(props) {
         });
     } else {
       axios
-        .post(`http://localhost:8080/like/${props.id}/${userId}`, null, {
+        .post(`http://localhost:8765/api/profile/favourites/${props.id}`, null, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then(() => {

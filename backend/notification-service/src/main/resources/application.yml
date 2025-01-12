@@ -4,13 +4,10 @@ server:
 spring:
   application:
     name: notification-service
-
   cloud:
     loadbalancer:
         ribbon:
           enabled: false
-
-
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
@@ -28,6 +25,16 @@ spring:
           auth: true
           starttls:
             enable: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/notification_db
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
 eureka:
   client:
