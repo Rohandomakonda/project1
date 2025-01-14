@@ -6,8 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class NotificationDTO {
-    private Long eventId;
-    private Long userId;
-    private boolean isRead;
+   String msg;
 }
 

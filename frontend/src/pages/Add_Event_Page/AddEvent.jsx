@@ -85,7 +85,7 @@ import usePost from "../../customhooks/usePost";
       .then((response) => {
         alert("Event added successfully!");
         console.log("Response Data:", response.data);
-        navigate("/viewevents"); // Redirect to events page
+        navigate("/"); // Redirect to events page
       })
       .catch((error) => {
         console.error("Error adding event:", error);

@@ -1,98 +1,49 @@
-import { Buffer } from "buffer";
-// Polyfills for browser environment
-if (typeof window !== "undefined") {
-  // @ts-ignore
-  window.global = window
-  // @ts-ignore
-  window.process = {
-    env: { DEBUG: undefined }
-  }
-  // @ts-ignore
-  window.Buffer = window.Buffer || Buffer;
-}
+import { useEffect, useState } from 'react';
+import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
+import { unstable_useEnhancedEffect } from '@mui/material';
 
-import { Client } from "@stomp/stompjs"
-import { useEffect, useRef, useState } from "react"
-import SockJS from "sockjs-client"
-
-export const useWebSocket = ({
-  brokerURL,
-  onConnect,
-  onDisconnect,
-  onError
-}) => {
-  const client = useRef(null)
-  const [isConnected, setIsConnected] = useState(false)
+function useWebSocket() {
+  const [unseenEventsCount, setUnseenEventsCount] = useState(0);
 
   useEffect(() => {
-   
-    const ws = new SockJS(brokerURL)
-    client.current = new Client({
-      webSocketFactory: () => ws,
-      reconnectDelay: 5000,
-      heartbeatIncoming: 4000,
-      heartbeatOutgoing: 4000
-    })
-    
-    client.current.onConnect = () => {
-      setIsConnected(true)
-      onConnect?.()
-    }
+    // Create SockJS connection
+    const socket = new SockJS("http://localhost:8086/ws");
 
-    client.current.onDisconnect = () => {
-      setIsConnected(false)
-      onDisconnect?.()
-    }
+    // Create STOMP client and connect
+    const stompClient = new Client({
+      webSocketFactory: () => socket, // Use SockJS connection as the WebSocket connection
+      reconnectDelay: 5000, // Reconnect after 5 seconds if disconnected
+      onConnect: () => {
+        console.log("Connected to WebSocket");
+          // Subscribe to the notifications topic for this user
+          stompClient.subscribe(`/topic/notifications`, (message) => {
+            console.log("Broadcast notification received:", message.body);
+            setUnseenEventsCount((prev) => prev + 1); // Increment unseen events count
+            localStorage.setItem('unseen',unseenEventsCount);
+          });  
+      },
+      onDisconnect: () => {
+        console.log("Disconnected from WebSocket");
+      },
+      onStompError: (error) => {
+        console.error("WebSocket error:", error);
+      },
+    });
 
-    client.current.onStompError = frame => {
-      onError?.(new Error(frame.headers["message"]))
-    }
-
-    client.current.onWebSocketError = event => {
-      onError?.(new Error("WebSocket error occurred"))
-    }
-
-    client.current.activate()
-   
+    stompClient.activate(); // Activate the STOMP client to start receiving messages
+    // Cleanup on component unmount
     return () => {
-      if (client.current) {
-        client.current.deactivate()
-      }
-    }
-  }, [brokerURL, onConnect, onDisconnect, onError])
+      stompClient.deactivate();
+    };
+  }, []); 
 
-  const subscribe = (destination, callback) => {
+  useEffect(()=>{
+      console.log("unseenEventsCount is "+unseenEventsCount);
+      localStorage.setItem('unseen',unseenEventsCount);
+  },[unseenEventsCount])
 
-    if (!client.current || !isConnected) {
-      console.warn("WebSocket is not connected")
-      return
-    }
-
-    return client.current.subscribe(destination, message => {
-      try {
-        const payload = JSON.parse(message.body)
-        callback(payload)
-      } catch (error) {
-        console.error("Error parsing message:", error)
-      }
-    })
-  }
-
-  const send = (destination, body) => {
-    if (!client.current || !isConnected) {
-      console.warn("WebSocket is not connected")
-      return
-    }
-
-    client.current.publish({
-      destination: `/app${destination}`,
-      body: JSON.stringify(body)
-    })
-  }
-
-  return {
-    isConnected,
-    subscribe,
-    send
-  }
+  return { unseenEventsCount };
 }
+
+export default useWebSocket;

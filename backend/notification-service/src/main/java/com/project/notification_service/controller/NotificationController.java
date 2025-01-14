@@ -1,21 +1,16 @@
 package com.project.notification_service.controller;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+//import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.notification_service.dto.EventNotificationDTO;
-import com.project.notification_service.dto.NotificationMessage;
-import com.project.notification_service.model.EventNotification;
-import com.project.notification_service.service.EventNotificationListener;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import com.project.notification_service.dto.NotificationRequest;
+// import com.project.notification_service.model.EventNotification;
+//import com.project.notification_service.service.EventNotificationListener;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -23,34 +18,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RestController
 @RequestMapping("/api/notifications")
 public class NotificationController {
-    @Autowired
-    private SimpMessagingTemplate messagingTemplate;
     
-    @Autowired
-    private EventNotificationListener notificationService;
-    
-    @PostMapping("/event")
-    public ResponseEntity<?> createEventNotification(@RequestBody EventNotificationDTO dto) {
-        EventNotification notification = notificationService.createNotification(dto);
-        
-        // Send WebSocket notification to specific user
-        messagingTemplate.convertAndSendToUser(
-            dto.getUserId().toString(),
-            "/queue/notifications",     
-            new NotificationMessage(notification.getId(),notification.getEventId(),notification.getUserId(),"new event added")
-        );
-        
-        return ResponseEntity.ok(notification);
+    private final SimpMessagingTemplate messagingTemplate;
+
+    NotificationController(SimpMessagingTemplate messagingTemplate){
+        this.messagingTemplate = messagingTemplate;
     }
+    
+    //@Autowired
+   // private EventNotificationListener notificationService;
+    
+   @PostMapping("/event")
+   public ResponseEntity<String> createEventNotification() {
+       System.out.println("going to notify");
+       messagingTemplate.convertAndSend("/topic/notifications", "new event added");
+       return ResponseEntity.ok("sent to ws");
+   }
+
+   // topic                queue
+   // notifications
+
+   // event -> /topic/notification <-> frontend
     
     // @GetMapping("/unread/{userId}")
     // public ResponseEntity<List<EventNotification>> getUnreadNotifications(@PathVariable Long userId) {
     //     return ResponseEntity.ok(notificationService.getUnreadNotifications(userId));
     // }
     
-    @PutMapping("/markAsRead/{notificationId}")
-    public ResponseEntity<?> markAsRead(@PathVariable Long notificationId) {
-        notificationService.markAsRead(notificationId);
-        return ResponseEntity.ok().build();
-    }
+    // @PutMapping("/markAsRead/{notificationId}")
+    // public ResponseEntity<?> markAsRead(@PathVariable Long notificationId) {
+    //     notificationService.markAsRead(notificationId);
+    //     return ResponseEntity.ok().build();
+    // }
 }

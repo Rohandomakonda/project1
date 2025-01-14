@@ -1,6 +1,5 @@
 import "./init.jsx";
 import { brainwave } from "../assets";
-import { navigation } from "../constants";
 import { useLocation } from "react-router-dom";
 import { useState,useEffect } from "react"; // Correct import for useState
 import Button from "./Button";
@@ -9,9 +8,7 @@ import Avatar from "@mui/material/Avatar";
 import { HamburgerMenu } from "./design/Header";
 import { useNavigate } from "react-router-dom";
 import Badge from "@mui/material/Badge";
-import { Client } from '@stomp/stompjs';  // Correct import
-import SockJS from "sockjs-client";
-import { useWebSocket } from "../customhooks/useWebSocket";
+import useWebSocket from "../customhooks/useWebSocket.jsx";
 import axios from "axios";
 
 
@@ -25,46 +22,10 @@ const Header = () => {
     return storedRoles ? JSON.parse(storedRoles) : [];
   });
   const token = localStorage.getItem("authToken");
-  const name = localStorage.getItem("name");
   const navigate = useNavigate();
-  const [unseenEventsCount, setUnseenEventsCount] = useState(0);
-  const [stompClient, setStompClient] = useState(null);
-  const userId = localStorage.getItem("userId");
-
-  const { isConnected, subscribe, send } = useWebSocket({
-    brokerURL: "http://localhost:8765/ws-notifications",
-    onConnect: () => {
-      console.log("Connected to WebSocket")
-      if (userId) {
-        // Subscribe using /queue prefix as configured in backend
-        subscribe(`/queue/notifications/${userId}`, notification => {
-          console.log("New notification received:", notification)
-          setUnseenEventsCount(prev => prev + 1)
-        })
-      }
-    },
-    onDisconnect: () => {
-      console.log("Disconnected from WebSocket")
-    },
-    onError: error => {
-      console.error("WebSocket error:", error)
-    }
-  })
-
-  useEffect(() => {
-    if (token && userId) {
-      axios
-        .get(`http://localhost:8765/api/notifications/unseen/${userId}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
-        .then(response => {
-          setUnseenEventsCount(response.data.length)
-        })
-        .catch(error => {
-          console.error("Error fetching unseen events:", error)
-        })
-    }
-  }, [token, userId])
+  const { unseenEventsCount } = useWebSocket();
+  const [unseen,setUnseen] = useState(localStorage.getItem('unseen'));
+  
 
 
   const toggleNavigation = () => {
@@ -146,9 +107,16 @@ const Header = () => {
   }
 
   function handleViewEvents() {
+    localStorage.setItem('unseen',0);
+    setUnseen(0);
     navigate("/viewevents");
-    setUnseenEventsCount(0);
   }
+
+  useEffect(()=>{
+    console.log("unseen changed to "+ unseen);
+    setUnseen(localStorage.getItem('unseen'));
+  },[unseen])
+
 
   return (
     <div
@@ -191,9 +159,8 @@ const Header = () => {
             </button>
             {token && (
               <Badge
-                badgeContent={unseenEventsCount}
                 color="error"
-                variant={unseenEventsCount > 0 ? "dot" : undefined}
+                badgeContent={unseen>0 ? unseen : null}
               >
                 <button
                   onClick={handleViewEvents}
@@ -287,6 +254,20 @@ const Header = () => {
                     }  lg:leading-5 lg:hover:text-n-1 xl:px-12 `}
                 >
                   Add Recruitment
+                </button>
+              )}
+              {token &&
+              (roles.includes("CLUB_SEC")) && (
+                <button
+                  onClick={() => navigate("/dashboard")}
+                  className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1
+                    px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${
+                      "/recruitments" === pathname || "/recruitment" === hash
+                        ? "z-2 lg:text-n-1"
+                        : "lg:text-n-1/50"
+                    }  lg:leading-5 lg:hover:text-n-1 xl:px-12 `}
+                >
+                  DashBoard
                 </button>
               )}
             <HamburgerMenu />

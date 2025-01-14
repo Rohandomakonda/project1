@@ -36,6 +36,7 @@ public class FormService {
 
     @Transactional
     public Event saveEvent(String title, String description, String date, String time, String venueDescription, String venue, String club, boolean isPublic, MultipartFile image) throws IOException {
+        System.out.println("saveEvent ");
         Event event = new Event();
         event.setTitle(title);
         event.setDescription(description);
@@ -45,11 +46,12 @@ public class FormService {
         event.setClub(club);
         event.setVenueDescription(venueDescription);
         event.setPublic(isPublic);
-
-         //Save the image as bytes in the database
+        System.out.println("image left ");
+        //Save the image as bytes in the database
         if (!image.isEmpty()) {
             event.setImage(image.getBytes());
         }
+        System.out.println("image also done ");
 
         // Send Kafka message for new event
         Event message = new Event();
@@ -61,14 +63,15 @@ public class FormService {
         message.setVenue(event.getVenue());
         message.setClub(event.getClub());
 
-        //kafkaTemplate.send("new-events", message);
-        // Notify all relevant users through notification service
-        List<User> userIds = userContext.getAllUsers();
-        for (User users : userIds) {
-            NotificationDTO dto = new NotificationDTO(event.getId(), users.getId(), false);
-            notificationService.createEventNotification(dto);
-        }
+        System.out.println("messge ready ");
 
+        //kafkaTemplate.send("new-events", message);
+
+        // Notify all relevant users through notification service
+        System.out.println("sending to notification ws");
+        String res = notificationService.createEventNotification().getBody();
+
+        System.out.println(res);
 
         System.out.println("sent to kafka");
 

@@ -24,7 +24,7 @@ public class FormController {
     private FormService service;
 
 
-    @PostMapping(value="/addevents",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value="/addevents",consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Event> addEvent(
 
             @RequestParam("title") String title,
