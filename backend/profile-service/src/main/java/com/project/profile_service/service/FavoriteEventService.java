@@ -39,8 +39,8 @@ public class FavoriteEventService {
             List<Event> eventsList = new ArrayList<>();
 
             for(Long i : listofeventids){
-                System.out.println("getting events by "+i);
                 Event e = eventInterface.getById(i).getBody();
+                if(e==null) continue;
                 eventsList.add(e);
             }
 
@@ -64,7 +64,7 @@ public class FavoriteEventService {
         FavoriteEvent favorite = new FavoriteEvent();
         favorite.setUserId(userId);
         favorite.setEventId(eventId);
-       eventservice.inclikes(eventId);
+        eventservice.inclikes(eventId);
         favoriteEventRepository.save(favorite);
     }
 
@@ -83,9 +83,20 @@ public class FavoriteEventService {
             return false;
         }
 
+        for(Long eventids : listofeventids){
+                if(eventids==eventId){
+                    return true;
+                }
+        }
+
         return liked;
 
 
+    }
+
+
+    public void removeFavoriteForAll(Long eventId) {
+       favoriteEventRepository.deleteByEventId(eventId);
     }
 
 }

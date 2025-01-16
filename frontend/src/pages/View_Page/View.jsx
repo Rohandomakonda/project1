@@ -91,7 +91,7 @@ const View = () => {
     const token = localStorage.getItem("authToken");
 
     axios
-      .delete(`http://localhost:8080/event/${id}`, {
+      .delete(`http://localhost:8765/api/events/event/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {

@@ -5,29 +5,35 @@ import SearchIcon from "@mui/icons-material/Search";
 import Skeleton from "@mui/material/Skeleton"; // Import MUI Skeleton
 import Grid from "@mui/material/Grid"; // Import MUI Grid
 import Box from "@mui/material/Box"; // Use MUI Box for consistent layout
-import TextField from '@mui/material/TextField';
+import TextField from "@mui/material/TextField";
 import { curve, heroBackground, robot } from "../../assets";
 import { useNavigate } from "react-router-dom";
 import Section from "../../components/Section.jsx";
-import Button from"../../components/Button";
-import { BackgroundCircles, BottomLine, Gradient } from "../../components/design/Hero";
+import Button from "../../components/Button";
+import {
+  BackgroundCircles,
+  BottomLine,
+  Gradient,
+} from "../../components/design/Hero";
 import { heroIcons } from "../../constants";
 import { ScrollParallax } from "react-just-parallax";
 import { useRef } from "react";
 import { GradientLight } from "../../components/design/Benefits";
 import ClipPath from "../../assets/svg/ClipPath";
 import cardImage from "../../assets/benefits/card-6.svg";
-
+import CustomizedSnackbars from "../../components/SnackBarCustom.jsx";
 
 const Favourites = () => {
   const [events, setEvents] = useState([]); // All events
   const [loading, setLoading] = useState(false); // Loading state
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [error, setError] = useState(false);
   const [searchTerm, setSearchTerm] = useState(""); // Search term
   const [roles, setRoles] = useState([]); // User roles
 
   const userId = localStorage.getItem("userId");
-  const club = localStorage.getItem("club");
-   const parallaxRef=useRef(null);
+  //const club = localStorage.getItem("club");
+  const parallaxRef = useRef(null);
 
   useEffect(() => {
     setLoading(true);
@@ -41,9 +47,8 @@ const Favourites = () => {
     }
 
     axios
-      .get("http://localhost:8080/getalllikedevents", {
+      .get("http://localhost:8765/api/profile/getFavouritesByUser", {
         headers: { Authorization: `Bearer ${token}` },
-        params: { userId },
       })
       .then((response) => {
         console.log("response data is " + response.data);
@@ -64,20 +69,28 @@ const Favourites = () => {
   }, [userId]);
 
   const handleDislike = (id) => {
-    alert("hello");
     const token = localStorage.getItem("authToken");
 
     axios
-      .delete(`http://localhost:8080/dislike/${id}/${userId}`, {
+      .delete(`http://localhost:8765/api/profile/favourites/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
-        setEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
-        alert("Event deleted successfully");
+        setEvents((prevEvents) =>
+          prevEvents.filter((event) => event.id !== id)
+        );
+       // alert("Event deleted successfully");
+        setLoading(false);
+        setSnackbarOpen(true);
+        setError(false);
+        setTimeout(() => navigate("/"), 1500);
       })
       .catch((error) => {
         console.error("Error deleting event:", error);
-        alert("Error deleting event: " + error.message);
+        //alert("Error deleting event: " + error.message);
+        setLoading(false);
+        setSnackbarOpen(true);
+        setError(true);
       });
   };
 
@@ -112,97 +125,88 @@ const Favourites = () => {
       <p>No events found</p>
     );
 
-   const calculateMarginTop = (eventList) => {
-      const numberOfColumns = 3; // Assuming you want 3 columns
-      const numberOfRows = Math.ceil(eventList.length / numberOfColumns);
-      return   (numberOfRows - 1) * 48; // Increase mt by 38 for each additional row
-    };
-
+  const calculateMarginTop = (eventList) => {
+    const numberOfColumns = 3; // Assuming you want 3 columns
+    const numberOfRows = Math.ceil(eventList.length / numberOfColumns);
+    return (numberOfRows - 1) * 48; // Increase mt by 38 for each additional row
+  };
 
   if (roles.includes("USER")) {
     return (
-        <Section
-                          className="pt-[12rem] -mt-[5.25rem]"
-                          crosses
-                          crossesOffset="lg:translate-y-[5.25rem]"
-                          customPaddings
-                          id="hero"
-                        >
-                          <div className="container relative mt-20" ref={parallaxRef} >
-                            <div className="relative z-1 max-w-[62rem] mx-auto text-center mb-[3.875rem] md:mb-20 lg:mb-[6.25rem]">
-                             <h1 className="h1 mb-6">
-                                {` `}
-                                 <span className="inline-block relative">
-                                              Favourite Events{" "}
-                                              <img
-                                                src={curve}
-                                                className="absolute top-full left-0 w-full xl:-mt-2"
-                                                width={624}
-                                                height={28}
-                                                alt="Curve"
-                                              />
-                                            </span>
+      <Section
+        className="pt-[12rem] -mt-[5.25rem]"
+        crosses
+        crossesOffset="lg:translate-y-[5.25rem]"
+        customPaddings
+        id="hero"
+      >
+        <div className="container relative mt-20" ref={parallaxRef}>
+          <div className="relative z-1 max-w-[62rem] mx-auto text-center mb-[3.875rem] md:mb-20 lg:mb-[6.25rem]">
+            <h1 className="h1 mb-6">
+              {` `}
+              <span className="inline-block relative">
+                Favourite Events{" "}
+                <img
+                  src={curve}
+                  className="absolute top-full left-0 w-full xl:-mt-2"
+                  width={624}
+                  height={28}
+                  alt="Curve"
+                />
+              </span>
+            </h1>
+            <Box sx={{ mb: 4 }} className="search-container">
+              <SearchIcon className="search-icon" />
+              <input
+                type="text"
+                placeholder="Search events"
+                className="search-bar"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{
+                  border: "2px solid white", // White border
+                  borderRadius: "8px", // Optional: rounded corners
+                  padding: "0.5rem 1rem", // Optional: spacing inside the input
+                  color: "white", // White text
+                  backgroundColor: "transparent", // Transparent background
+                }}
+              />
+            </Box>
+          </div>
 
-                              </h1>
-                                 <Box sx={{ mb: 4 }} className="search-container">
-                                                                    <SearchIcon className="search-icon" />
-                                                                    <input
-                                                                      type="text"
-                                                                      placeholder="Search events"
-                                                                      className="search-bar"
-                                                                      value={searchTerm}
-                                                                      onChange={(e) => setSearchTerm(e.target.value)}
-                                                                      style={{
-                                                                        border: "2px solid white", // White border
-                                                                        borderRadius: "8px", // Optional: rounded corners
-                                                                        padding: "0.5rem 1rem", // Optional: spacing inside the input
-                                                                        color: "white", // White text
-                                                                        backgroundColor: "transparent", // Transparent background
-                                                                      }}
-                                                                    />
-                                                                  </Box>
-
-                              </div>
-
-
-
-
-                                              <BackgroundCircles  />
-
-
-
-
-
-                                              </div>
-         <div className="container relative z-2">
-
-
-                                                            <div className="flex flex-wrap gap-10 mb-10">
-                                                             {filteredEvents.map((event) => (
-                                                               <LikedEvent
-                                                                 key={event.id}
-                                                                 id={event.id}
-                                                                 title={event.title}
-                                                                 description={event.description}
-                                                                 date={event.date}
-                                                                 time={event.time}
-                                                                 venue={event.venue}
-                                                                 image={`data:image/jpeg;base64,${event.image}`} // Fix here: Use template literal properly
-                                                                 club={event.club}
-                                                                 dislike={handleDislike}
-
-                                                               />
-                                                             ))}
-
-
-                                                                                  </div>
-                                                                                </div>
-
-
-        </Section>
-
-
-
+          <BackgroundCircles />
+        </div>
+        {loading ? (
+          renderSkeletons(6)
+        ) : (
+          <div className="container relative z-2">
+            <div className="flex flex-wrap gap-10 mb-10">
+              {filteredEvents.length>0 ? filteredEvents.map((event) => (
+                <LikedEvent
+                  key={event.id}
+                  id={event.id}
+                  title={event.title}
+                  description={event.description}
+                  date={event.date}
+                  time={event.time}
+                  venue={event.venue}
+                  image={`data:image/jpeg;base64,${event.image}`} // Fix here: Use template literal properly
+                  club={event.club}
+                  dislike={handleDislike}
+                />
+              )) : <div className="flex flex-wrap gap-10 mb-10">No liked events..</div>}
+            </div>
+          </div>
+        )}
+        <CustomizedSnackbars
+          open={snackbarOpen}
+          onClose={() => setSnackbarOpen(false)}
+          alertM={
+            error ? "error unliking event,pls try again" : "Unliked event successfully"
+          }
+          type={error ? "error" : "success"}
+        />
+      </Section>
     );
   } else {
     return null; // Render nothing for unauthorized users

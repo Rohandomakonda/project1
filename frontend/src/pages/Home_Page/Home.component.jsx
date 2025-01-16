@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Event from "../../components/Event_Card/Event.jsx";
 import axios from "axios";
 import { curve } from "../../assets/index.js";
@@ -10,18 +10,30 @@ import useGet from "../../customhooks/useGet.jsx";
 
 function Home() {
   const token = localStorage.getItem("authToken");
-  const {data : publicEvents, loading, error } = useGet("events/public/events", null);
+  const {
+    data: publicEvents,
+    loading,
+    error,
+  } = useGet("events/public/events", null);
   const parallaxRef = useRef(null);
   const navigate = useNavigate();
 
-  function handleDelete(id, e) {
-    e.stopPropagation();
-    axios
-      .delete(`http://localhost:8080/event/${id}`)
-      .then(() => {
-        console.log("Event deleted successfully");
-      })
-      .catch((error) => console.error("Error deleting event:", error));
+  function handleDelete(e) {
+    e.preventDefault();
+    // axios
+    //   .delete(`http://localhost:8765/api/events/event/${id}`, {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   })
+    //   .then(() => {
+    //     alert("event deleted successfully");
+    //     console.log("Event deleted successfully");
+    //     // publicEvents((prevEvents) =>
+    //     //   prevEvents.filter((event) => event.id !== id)
+    //     // );
+    //   })
+    //   .catch((error) => console.error("Error deleting event:", error));
   }
 
   return (
@@ -75,7 +87,7 @@ function Home() {
                 venue={event.venue}
                 image={`data:image/jpeg;base64,${event.image}`}
                 club={event.club}
-                delete={(e) => handleDelete(event.id, e)}
+                delete={(e) => handleDelete}
               />
             ))}
           </div>

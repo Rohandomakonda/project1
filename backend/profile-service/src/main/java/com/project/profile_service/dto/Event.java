@@ -9,8 +9,6 @@ import lombok.Data;
 @Data
 public class Event {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
@@ -21,6 +19,8 @@ public class Event {
     private String club;
     private String venueDescription;
     private boolean isPublic;
+    private Long likes=0l;
+    private Long saves=0l;
 
     @Lob
     private byte[] image;

@@ -18,20 +18,19 @@ import usePost from "../../customhooks/usePost";
   function Form() {
   const [details, setDetails] = useState(() => {
     const initialClub = localStorage.getItem("club") || "";
-    const initialRole = localStorage.getItem("role") || "";
     return {
       title: "",
       description: "",
       date: "",
       time: "",
       venue: "",
-      club: initialRole === "CLUB_SEC" ? initialClub : "", // Set club if role is CLUB_SEC
+      club:initialClub, // Set club if role is CLUB_SEC
       isPublic: true,
       venueDescription: "",
     };
   });
 
-  const [role] = useState(localStorage.getItem("role")); // Getting role from localStorage
+ 
   const club = localStorage.getItem("club"); // Getting club name from localStorage
   const [image, setImage] = useState(null); // For storing the image file
   const navigate = useNavigate();
@@ -51,15 +50,22 @@ import usePost from "../../customhooks/usePost";
   };
 
   const handleSubmit = (e) => {
-    console.log(details);
     e.preventDefault();
+  
+  const formData = new FormData();
 
-    const formData = new FormData();
-
-    // Append form fields
-    Object.entries(details).forEach(([key, value]) => {
+  // Get the club from localStorage
+  const clubValue = localStorage.getItem("club");
+  
+  // Append form fields
+  Object.entries(details).forEach(([key, value]) => {
+    // For club field, use the value from localStorage
+    if (key === "club") {
+      formData.append("club", clubValue);
+    } else {
       formData.append(key, value);
-    });
+    }
+  });
 
     // Append image file
     if (image) {
@@ -84,7 +90,7 @@ import usePost from "../../customhooks/usePost";
       })
       .then((response) => {
         alert("Event added successfully!");
-        console.log("Response Data:", response.data);
+        console.log(response.data);
         navigate("/"); // Redirect to events page
       })
       .catch((error) => {
@@ -95,7 +101,7 @@ import usePost from "../../customhooks/usePost";
           alert("An error occurred while adding the event.");
         }
       });
-     //const {loading,error} = usePost("addevents",token,formData,null);
+     
   };
 
   return (
@@ -278,6 +284,7 @@ import usePost from "../../customhooks/usePost";
                   "& .MuiInputLabel-root.Mui-focused": { color: "#87CEEB" },
                 }}
               />
+
 
               <input
                 type="file"

@@ -6,16 +6,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @FeignClient("event-service")
 public interface EventService {
-    @PostMapping("api/events/inclikes/{id}")
+    @PostMapping("api/events/inclikes/{eventid}")
     public void inclikes(@PathVariable long eventid);
 
-    @PostMapping("api/events/declikes/{id}")
+    @PostMapping("api/events/declikes/{eventid}")
     public void declikes(@PathVariable long eventid);
 
-    @PostMapping("api/events/decsaves/{id}")
-    public void decsaves(@PathVariable String eventtitle);
+    @PostMapping("api/events/decsaves/{eventTitle}")
+    public void decsaves(@PathVariable String eventTitle);
 
-    @PostMapping("api/events/incsaves/{id}")
+    @PostMapping("api/events/incsaves/{eventid}")
     public void incsaves(@PathVariable long eventid);
 
 }

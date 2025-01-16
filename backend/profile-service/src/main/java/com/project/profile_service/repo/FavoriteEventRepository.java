@@ -21,4 +21,6 @@ public interface FavoriteEventRepository extends JpaRepository<FavoriteEvent, Lo
     Optional<FavoriteEvent> findByUserIdAndEventId(Long userId, Long eventId);
     boolean existsByUserIdAndEventId(Long userId, Long eventId);
     void deleteByUserIdAndEventId(Long userId, Long eventId);
+
+    void deleteByEventId(Long eventId);
 }

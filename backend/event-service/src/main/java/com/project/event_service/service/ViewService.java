@@ -61,7 +61,7 @@ public class ViewService {
         return null;
     }
 
-    public void deleteEvent(long id) {
+    public void deleteEvent(Long id) {
         commentService.deletedeventcomments(id);
         formRepo.deleteById(id);
     }

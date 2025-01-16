@@ -148,10 +148,10 @@ function Event(props) {
       });
 
     // Fetch whether the event is saved/bookmarked by the user
-    axios
-      .get(`http://localhost:8765/api/profile/issaved`, {
+     axios
+      .get(`http://localhost:8765/api/profile/saved-events/issaved`, {
         headers: { Authorization: `Bearer ${token}` },
-        params: { userId: userId, eventTitle: props.title },
+        params:{eventTitle : `${props.title}`}
       })
       .then((response) => {
         setIsSaved(response.data);
@@ -200,10 +200,9 @@ function Event(props) {
     e.stopPropagation();
     if (isSaved) {
       axios
-        .delete(`http://localhost:8080/unsave`, {
+        .delete(`http://localhost:8765/api/profile/saved-events/unsave`, {
           headers: { Authorization: `Bearer ${token}` },
           params: {
-            userId: userId,
             eventTitle: props.title,
           },
         })
@@ -217,9 +216,8 @@ function Event(props) {
         });
     } else {
       axios
-        .post(`http://localhost:8080/saved-events/${props.id}`, null, {
-          headers: { Authorization: `Bearer ${token}` },
-          params: { userId: userId },
+        .post(`http://localhost:8765/api/profile/saved-events/${props.id}`, null, {
+          headers: { Authorization: `Bearer ${token}` }
         })
         .then(() => {
           setIsSaved(true);
@@ -332,6 +330,10 @@ function Event(props) {
     addManualEvent();
     console.log(" event  added ");
   };
+
+  useEffect(()=>{
+    console.log("props like is "+props.likes);
+  },[])
 
   return (
     <div

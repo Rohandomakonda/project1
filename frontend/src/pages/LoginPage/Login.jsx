@@ -52,7 +52,6 @@ const Login = () => {
         localStorage.setItem("club", club);
         localStorage.setItem("userId", userId);
 console.log("localstorage set");
-alert("logging in");
 
       setSnackbarOpen(true);
       setLoading(false);

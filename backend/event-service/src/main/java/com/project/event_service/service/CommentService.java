@@ -52,14 +52,14 @@ public class CommentService {
             LocalDateTime currentTime = LocalDateTime.now();
             LocalDateTime fiveHoursAgo = currentTime.minusHours(5);
 
-            if(c.getCreatedAt().isBefore(fiveHoursAgo)){
-                System.out.println("cannnot edit after 5 hrs");
+            // if(c.getCreatedAt().isBefore(fiveHoursAgo)){
+            //     System.out.println("cannnot edit after 5 hrs");
 
-            }
-            else{
-               c.setMsg(m);
-               commentRepo.save(c);
-            }
+            // }
+            // else{
+            //    c.setMsg(m);
+            //    commentRepo.save(c);
+            // }
         }
         else{
             System.out.println("this comment cannot be edited by someone else");
@@ -73,14 +73,14 @@ public class CommentService {
             LocalDateTime currentTime = LocalDateTime.now();
             LocalDateTime fiveHoursAgo = currentTime.minusHours(5);
 
-            if(c.getCreatedAt().isBefore(fiveHoursAgo)){
-                System.out.println("cannnot delete after 5 hrs");
+            // if(c.getCreatedAt().isBefore(fiveHoursAgo)){
+            //     System.out.println("cannnot delete after 5 hrs");
 
-            }
-            else{
+            // }
+            // else{
 
-                commentRepo.delete(c);
-            }
+            //     commentRepo.delete(c);
+            // }
         }
         else{
             System.out.println("this comment cannot be deleted by someone else");

@@ -3,8 +3,12 @@ package com.project.profile_service.controller;
 import com.project.profile_service.dto.Event;
 import com.project.profile_service.feign.UserContext;
 import com.project.profile_service.service.FavoriteEventService;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,8 +57,16 @@ public class FavouriteController {
     @GetMapping("/isliked/{eventId}")
     public ResponseEntity<Boolean> getisLiked(@PathVariable("eventId") Long eventId, @RequestHeader("X-User-ID") String userId){
         Long userid = usercontext.getUserId(userId).getBody();
+        System.out.println(eventId+" "+userid);
         boolean isLiked = favoriteEventService.isLiked(eventId,userid);
 
         return new ResponseEntity<>(isLiked,HttpStatus.OK);
+    }
+
+    @DeleteMapping("favourites/remove/{eventId}")
+    @Transactional
+    public ResponseEntity<Void> removeFavoriteForAll(@PathVariable Long eventId){
+        favoriteEventService.removeFavoriteForAll(eventId);
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }

@@ -1,11 +1,8 @@
 package com.project.profile_service.model;
 
-
-
 import jakarta.persistence.*;
 import lombok.Data;
-import java.time.LocalDateTime;
-import java.util.List;
+
 
 @Data
 @Entity
@@ -18,13 +15,4 @@ public class FavoriteEvent {
 
     private Long userId;
     private Long eventId;
-
-
-    public void setUserId(Long userId) {
-        this.userId=userId;
-    }
-
-    public void setEventId(Long eventId) {
-        this.eventId=eventId;
-    }
 }

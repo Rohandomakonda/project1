@@ -124,7 +124,15 @@ spring:
                    - Path=/api/notifications/**
           filters:
             - AuthenticationFilter
-            - DedupeResponseHeader=Access-Control-Allow-Origin        
+            - DedupeResponseHeader=Access-Control-Allow-Origin 
+
+        - id: profile-serivce
+          uri: lb://profile-service
+          predicates:
+                   - Path=/api/profile/**
+          filters:
+            - AuthenticationFilter
+            - DedupeResponseHeader=Access-Control-Allow-Origin               
 
 
 eureka:

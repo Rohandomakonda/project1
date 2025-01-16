@@ -16,6 +16,7 @@ const useGet = (endpoint, token) => {
       })
       .then((resp) => {
         if (isMounted) {
+          console.log(resp);
           setData(resp.data);
           setLoading(false);
         }

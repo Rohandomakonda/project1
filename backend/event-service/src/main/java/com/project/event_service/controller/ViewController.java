@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.project.event_service.feign.ProfileService;
 import com.project.event_service.model.Event;
 import com.project.event_service.service.ViewService;
 
@@ -20,8 +21,11 @@ public class ViewController {
     @Autowired
     private ViewService viewservice;
 
+    @Autowired
+    private ProfileService profileService;
 
-
+    @Autowired
+    private CommentService commentService;
 
     @GetMapping("/viewevents")
     public ResponseEntity<List<Event>> getAllEvents(){
@@ -69,10 +73,12 @@ public class ViewController {
     }
 
     @DeleteMapping("/event/{id}")
-    public ResponseEntity<List<Event>> deleteEvent(@PathVariable int id){
+    public ResponseEntity<List<Event>> deleteEvent(@PathVariable Long id){
 
         Event event = viewservice.getEventById(id);
         if(event != null){
+            profileService.removeFavoriteForAll(id).getBody();
+            commentService.deletedeventcomments(id);
             viewservice.deleteEvent(id);
             List<Event> events = viewservice.getAllEvents();
             return new ResponseEntity<>(events, HttpStatus.OK);

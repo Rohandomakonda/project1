@@ -1,7 +1,7 @@
 import "./init.jsx";
 import { brainwave } from "../assets";
 import { useLocation } from "react-router-dom";
-import { useState,useEffect } from "react"; // Correct import for useState
+import { useState, useEffect } from "react"; // Correct import for useState
 import Button from "./Button";
 import MenuSvg from "../assets/svg/MenuSvg";
 import Avatar from "@mui/material/Avatar";
@@ -10,13 +10,14 @@ import { useNavigate } from "react-router-dom";
 import Badge from "@mui/material/Badge";
 import useWebSocket from "../customhooks/useWebSocket.jsx";
 import axios from "axios";
-
+import CustomizedSnackbars from "./SnackBarCustom.jsx";
 
 const Header = () => {
   const [openNavigation, setOpenNavigation] = useState(false);
   const { pathname, hash } = useLocation();
   const [scrolling, setScrolling] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [roles, setRoles] = useState(() => {
     const storedRoles = localStorage.getItem("roles");
     return storedRoles ? JSON.parse(storedRoles) : [];
@@ -24,9 +25,8 @@ const Header = () => {
   const token = localStorage.getItem("authToken");
   const navigate = useNavigate();
   const { unseenEventsCount } = useWebSocket();
-  const [unseen,setUnseen] = useState(localStorage.getItem('unseen'));
-  
-
+  const [unseen, setUnseen] = useState(localStorage.getItem("unseen"));
+  const [error, setError] = useState(false); // Add this
 
   const toggleNavigation = () => {
     if (openNavigation) {
@@ -67,56 +67,57 @@ const Header = () => {
       children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
     };
   }
-  const handleLogout = async () => {
-    try {
-      if (token) {
-        await axios.post(
-          "http://localhost:8080/api/auth/logout",
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        localStorage.clear();
-        setIsAuthenticated(false);
-        setRoles([]);
-        setSnackbarOpen(true); // Show success Snackbar
-        setLoading(false);
-        setError(false);
-        setTimeout(() => navigate("/"), 3000);
-        alert("Logout successful");
-      }
-    } catch (error) {
-      console.error("Logout error:", error);
-      // Still remove token and update state even if server request fails
-      localStorage.removeItem("authToken");
-      localStorage.removeItem("roles");
+  // const [loading, setLoading] = useState(false); // Add this
+
+const handleLogout = async () => {
+  try {
+    if (token) {
+   // Indicate loading state
+      await axios.post(
+        "http://localhost:8765/api/auth/logout",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      localStorage.clear();
       setIsAuthenticated(false);
       setRoles([]);
-      setSnackbarOpen(true); // Show success Snackbar
-      setLoading(false);
-      setError(true);
-      setTimeout(() => navigate("/"), 3000);
+      setSnackbarOpen(true); // Show success snackbar
+      setError(false);
+      setTimeout(() => navigate("/"), 1500); // Redirect after logout
     }
-  };
+  } catch (error) {
+    console.error("Logout error:", error);
+    // Handle logout even if server request fails
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("roles");
+    setIsAuthenticated(false);
+    setRoles([]);
+    setSnackbarOpen(true); // Show error snackbar
+   // setLoading(false);
+    setError(true);
+    setTimeout(() => navigate("/"), 3000);
+  }
+};
+
 
   function handleNavigation() {
     navigate("/");
   }
 
   function handleViewEvents() {
-    localStorage.setItem('unseen',0);
+    localStorage.setItem("unseen", 0);
     setUnseen(0);
     navigate("/viewevents");
   }
 
-  useEffect(()=>{
-    console.log("unseen changed to "+ unseen);
-    setUnseen(localStorage.getItem('unseen'));
-  },[unseen])
-
+  useEffect(() => {
+    console.log("unseen changed to " + unseen);
+    setUnseen(localStorage.getItem("unseen"));
+  }, [unseen]);
 
   return (
     <div
@@ -158,10 +159,7 @@ const Header = () => {
               about
             </button>
             {token && (
-              <Badge
-                color="error"
-                badgeContent={unseen>0 ? unseen : null}
-              >
+              <Badge color="error" badgeContent={unseen > 0 ? unseen : null}>
                 <button
                   onClick={handleViewEvents}
                   className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1
@@ -256,20 +254,19 @@ const Header = () => {
                   Add Recruitment
                 </button>
               )}
-              {token &&
-              (roles.includes("CLUB_SEC")) && (
-                <button
-                  onClick={() => navigate("/dashboard")}
-                  className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1
+            {token && roles.includes("CLUB_SEC") && (
+              <button
+                onClick={() => navigate("/dashboard")}
+                className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1
                     px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${
                       "/recruitments" === pathname || "/recruitment" === hash
                         ? "z-2 lg:text-n-1"
                         : "lg:text-n-1/50"
                     }  lg:leading-5 lg:hover:text-n-1 xl:px-12 `}
-                >
-                  DashBoard
-                </button>
-              )}
+              >
+                DashBoard
+              </button>
+            )}
             <HamburgerMenu />
           </div>
         </nav>
@@ -294,6 +291,14 @@ const Header = () => {
             sign in
           </Button>
         )}
+        <CustomizedSnackbars
+          open={snackbarOpen}
+          onClose={() => setSnackbarOpen(false)}
+          alertM={
+            error ? "Logout unsuccessful, please try again" : "Logout successful"
+          }
+          type={error ? "error" : "success"}
+        />
         <Button
           className="ml-auto lg:hidden "
           px="px-3"

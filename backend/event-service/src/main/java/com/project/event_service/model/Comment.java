@@ -19,9 +19,9 @@ public class Comment {
     private String msg;
     private Long EventId;
     private Long UserId;
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false) // Automatically set during creation, not updatable
-    private LocalDateTime createdAt;
+    // @CreationTimestamp
+    // @Column(updatable = false) // Automatically set during creation, not updatable
+    // private LocalDateTime createdAt;
 
     public Long getUserId() {
         return UserId;
@@ -31,9 +31,9 @@ public class Comment {
         return msg;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+    // public LocalDateTime getCreatedAt() {
+    //     return createdAt;
+    // }
 
     public void setMsg(String m) {
         this.msg=m;
