@@ -13,9 +13,15 @@ import useWebSocket from "../customhooks/useWebSocket.jsx";
 import axios from "axios";
 import CustomizedSnackbars from "./SnackBarCustom.jsx";
 import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import CustomMenu from './Menu.jsx';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import Divider from '@mui/material/Divider';
+import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
+import { unstable_useEnhancedEffect } from '@mui/material';
+
+
+
 const Header = () => {
   const [openNavigation, setOpenNavigation] = useState(false);
   const { pathname, hash } = useLocation();
@@ -28,11 +34,58 @@ const Header = () => {
   });
   const token = localStorage.getItem("authToken");
   const navigate = useNavigate();
-  const { unseenEventsCount } = useWebSocket();
-  const [unseen, setUnseen] = useState(localStorage.getItem("unseen"));
+   const [unseenEventsCount, setUnseenEventsCount] = useState(0);
+ const [unseenEvents, setUnseenEvents] = useState([]);
   const [error, setError] = useState(false); // Add this
  const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+
+  useEffect(() => {
+      // Create SockJS connection
+      const socket = new SockJS("http://localhost:8086/ws");
+
+      // Create STOMP client and connect
+      const stompClient = new Client({
+        webSocketFactory: () => socket, // Use SockJS connection as the WebSocket connection
+        reconnectDelay: 5000, // Reconnect after 5 seconds if disconnected
+        onConnect: () => {
+          console.log("Connected to WebSocket");
+            // Subscribe to the notifications topic for this user
+            stompClient.subscribe(`/topic/notifications`, (message) => {
+              console.log("Broadcast notification received:", message.body);
+              setUnseenEventsCount((prev) => prev + 1);
+               setUnseenEvents((prev) => [
+                  ...prev,
+                  {  msg: message.body }, // Adding message body with a unique id
+                ]);
+
+
+
+            });
+        },
+        onDisconnect: () => {
+          console.log("Disconnected from WebSocket");
+        },
+        onStompError: (error) => {
+          console.error("WebSocket error:", error);
+        },
+      });
+
+      stompClient.activate(); // Activate the STOMP client to start receiving messages
+      // Cleanup on component unmount
+      return () => {
+        stompClient.deactivate();
+      };
+    }, []);
+
+    useEffect(()=>{
+        console.log("unseenEventsCount is "+unseenEventsCount);
+         console.log(unseenEvents);
+
+    },[unseenEventsCount])
+
+
+
   const toggleNavigation = () => {
     if (openNavigation) {
       setOpenNavigation(false);
@@ -115,12 +168,13 @@ const handleLogout = async () => {
 
   function handleViewEvents() {
     localStorage.setItem("unseen", 0);
-    setUnseen(0);
+    setUnseenEventsCount(0);
     navigate("/viewevents");
   }
 
 
     const handleClick1 = (event) => {
+        setUnseenEventsCount(0);
        setAnchorEl(event.currentTarget);
      };
      const handleClose = () => {
@@ -129,9 +183,9 @@ const handleLogout = async () => {
 
 
   useEffect(() => {
-    console.log("unseen changed to " + unseen);
-    setUnseen(localStorage.getItem("unseen"));
-  }, [unseen]);
+    console.log("unseen changed to " + unseenEventsCount);
+
+  }, [unseenEventsCount]);
 
   return (
     <div
@@ -173,7 +227,7 @@ const handleLogout = async () => {
               about
             </button>
             {token && (
-              <Badge color="error" badgeContent={unseen > 0 ? unseen : null}>
+
                 <button
                   onClick={handleViewEvents}
                   className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1
@@ -185,7 +239,7 @@ const handleLogout = async () => {
                 >
                   View Events
                 </button>
-              </Badge>
+
             )}
             {token && (
               <button
@@ -283,82 +337,66 @@ const handleLogout = async () => {
             )}
             <HamburgerMenu />
           </div>
+
+
+
+
         </nav>
-        {token && roles.includes("USER") && (<div className="pr-10">
-               <NotificationsActiveIcon
-                 aria-controls={open ? 'basic-menu' : undefined}
-                 aria-haspopup="true"
-                 aria-expanded={open ? 'true' : undefined}
-                 onClick={handleClick1}
-                 style={{
-                   color: '#9e9e9e',
-                   opacity: 0.6,
-                   cursor: 'pointer',
-                   fontSize: '28px',
-                 }}
-               />
-               <Menu
-                 id="basic-menu"
-                 anchorEl={anchorEl}
-                 open={open}
-                 onClose={handleClose}
-                 MenuListProps={{
-                   'aria-labelledby': 'basic-button',
-                 }}
-                 PaperProps={{
-                   style: {
-                     borderRadius: '10px', // Rounded corners
-                     boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', // Subtle shadow
-                     padding: '8px 0',
-                     minWidth: '200px',
-                     backgroundColor: '#1e1e2f', // Black purplish background
-                     color: '#ffffff', // White text for better contrast
-                   },
-                 }}
-               >
-                 <MenuItem
-                   onClick={handleClose}
-                   style={{
-                     fontSize: '16px',
-                     color: '#ffffff',
-                     padding: '10px 20px',
-                     transition: 'background-color 0.3s',
-                   }}
-                   onMouseEnter={(e) => (e.target.style.backgroundColor = '#6a1b9a')} // Dark purple on hover
-                   onMouseLeave={(e) => (e.target.style.backgroundColor = 'transparent')}
-                 >
-                   Profile
-                 </MenuItem>
-                 <Divider style={{ backgroundColor: '#4a4a6a' }} /> {/* Subtle divider color */}
-                 <MenuItem
-                                    onClick={handleClose}
-                                    style={{
-                                      fontSize: '16px',
-                                      color: '#ffffff',
-                                      padding: '10px 20px',
-                                      transition: 'background-color 0.3s',
-                                    }}
-                                    onMouseEnter={(e) => (e.target.style.backgroundColor = '#6a1b9a')} // Dark purple on hover
-                                    onMouseLeave={(e) => (e.target.style.backgroundColor = 'transparent')}
-                                  >
-                                    Profile
-                                  </MenuItem>
-                 <Divider style={{ backgroundColor: '#4a4a6a' }} />
-                  <MenuItem
-                       onClick={handleClose}
-                       style={{
-                         fontSize: '16px',
-                         color: '#ffffff',
-                         padding: '10px 20px',
-                         transition: 'background-color 0.3s',
-                       }}
-                       onMouseEnter={(e) => (e.target.style.backgroundColor = '#6a1b9a')} // Dark purple on hover
-                       onMouseLeave={(e) => (e.target.style.backgroundColor = 'transparent')}
-                     >
-                       Profile
-                     </MenuItem>
-               </Menu>
-             </div>)}
+
+          {token && roles.includes("USER") && (
+            <div className="pr-10">
+              <Badge color="error" badgeContent={unseenEventsCount > 0 ? unseenEventsCount : null}>
+                <NotificationsActiveIcon
+                  aria-controls={open ? 'basic-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? 'true' : undefined}
+                  onClick={handleClick1}
+                  style={{
+                    color: '#9e9e9e',
+                    opacity: 0.6,
+                    cursor: 'pointer',
+                    fontSize: '28px',
+                  }}
+                />
+              </Badge>
+
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  'aria-labelledby': 'basic-button',
+                }}
+                PaperProps={{
+                  style: {
+                    borderRadius: '10px', // Rounded corners
+                    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', // Subtle shadow
+                    padding: '8px 0',
+                    minWidth: '200px',
+                    backgroundColor: '#1e1e2f', // Black purplish background
+                    color: '#ffffff', // White text for better contrast
+                  },
+                }}
+              >
+                {unseenEvents.map((event, index) => (
+                  <CustomMenu
+                    key={index} // Add a unique key to each CustomMenu
+                    handleClose={handleClose}
+                    msg={event.msg} // Pass the msg from the event
+                  />
+                ))}
+              </Menu>
+            </div>
+          )}
+
+
+
+
+
+
+
+
 
         {token == null && (
           <button

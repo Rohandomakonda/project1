@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name="NOTIFICATION-SERVICE")
 public interface NotificationClient {
-    @PostMapping("api/notifications/event")
-    public ResponseEntity<String> createEventNotification();
+
+    @PostMapping("api/notifications/event/{eventTitle}")
+    public ResponseEntity<String> createEventNotification(@PathVariable String eventTitle);
 }

@@ -25,16 +25,7 @@ spring:
           auth: true
           starttls:
             enable: true
-  datasource:
-    url: jdbc:postgresql://localhost:5432/notification_db
-    username: postgres
-    password: postgres
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+
 
 eureka:
   client:

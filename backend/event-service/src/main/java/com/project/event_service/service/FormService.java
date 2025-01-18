@@ -69,7 +69,7 @@ public class FormService {
 
         // Notify all relevant users through notification service
         System.out.println("sending to notification ws");
-        String res = notificationService.createEventNotification().getBody();
+        String res = notificationService.createEventNotification(title+" is added").getBody();
 
         System.out.println(res);
 

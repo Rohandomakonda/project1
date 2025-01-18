@@ -5,14 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.project.notification_service.dto.NotificationRequest;
 // import com.project.notification_service.model.EventNotification;
 //import com.project.notification_service.service.EventNotificationListener;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @RestController
@@ -28,10 +25,10 @@ public class NotificationController {
     //@Autowired
    // private EventNotificationListener notificationService;
     
-   @PostMapping("/event")
-   public ResponseEntity<String> createEventNotification() {
+   @PostMapping("/event/{eventTitle}")
+   public ResponseEntity<String> createEventNotification(@PathVariable String eventTitle) {
        System.out.println("going to notify");
-       messagingTemplate.convertAndSend("/topic/notifications", "new event added");
+       messagingTemplate.convertAndSend("/topic/notifications", eventTitle);
        return ResponseEntity.ok("sent to ws");
    }
 
