@@ -338,12 +338,12 @@ function Event(props) {
   return (
     <div
       style={{
-        perspective: "1000px", // Enables 3D perspective
-        width: "300px", // Set a fixed width for the card
-        height: "400px", // Set a fixed height for the card
-        margin: "auto", // Center the card horizontally
+        perspective: "1000px",
+        width: "300px",
+        height: "400px",
+        margin: "auto",
       }}
-      onClick={handleFlip} // Flip the card on click
+      onClick={handleFlip}
     >
       <div
         style={{

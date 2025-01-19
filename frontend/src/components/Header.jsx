@@ -373,13 +373,9 @@ useEffect(() => {
                   aria-haspopup="true"
                   aria-expanded={open ? 'true' : undefined}
                   onClick={handleClick1}
-                  style={{
-                    color: '#9e9e9e',
-                    opacity: 0.6,
-                    cursor: 'pointer',
-                    fontSize: '28px',
-                  }}
+                  className="text-gray-400 transition-colors hover:text-white cursor-pointer text-2xl"
                 />
+
               </Badge>
 
               <Menu
