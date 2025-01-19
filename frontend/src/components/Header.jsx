@@ -32,7 +32,7 @@ const Header = () => {
     const storedRoles = localStorage.getItem("roles");
     return storedRoles ? JSON.parse(storedRoles) : [];
   });
-  const token = localStorage.getItem("authToken");
+  const [token,setToken] = useState(localStorage.getItem("authToken"));
   const navigate = useNavigate();
    const [unseenEventsCount, setUnseenEventsCount] = useState(0);
  const [unseenEvents, setUnseenEvents] = useState([]);
@@ -41,6 +41,7 @@ const Header = () => {
   const open = Boolean(anchorEl);
 
   useEffect(() => {
+
       // Create SockJS connection
       const socket = new SockJS("http://localhost:8086/ws");
 
@@ -81,10 +82,17 @@ const Header = () => {
     useEffect(()=>{
         console.log("unseenEventsCount is "+unseenEventsCount);
          console.log(unseenEvents);
+         setToken(localStorage.getItem("authToken"));
 
     },[unseenEventsCount])
 
-
+const handlenavigatelogin=()=>{
+     console.log("hello1");
+    navigate("/login");
+    console.log("hello2");
+    setToken(localStorage.getItem("authToken"));
+    console.log(token);
+    }
 
   const toggleNavigation = () => {
     if (openNavigation) {
@@ -145,6 +153,7 @@ const handleLogout = async () => {
       setRoles([]);
       setSnackbarOpen(true); // Show success snackbar
       setError(false);
+      setToken(null);
       setTimeout(() => navigate("/"), 1500); // Redirect after logout
     }
   } catch (error) {
@@ -180,6 +189,19 @@ const handleLogout = async () => {
      const handleClose = () => {
        setAnchorEl(null);
      };
+
+
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setToken(localStorage.getItem("authToken"));
+    setRoles(localStorage.getItem("roles"));
+  }, 1000);
+
+  // Cleanup function to clear the interval
+  return () => clearInterval(interval);
+}, []); // Empty dependency array to run once
+
 
 
   useEffect(() => {
@@ -343,7 +365,7 @@ const handleLogout = async () => {
 
         </nav>
 
-          {token && roles.includes("USER") && (
+          {token && roles.includes("USER")&& (
             <div className="pr-10">
               <Badge color="error" badgeContent={unseenEventsCount > 0 ? unseenEventsCount : null}>
                 <NotificationsActiveIcon
@@ -415,7 +437,7 @@ const handleLogout = async () => {
           </Button>
         )}
         {token == null && (
-          <Button className="hidden lg:flex" onClick={() => navigate("/login")}>
+          <Button className="hidden lg:flex" onClick={handlenavigatelogin}>
             sign in
           </Button>
         )}
