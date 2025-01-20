@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.project.event_service.dto.ConductedEvent;
 import com.project.event_service.feign.ProfileService;
 import com.project.event_service.model.Event;
 import com.project.event_service.service.ViewService;
@@ -103,6 +104,22 @@ public class ViewController {
         Event event = viewservice.getEventById(id);
         return ResponseEntity.ok(event);
     }
+
+    @DeleteMapping("conducted/event/{id}")
+    public ResponseEntity<ConductedEvent> deleteConductedEvent(@PathVariable Long id){
+
+        Event event = viewservice.getEventById(id);
+        if(event != null){
+            profileService.removeFavoriteForAll(id).getBody();
+            commentService.deletedeventcomments(id);
+            viewservice.deleteEvent(id);
+            ConductedEvent ce = new ConductedEvent(event.getTitle(),event.getCategory(),event.getLikes(),event.getClub());
+            return new ResponseEntity<>(ce, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        }
+    }
 }
 
-
+//event-add -> after time over -> profile-service->call this -> title,category,likes,clubname

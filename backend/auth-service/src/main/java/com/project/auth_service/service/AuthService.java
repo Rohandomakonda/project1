@@ -4,6 +4,7 @@ package com.project.auth_service.service;
 import com.project.auth_service.dto.AuthResponse;
 import com.project.auth_service.dto.LoginRequest;
 import com.project.auth_service.dto.NotificationRequest;
+import com.project.auth_service.dto.Users;
 import com.project.auth_service.dto.VerificationRequest;
 import com.project.auth_service.model.Role;
 import com.project.auth_service.model.User;
@@ -26,7 +27,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.project.auth_service.feign.NotificationClient;
 
-
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -300,5 +301,17 @@ public class AuthService {
     public String getUserbyId(Long id) {
         User u= repo.findById(id).get();
         return u.getName();
+    }
+
+
+    public List<Users> getAllUsersByClubname(String club) {
+        List<User> allusers = repo.findByClub(club);
+        List<Users> usersByClub = new ArrayList<>();
+        for(User user : allusers){
+            Users user1 =  new Users(user.getName());
+            usersByClub.add(user1);
+        }
+
+        return usersByClub;
     }
 }

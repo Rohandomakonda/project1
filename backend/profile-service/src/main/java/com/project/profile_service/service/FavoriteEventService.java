@@ -1,7 +1,6 @@
 package com.project.profile_service.service;
 
 import com.project.profile_service.dto.Event;
-import com.project.profile_service.feign.EventInterface;
 import com.project.profile_service.feign.EventService;
 import com.project.profile_service.model.FavoriteEvent;
 import com.project.profile_service.repo.FavoriteEventRepository;
@@ -19,11 +18,6 @@ public class FavoriteEventService {
     private FavoriteEventRepository favoriteEventRepository;
 
 
-
-    @Autowired
-    private EventInterface eventInterface;
-
-
     @Autowired
     private EventService eventservice;
 
@@ -39,7 +33,7 @@ public class FavoriteEventService {
             List<Event> eventsList = new ArrayList<>();
 
             for(Long i : listofeventids){
-                Event e = eventInterface.getById(i).getBody();
+                Event e = eventservice.getById(i).getBody();
                 if(e==null) continue;
                 eventsList.add(e);
             }

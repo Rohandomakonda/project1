@@ -4,7 +4,6 @@ package com.project.profile_service.service;
 
 
 import com.project.profile_service.dto.Event;
-import com.project.profile_service.feign.EventInterface;
 import com.project.profile_service.feign.EventService;
 import com.project.profile_service.model.SavedEvent;
 import com.project.profile_service.repo.SavedEventRepository;
@@ -25,14 +24,12 @@ public class SavedEventService {
     @Autowired
     private SavedEventRepository savedEventRepository;
 
-    @Autowired
-    private EventInterface eventInterface;
 
     @Autowired
     private EventService eventService;
 
     public void saveEvent(Long eventId, Long userId) {
-        Event event = eventInterface.getById(eventId).getBody();
+        Event event = eventService.getById(eventId).getBody();
 
 
 

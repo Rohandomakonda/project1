@@ -19,6 +19,7 @@ public class Event {
     private String venue;
     private String club;
     private String venueDescription;
+    private String category;
     private boolean isPublic;
     private Long likes=0l;
     private Long saves=0l;

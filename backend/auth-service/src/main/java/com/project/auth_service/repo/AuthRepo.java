@@ -18,4 +18,6 @@ public interface AuthRepo extends JpaRepository<User, Long> {
     @Query("SELECT u.id FROM User u WHERE u.email = :email")
     Long getUserIdByUsername(@Param("email") String email);
 
+    List<User> findByClub(String club);
+
 }

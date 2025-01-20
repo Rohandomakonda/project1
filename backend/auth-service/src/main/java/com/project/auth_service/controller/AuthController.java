@@ -6,6 +6,7 @@ import com.project.auth_service.dto.AuthResponse;
 import com.project.auth_service.dto.EmailReq;
 import com.project.auth_service.dto.LoginRequest;
 import com.project.auth_service.dto.RegisterRequest;
+import com.project.auth_service.dto.Users;
 import com.project.auth_service.dto.VerificationRequest;
 import com.project.auth_service.model.User;
 import com.project.auth_service.security.JwtTokenProvider;
@@ -137,6 +138,8 @@ public class AuthController {
         return ResponseEntity.ok("new Password and confirm password doesn't match");
     }
 
+    
+
 
     @PostMapping("/google")
     public ResponseEntity<?> authenticateWithGoogle(@RequestBody Map<String, String> requestBody) {
@@ -160,6 +163,12 @@ public class AuthController {
     @GetMapping("/getusername/{id}")
     public String getUserbyId(@PathVariable Long id){
         return  authService.getUserbyId(id);
+    }
+
+    @GetMapping("api/auth/getUserByClub/{club}")
+    public ResponseEntity<List<Users>> getAllUsersByClubname(@PathVariable String club){
+    
+        return ResponseEntity.ok(authService.getAllUsersByClubname(club));
     }
 
 

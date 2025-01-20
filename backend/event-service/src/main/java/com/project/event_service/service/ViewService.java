@@ -5,6 +5,9 @@ package com.project.event_service.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.project.event_service.dto.ConductedEvent;
+import com.project.event_service.feign.ProfileService;
 import com.project.event_service.model.Event;
 import com.project.event_service.repo.FormRepo;
 import java.time.LocalDate;
@@ -22,6 +25,8 @@ public class ViewService {
     @Autowired
     private CommentService commentService;
    
+    @Autowired
+    private ProfileService profileService;
 
     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -33,20 +38,27 @@ public class ViewService {
         List<Event> all_events =  formRepo.findAll();
         LocalDate currentDate = LocalDate.now();
 
-        // for(Event event : all_events){
-        //     String eventdate =  event.getDate();
-        //    // String eventTime = event.getTime();
+        for(Event event : all_events){
+            String eventdate =  event.getDate();
+           // String eventTime = event.getTime();
 
-        //     LocalDate eventDate = LocalDate.parse(eventdate, dateFormatter);
-        //     // LocalDateTime eventDateTime = LocalDateTime.of(eventDate, LocalDate.parse(eventTimeString).atStartOfDay().toLocalTime()); // Combine date and time if needed
+            LocalDate eventDate = LocalDate.parse(eventdate, dateFormatter);
+            // LocalDateTime eventDateTime = LocalDateTime.of(eventDate, LocalDate.parse(eventTimeString).atStartOfDay().toLocalTime()); // Combine date and time if needed
 
-
-        //     if(currentDate.isAfter(eventDate)){
-        //         System.out.println("Deleting date on "+eventDate);
-        //          commentService.deletedeventcomments(event.getId());
-        //         deleteEvent(event.getId());
-        //     }
-        // }
+            System.out.println("going to delete event");
+            if(currentDate.isAfter(eventDate)){
+                System.out.println("Deleting date on "+eventDate);
+                commentService.deletedeventcomments(event.getId());
+                System.out.println("deleted in commentservice");
+                profileService.removeFavoriteForAll(event.getId()).getBody();
+                System.out.println("deleted in favourite service");
+                ConductedEvent ce = new ConductedEvent(event.getTitle(),event.getCategory(),event.getLikes(),event.getClub());
+                String res = profileService.addDeletedEvent(ce).getBody();
+                System.out.println(res);
+                deleteEvent(event.getId());
+                System.out.println("deleted event");
+            }
+        }
 
         return formRepo.findAll();
 
