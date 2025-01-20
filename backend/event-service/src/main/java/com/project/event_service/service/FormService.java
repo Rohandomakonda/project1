@@ -35,7 +35,7 @@ public class FormService {
 
 
     @Transactional
-    public Event saveEvent(String title, String description, String date, String time, String venueDescription, String venue, String club, boolean isPublic, MultipartFile image) throws IOException {
+    public Event saveEvent(String title, String description, String date, String time, String venueDescription, String venue, String club, String category, boolean isPublic, MultipartFile image) throws IOException {
         System.out.println("saveEvent ");
         Event event = new Event();
         event.setTitle(title);
@@ -44,6 +44,7 @@ public class FormService {
         event.setTime(time);
         event.setVenue(venue);
         event.setClub(club);
+        event.setCategory(category);
         event.setVenueDescription(venueDescription);
         event.setPublic(isPublic);
         System.out.println("image left ");

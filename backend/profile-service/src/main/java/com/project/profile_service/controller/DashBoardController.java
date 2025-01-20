@@ -3,6 +3,7 @@ package com.project.profile_service.controller;
 
 import java.util.List;
 
+import com.project.profile_service.dto.ConductedEventReq;
 import com.project.profile_service.dto.UpcomingEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,17 +29,17 @@ public class DashBoardController {
 
 
     @PostMapping("/add-deleted-event")
-    ResponseEntity<String> addDeletedEvent(@RequestBody ConductedEvent event){
+    ResponseEntity<String> addDeletedEvent(@RequestBody ConductedEventReq event){
             dashboardService.addDeletedEvent(event);
             return ResponseEntity.ok("added");
     }
     
-    @PostMapping("/get-club-total-events/{clubname}")
+    @GetMapping("/get-club-total-events/{clubname}")
     ResponseEntity<Long> totalEvents(@PathVariable String clubname){
         return ResponseEntity.ok(dashboardService.totalEvents(clubname));
     }
 
-    @PostMapping("/get-club-total-members/{clubname}")
+    @GetMapping("/get-club-total-members/{clubname}")
     ResponseEntity<List<Users>> getAllUsersByclubname(@PathVariable String clubname){
         
         return ResponseEntity.ok(dashboardService.getAllUsersByclubname(clubname));

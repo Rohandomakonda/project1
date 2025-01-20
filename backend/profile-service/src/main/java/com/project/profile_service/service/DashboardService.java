@@ -3,6 +3,7 @@ package com.project.profile_service.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.project.profile_service.dto.ConductedEventReq;
 import com.project.profile_service.dto.Event;
 import com.project.profile_service.dto.UpcomingEvent;
 import com.project.profile_service.feign.EventService;
@@ -13,7 +14,9 @@ import com.project.profile_service.feign.UserContext;
 import com.project.profile_service.model.ConductedEvent;
 import com.project.profile_service.repo.DashboardRepo;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
+@Service
 public class DashboardService {
 
     @Autowired
@@ -24,8 +27,13 @@ public class DashboardService {
     @Autowired
     private EventService eventService;
 
-    public void addDeletedEvent(ConductedEvent event) {
-        dashboardRepo.save(event);
+    public void addDeletedEvent(ConductedEventReq event) {
+        ConductedEvent ce = new ConductedEvent();
+        ce.setTitle(event.getTitle());
+        ce.setCategory(event.getCategory());
+        ce.setClubName(event.getClubName());
+        ce.setLikes(event.getLikes());
+        dashboardRepo.save(ce);
     }
 
     public Long totalEvents(String club) {
@@ -43,7 +51,7 @@ public class DashboardService {
     }
 
     public List<ConductedEvent> getprevten(String clubname) {
-       List<ConductedEvent> conductedevents = dashboardRepo.findTop10ByClubnameOrderByIdDesc(clubname);
+       List<ConductedEvent> conductedevents = dashboardRepo.findTop10ByClubNameOrderByIdDesc(clubname);
        return conductedevents;
     }
 

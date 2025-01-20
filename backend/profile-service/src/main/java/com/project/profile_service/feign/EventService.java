@@ -31,6 +31,7 @@ public interface EventService {
 
     @GetMapping("api/events/getById/{id}")
     public ResponseEntity<Event> getById(@PathVariable Long id);
+    
     @GetMapping("api/events/getclubevents/{name}")
     public ResponseEntity<List<Event>> getClubByName(@PathVariable String name);
 

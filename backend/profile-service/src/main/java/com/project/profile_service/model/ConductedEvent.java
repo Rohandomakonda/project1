@@ -17,7 +17,7 @@ public class ConductedEvent {
     private String title;
     private String category;
     private Long likes;
-    private String clubname;
+    private String clubName;
 
     public long getLikes() {
         return likes;

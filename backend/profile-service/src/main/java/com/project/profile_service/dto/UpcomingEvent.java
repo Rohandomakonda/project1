@@ -12,9 +12,9 @@ public class UpcomingEvent {
     private String date;
     private String category;
 
-    public UpcomingEvent(String title, String date, String category) {
-        this.title = title;
-        this.date = date;
-        this.category = category;
-    }
+    // public UpcomingEvent(String title, String date, String category) {
+    //     this.title = title;
+    //     this.date = date;
+    //     this.category = category;
+    // }
 }

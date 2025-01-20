@@ -47,12 +47,13 @@ public class ViewService {
 
             System.out.println("going to delete event");
             if(currentDate.isAfter(eventDate)){
-                System.out.println("Deleting date on "+eventDate);
+               // System.out.println("Deleting date on "+eventDate);
                 commentService.deletedeventcomments(event.getId());
-                System.out.println("deleted in commentservice");
+              // System.out.println("deleted in commentservice");
                 profileService.removeFavoriteForAll(event.getId()).getBody();
-                System.out.println("deleted in favourite service");
+               // System.out.println("deleted in favourite service");
                 ConductedEvent ce = new ConductedEvent(event.getTitle(),event.getCategory(),event.getLikes(),event.getClub());
+                System.out.println(" is "+ce.getClubName());
                 String res = profileService.addDeletedEvent(ce).getBody();
                 System.out.println(res);
                 deleteEvent(event.getId());

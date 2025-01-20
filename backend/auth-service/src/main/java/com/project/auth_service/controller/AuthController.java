@@ -165,7 +165,7 @@ public class AuthController {
         return  authService.getUserbyId(id);
     }
 
-    @GetMapping("api/auth/getUserByClub/{club}")
+    @GetMapping("/getUserByClub/{club}")
     public ResponseEntity<List<Users>> getAllUsersByClubname(@PathVariable String club){
     
         return ResponseEntity.ok(authService.getAllUsersByClubname(club));

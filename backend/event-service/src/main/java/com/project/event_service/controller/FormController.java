@@ -33,13 +33,14 @@ public class FormController {
             @RequestParam("time") String time,
             @RequestParam("venue") String venue,
             @RequestParam("club") String club,
+            @RequestParam("category") String category,
             @RequestParam("isPublic") boolean isPublic,
             @RequestParam("venueDescription") String venueDescription,
             @RequestParam("image") MultipartFile image) throws IOException {
 
         // Save event and image
         System.out.println("adding");
-        Event event = service.saveEvent(title, description, date, time,venueDescription, venue, club, isPublic, image);
+        Event event = service.saveEvent(title, description, date, time,venueDescription, venue, club,category, isPublic, image);
 
         return ResponseEntity.ok(event);
     }

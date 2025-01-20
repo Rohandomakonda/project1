@@ -1,4 +1,5 @@
-package com.project.event_service.dto;
+package com.project.profile_service.dto;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ConductedEvent {
+public class ConductedEventReq {
     //title,category,likes,clubname
     private String title;
     private String category;
@@ -21,3 +22,4 @@ public class ConductedEvent {
     //     this.clubname = clubname;
     // }
 }
+ 
