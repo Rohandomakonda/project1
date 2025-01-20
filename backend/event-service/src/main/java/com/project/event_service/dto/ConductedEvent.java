@@ -13,4 +13,11 @@ public class ConductedEvent {
     private String category;
     private long likes;
     private String clubname;
-}   
+
+    public ConductedEvent(String title, String category, long likes, String clubname) {
+        this.title = title;
+        this.category = category;
+        this.likes = likes;
+        this.clubname = clubname;
+    }
+}

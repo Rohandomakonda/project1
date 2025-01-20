@@ -3,6 +3,7 @@ package com.project.profile_service.controller;
 
 import java.util.List;
 
+import com.project.profile_service.dto.UpcomingEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,6 +48,13 @@ public class DashBoardController {
     public ResponseEntity<List<ConductedEvent>> getprevten(@PathVariable String clubname) {
         return ResponseEntity.ok(dashboardService.getprevten(clubname));
     }
-    
+    @GetMapping("/average-like-category/{clubname}/{category}")
+    public ResponseEntity<Long> getavglikes(@PathVariable("clubname") String clubname,@PathVariable("category") String category) {
+        return ResponseEntity.ok(dashboardService.getavglikes(clubname,category));
+    }
+    @GetMapping("/upcoming-events/{clubname}")
+    public ResponseEntity<List<UpcomingEvent>> upcomingevents(@PathVariable("clubname") String clubname) {
+        return ResponseEntity.ok(dashboardService.upcomingevents(clubname));
+    }
     
 }

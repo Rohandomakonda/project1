@@ -3,6 +3,7 @@ package com.project.profile_service.dto;
 
 
 import jakarta.persistence.*;
+import jdk.jfr.Category;
 import lombok.Data;
 
 
@@ -21,6 +22,7 @@ public class Event {
     private boolean isPublic;
     private Long likes=0l;
     private Long saves=0l;
+    private String category;
 
     @Lob
     private byte[] image;
@@ -103,6 +105,9 @@ public class Event {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+    public String getCategory(){
+        return category;
     }
 }
 

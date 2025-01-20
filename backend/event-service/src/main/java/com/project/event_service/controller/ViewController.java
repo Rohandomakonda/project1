@@ -120,6 +120,7 @@ public class ViewController {
             return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
         }
     }
+
 }
 
 //event-add -> after time over -> profile-service->call this -> title,category,likes,clubname

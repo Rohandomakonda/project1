@@ -12,5 +12,7 @@ public interface DashboardRepo extends JpaRepository<ConductedEvent,Long>{
     List<ConductedEvent> findByClubName(String club);
 
     List<ConductedEvent> findTop10ByClubnameOrderByIdDesc(String clubname);
-    
+
+    List<ConductedEvent> findByClubNameAndCategory(String clubName, String category);
+
 }

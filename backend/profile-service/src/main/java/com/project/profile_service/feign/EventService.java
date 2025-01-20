@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.project.profile_service.dto.Event;
 import com.project.profile_service.model.ConductedEvent;
 
+import java.util.List;
+
 @FeignClient("event-service")
 public interface EventService {
     @PostMapping("api/events/inclikes/{eventid}")
@@ -29,5 +31,7 @@ public interface EventService {
 
     @GetMapping("api/events/getById/{id}")
     public ResponseEntity<Event> getById(@PathVariable Long id);
+    @GetMapping("api/events/getclubevents/{name}")
+    public ResponseEntity<List<Event>> getClubByName(@PathVariable String name);
 
 }

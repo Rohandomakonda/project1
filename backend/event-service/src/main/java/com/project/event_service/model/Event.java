@@ -121,6 +121,10 @@ public class Event {
     public void setSaves(Long s) {
          this.saves=s;
     }
+
+    public String getCategory() {
+         return category;
+    }
 }
 
 

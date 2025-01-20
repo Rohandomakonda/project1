@@ -1,14 +1,14 @@
 package com.project.profile_service.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import jakarta.persistence.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Getter
+@Setter
 public class ConductedEvent {
     //title,category,likes,clubname
     @Id
@@ -18,4 +18,8 @@ public class ConductedEvent {
     private String category;
     private Long likes;
     private String clubname;
-}   
+
+    public long getLikes() {
+        return likes;
+    }
+}
