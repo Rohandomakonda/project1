@@ -15,6 +15,19 @@ public class ConductedEventReq {
     private long likes;
     private String clubName;
 
+    public String  getTitle() {
+        return title;
+    }
+    public String  getCategory() {
+        return category;
+    }
+    public long   getLikes() {
+        return likes;
+    }
+    public String  getClubName() {
+        return clubName;
+    }
+
     // public ConductedEvent(String title, String category, long likes, String clubname) {
     //     this.title = title;
     //     this.category = category;

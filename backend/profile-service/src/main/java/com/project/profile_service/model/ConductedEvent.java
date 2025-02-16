@@ -22,4 +22,20 @@ public class ConductedEvent {
     public long getLikes() {
         return likes;
     }
+
+    public void setTitle(String t) {
+        title=t;
+    }
+    public void setCategory(String t) {
+        category=t;
+    }
+
+    public void setClubName(String c) {
+        clubName=c;
+    }
+    public void setLikes(long t) {
+        likes=t;
+    }
+
+
 }

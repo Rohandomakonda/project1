@@ -14,6 +14,17 @@ public class ConductedEvent {
     private long likes;
     private String clubName;
 
+    public ConductedEvent(String title, String category, Long likes, String club) {
+        this.title=title;
+        this.category=category;
+        this.likes=likes;
+        this.clubName=club;
+    }
+
+    public String getClubName() {
+        return clubName;
+    }
+
     // public ConductedEvent(String title, String category, long likes, String clubname) {
     //     this.title = title;
     //     this.category = category;

@@ -1,44 +1,113 @@
-import  Balance  from "./Balance";
-import {empolyeesData} from "../../responsive-dashboard-with-dark-mode/constants";
+import Balance from "./Balance";
 import Card from "./Card.jsx";
-import {useState,useEffect} from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-const Stats=({darkMode})=>{
-    const [empolyeesData,setEmpolyeesData] = useState([]);
-    
-    
+import { IoIosPerson, IoIosEyeOff, IoIosPersonAdd } from "react-icons/io";
 
-    
-    useEffect(()=>{
-            axios
-              .get(`http://localhost:8765/api/profile/get-club-total-members/${clubname}`, {
-                headers: { Authorization: `Bearer ${token}` }
-              })
-              .then((response) => {
-                setUsers(response.data);
-                
-                alert("Event saved successfully!");
-              })
-              .catch((error) => {
-                console.error("Error saving event:", error);
-                alert("Failed to save event: " + error.response?.data?.message);
-              });
-          },[])
+const Stats = ({ darkMode }) => {
+  const [employeesData1, setEmployeesData1] = useState([]);
+  const [prevten, setPrevten] = useState([]);
+  const [totalevents,setTotalevents]=useState();
+  const clubname = localStorage.getItem("club");
+  const token = localStorage.getItem("authToken");
+
+  useEffect(() => {
+    if (!clubname || !token) return;
+
+    axios
+      .get(`http://localhost:8765/api/profile/get-club-total-members/${clubname}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setEmployeesData1(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching club members:", error);
+        alert("Failed to fetch data: " + error.response?.data?.message);
+      });
+  }, [clubname, token]);
 
 
-    useEffect(()=>{
-        
-    },[users])
-   
-    return (
-        <div className="flex flex-col md:flex-row gap-5">
-        <div className="flex flex-col gap-4 h-full">
-            {empolyeesData.map((data,index)=>{
-               return (<Card key={index} data={data}/>);
-            })}
-        </div>
-        
-        <Balance darkMode={darkMode} />
-    </div>);
+   useEffect(() => {
+      if (!clubname || !token) return;
+
+      axios
+        .get(`http://localhost:8765/api/profile/get-club-total-events/${clubname}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          setTotalevents(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching club members:", error);
+          alert("Failed to fetch data: " + error.response?.data?.message);
+        });
+    }, [clubname, token]);
+
+
+  useEffect(() => {
+      if (!clubname || !token) return;
+
+      axios
+        .get(`http://localhost:8765/api/profile/previous-ten/${clubname}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          setPrevten(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching club members:", error);
+          alert("Failed to fetch data: " + error.response?.data?.message);
+        });
+    }, [clubname, token]);
+
+let average = 0; // Use let instead of const
+if(prevten.length>0){
+    for (let i = 0; i < prevten.length; i++) {
+        average += prevten[i].likes; // Accumulate likes instead of overwriting
+    }
+
+    average = average / prevten.length; // Use property instead of function
+
+    }
+
+
+
+
+
+
+  const employeesData2 = [
+      {
+        title: "Total members",
+        icon: IoIosPerson,
+        count: employeesData1.length,
+        bgColor: "bg-gray-100",
+      },
+      {
+        title: "Average Likes",
+        icon: IoIosEyeOff,
+        count: average,
+        bgColor: "bg-blue-100",
+      },
+      {
+        title: "Total Events",
+        icon: IoIosPersonAdd,
+        count: totalevents,
+        bgColor: "bg-yellow-100",
+      },
+    ];
+
+  return (
+    <div className="flex flex-col md:flex-row gap-5">
+      <div className="flex flex-col gap-4 h-full">
+        {employeesData2.map((data, index) => (
+          <Card key={index} data={data} />
+        ))}
+      </div>
+
+      <Balance darkMode={darkMode} />
+    </div>
+  );
 };
+
 export default Stats;

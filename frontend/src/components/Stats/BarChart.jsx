@@ -1,11 +1,36 @@
-import Chart from "react-apexcharts";
+import Chart from "react-apexcharts"; // Importing the chart library
+import { useState, useEffect } from "react"; // React hooks for state and lifecycle
+import axios from "axios"; // To make API requests
 
 const BarChart = ({ darkMode }) => {
+    const clubname = localStorage.getItem("club");
+     const token = localStorage.getItem("authToken");
+     const [prevten, setPrevten] = useState([]);
+      useEffect(() => {
+           if (!clubname || !token) return;
+
+           axios
+             .get(`http://localhost:8765/api/profile/previous-ten/${clubname}`, {
+               headers: { Authorization: `Bearer ${token}` },
+             })
+             .then((response) => {
+               setPrevten(response.data);
+             })
+             .catch((error) => {
+               console.error("Error fetching club members:", error);
+               alert("Failed to fetch data: " + error.response?.data?.message);
+             });
+         }, [clubname, token]);
+
+const titles = prevten.map(event => event.title);
+const likes = prevten.map(event => event.likes);
+
+
   const chartConfig = {
     series: [
       {
         name: "Likes",
-        data: [50, 40, 300, 320, 500, 350, 200, 230, 500, 100],
+        data: likes,
       },
     ],
     options: {
@@ -44,18 +69,7 @@ const BarChart = ({ darkMode }) => {
             fontWeight: 400,
           },
         },
-        categories: [
-          "Title1",
-          "Title2",
-          "Title3",
-          "Title4",
-          "Title5",
-          "Title6",
-          "Title7",
-          "Title8",
-          "Title9",
-          "Title10",
-        ],
+        categories: titles,
       },
       yaxis: {
         labels: {

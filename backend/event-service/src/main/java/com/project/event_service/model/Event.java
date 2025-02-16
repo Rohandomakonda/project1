@@ -125,6 +125,10 @@ public class Event {
     public String getCategory() {
          return category;
     }
+
+    public void setCategory(String c) {
+         category=c;
+    }
 }
 
 
