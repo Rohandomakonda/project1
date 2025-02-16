@@ -36,8 +36,8 @@
       <module name="auth-service" options="-parameters" />
       <module name="clubs" options="-parameters" />
       <module name="notification-service" options="-parameters" />
-      <module name="profile-service" options="-parameters" />
-      <module name="service-registry" options="-parameters" />
+      <module name="profile-service" options="" />
+      <module name="service-registry" options="" />
       <module name="view-serivce" options="-parameters" />
     </option>
   </component>

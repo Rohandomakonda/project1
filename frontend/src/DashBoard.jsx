@@ -9,7 +9,7 @@ const DashBoard=()=>{
     const [darkMode,setDarkMode]=useState(true);
     const toggleDarkMode=()=>{
         setDarkMode(!darkMode);
-        };
+    };
     return (<Main>
         <Content>
            <Stats darkMode={darkMode}/> 

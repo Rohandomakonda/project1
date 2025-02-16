@@ -221,7 +221,7 @@ function Event(props) {
         })
         .then(() => {
           setIsSaved(true);
-          alert("Event saved successfully!");
+          //alert("Event saved successfully!");
         })
         .catch((error) => {
           console.error("Error saving event:", error);
