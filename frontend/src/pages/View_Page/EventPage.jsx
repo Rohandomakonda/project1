@@ -6,8 +6,7 @@ import Comments from "../comments/comments";
 function EventPage() {
   const { id } = useParams();
   const eventId = parseInt(id, 10);
-
-  const [imageUrl, setImageUrl] = useState(null);
+  console.log("eventid is "+eventId);
   const [details, setDetails] = useState({}); // ✅ Fix: Initialize as an object
   const token = localStorage.getItem("authToken");
 

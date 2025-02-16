@@ -8,7 +8,7 @@ import lombok.Data;
 public class Users {
     private String name;
 
-    public Users(String n) {
-        name=n;
-    }
+    // public Users(String n) {
+    //     name=n;
+    // }
 }

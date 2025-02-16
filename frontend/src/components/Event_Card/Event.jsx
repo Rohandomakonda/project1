@@ -16,7 +16,7 @@ import ClipPath from "../../assets/svg/ClipPath";
 import Typography from "@mui/material/Typography";
 import CommentIcon from "@mui/icons-material/Comment";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import { LoginSignout } from "../../pages/LoginPage/GoogleCalendarEvent";  
+import { LoginSignout } from "../../pages/LoginPage/GoogleCalendarEvent";
 import {
   benefitIcon1,
   benefitIcon2,
@@ -148,10 +148,10 @@ function Event(props) {
       });
 
     // Fetch whether the event is saved/bookmarked by the user
-     axios
+    axios
       .get(`http://localhost:8765/api/profile/saved-events/issaved`, {
         headers: { Authorization: `Bearer ${token}` },
-        params:{eventTitle : `${props.title}`}
+        params: { eventTitle: `${props.title}` },
       })
       .then((response) => {
         setIsSaved(response.data);
@@ -181,9 +181,13 @@ function Event(props) {
         });
     } else {
       axios
-        .post(`http://localhost:8765/api/profile/favourites/${props.id}`, null, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+        .post(
+          `http://localhost:8765/api/profile/favourites/${props.id}`,
+          null,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
         .then(() => {
           setIsLiked(true);
           alert("Event liked successfully!");
@@ -216,9 +220,13 @@ function Event(props) {
         });
     } else {
       axios
-        .post(`http://localhost:8765/api/profile/saved-events/${props.id}`, null, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
+        .post(
+          `http://localhost:8765/api/profile/saved-events/${props.id}`,
+          null,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
         .then(() => {
           setIsSaved(true);
           //alert("Event saved successfully!");
@@ -273,7 +281,6 @@ function Event(props) {
   const date = props.date?.toString() || "";
   const time = subtractTimeBy530(props.time);
   function addManualEvent() {
-
     console.log(`${date}T${time}:00.000Z`);
     const event = {
       kind: "calendar#event",
@@ -331,9 +338,9 @@ function Event(props) {
     console.log(" event  added ");
   };
 
-  useEffect(()=>{
-    console.log("props like is "+props.likes);
-  },[])
+  useEffect(() => {
+    console.log("props like is " + props.likes);
+  }, []);
 
   return (
     <div
@@ -379,7 +386,12 @@ function Event(props) {
           >
             <h5 className="h2 mb-5 z-3">{props.title}</h5>
             <p className="body-2 mb-3 text-n-3 z-3">Description</p>
-            <p className="body-2 mb-3 text-n-3 z-3">{props.description}</p>
+            <p
+              className="body-2 mb-3 text-n-3 z-3 cursor-pointer"
+              onClick={() => navigate(`/event/${props.id}`)}
+            >
+              read more..
+            </p>
             <p className="body-2 mb-3 text-n-3 z-3">Date: {props.date}</p>
             <p className="body-2 mb-3 text-n-3 z-3">Time: {props.time}</p>
             <p className="body-2 text-n-3 z-3">
@@ -475,7 +487,7 @@ function Event(props) {
                     </Fab>
                   </Box>
 
-                  <Box sx={{ position: "relative", textAlign: "center" }}>
+                  {/* <Box sx={{ position: "relative", textAlign: "center" }}>
                     <Fab
                       onClick={handleComment}
                       sx={{
@@ -485,7 +497,7 @@ function Event(props) {
                     >
                       <CommentIcon />
                     </Fab>
-                  </Box>
+                  </Box> */}
 
                   {/* <Box sx={{ position: "relative", textAlign: "center" }}>
                     <Fab
@@ -498,12 +510,12 @@ function Event(props) {
                       <CalendarTodayIcon />
                     </Fab>
                   </Box> */}
-                     <LoginSignout
+                  <LoginSignout
                     title={props.title}
                     venue={props.venue}
-                    date = {date}
-                    time = {time}
-    />
+                    date={date}
+                    time={time}
+                  />
 
                   {/* Save Button with Save Count */}
                 </Box>

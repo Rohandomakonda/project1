@@ -72,10 +72,6 @@ if(prevten.length>0){
     }
 
 
-
-
-
-
   const employeesData2 = [
       {
         title: "Total members",
