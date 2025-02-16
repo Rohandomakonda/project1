@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
+//@AllArgsConstructor
 public class Users {
     private String name;
 
-    // public Users(String n) {
-    //     name=n;
-    // }
+
+
+     public Users(String n) {
+         name=n;
+     }
 }
