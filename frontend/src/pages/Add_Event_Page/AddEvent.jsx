@@ -15,7 +15,7 @@ import Button from "../../components/Button";
 import { GradientLight } from "../../components/design/Benefits";
 import usePost from "../../customhooks/usePost";
 
-  function Form() {
+function Form() {
   const [details, setDetails] = useState(() => {
     const initialClub = localStorage.getItem("club") || "";
     return {
@@ -24,13 +24,13 @@ import usePost from "../../customhooks/usePost";
       date: "",
       time: "",
       venue: "",
-      club:initialClub, // Set club if role is CLUB_SEC
+      club: initialClub, // Set club if role is CLUB_SEC
       isPublic: true,
       venueDescription: "",
+      category: "",
     };
   });
 
- 
   const club = localStorage.getItem("club"); // Getting club name from localStorage
   const [image, setImage] = useState(null); // For storing the image file
   const navigate = useNavigate();
@@ -51,21 +51,21 @@ import usePost from "../../customhooks/usePost";
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
-  const formData = new FormData();
 
-  // Get the club from localStorage
-  const clubValue = localStorage.getItem("club");
-  
-  // Append form fields
-  Object.entries(details).forEach(([key, value]) => {
-    // For club field, use the value from localStorage
-    if (key === "club") {
-      formData.append("club", clubValue);
-    } else {
-      formData.append(key, value);
-    }
-  });
+    const formData = new FormData();
+
+    // Get the club from localStorage
+    const clubValue = localStorage.getItem("club");
+
+    // Append form fields
+    Object.entries(details).forEach(([key, value]) => {
+      // For club field, use the value from localStorage
+      if (key === "club") {
+        formData.append("club", clubValue);
+      } else {
+        formData.append(key, value);
+      }
+    });
 
     // Append image file
     if (image) {
@@ -101,7 +101,6 @@ import usePost from "../../customhooks/usePost";
           alert("An error occurred while adding the event.");
         }
       });
-     
   };
 
   return (
@@ -285,6 +284,28 @@ import usePost from "../../customhooks/usePost";
                 }}
               />
 
+              <select
+                name="category"
+                value={details.category}
+                onChange={handleChange}
+                required
+                style={{
+                  padding: "0.5rem",
+                  borderRadius: "4px",
+                  border: "1px solid white",
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  color: "white",
+                }}
+              >
+                <option value="" hidden>
+                  Select Category
+                </option>
+                <option value="workshop">workshop</option>
+                <option value="hackathon">hackathon</option>
+                <option value="insights">insights</option>
+                <option value="quiz">quiz</option>
+                <option value="entertainment">entertainment</option>
+              </select>
 
               <input
                 type="file"

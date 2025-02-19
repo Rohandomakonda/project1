@@ -67,4 +67,4 @@ export const mobileAndDesktopOS = [
   })),
 ];
 
-export const valueFormatter = (item) => `${item.value}%`;
+export const valueFormatter = (item) => `${item.value} likes`;

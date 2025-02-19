@@ -15,11 +15,11 @@ const Team=()=>{
         })
         .then((response) => {
           setUsers(response.data);
-          alert("Event saved successfully!");
+          console.log("users fetched");
         })
         .catch((error) => {
           console.error("Error saving event:", error);
-          alert("Failed to save event: " + error.response?.data?.message);
+          alert("Failed to fetch users: " + error.response?.data?.message);
         });
     },[])
 
