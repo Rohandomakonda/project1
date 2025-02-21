@@ -110,8 +110,8 @@ import axios from "axios";
           valueFormatter,
         },
       ]}
-      height={300} // Increased height
-  width={490}  // Optionally set width
+      height={300}
+  width={490}
     />
         </div>;
  };
