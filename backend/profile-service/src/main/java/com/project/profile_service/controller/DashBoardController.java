@@ -51,6 +51,7 @@ public class DashBoardController {
     }
     @GetMapping("/average-like-category/{clubname}/{category}")
     public ResponseEntity<Long> getavglikes(@PathVariable("clubname") String clubname,@PathVariable("category") String category) {
+        System.out.println("calling dashboard service");
         return ResponseEntity.ok(dashboardService.getavglikes(clubname,category));
     }
     @GetMapping("/upcoming-events/{clubname}")

@@ -2,7 +2,9 @@ import Balance from "./Balance";
 import Card from "./Card.jsx";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { IoIosPerson, IoIosEyeOff, IoIosPersonAdd } from "react-icons/io";
+import { IoIosPerson} from "react-icons/io";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 
 const Stats = ({ darkMode }) => {
   const [employeesData1, setEmployeesData1] = useState([]);
@@ -81,13 +83,13 @@ if(prevten.length>0){
       },
       {
         title: "Average Likes",
-        icon: IoIosEyeOff,
-        count: average,
+        icon: FavoriteIcon,
+        count: Math.floor(average),
         bgColor: "bg-blue-100",
       },
       {
         title: "Total Events",
-        icon: IoIosPersonAdd,
+        icon: EventAvailableIcon,
         count: totalevents,
         bgColor: "bg-yellow-100",
       },

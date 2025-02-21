@@ -57,16 +57,20 @@ public class DashboardService {
 
     public Long getavglikes(String clubname, String category) {
         long temp = 0L; // Use 'long' (lowercase) for primitive type
+        System.out.println("clubname and category "+ clubname+" "+category);
+        
+        
         List<ConductedEvent> conductedevents = dashboardRepo.findByClubNameAndCategory(clubname, category);
-
+        System.out.println("size of conducted events "+ conductedevents.size());
         for (ConductedEvent e : conductedevents) {
+            System.out.println("likes is "+e.getLikes());
             temp += e.getLikes();
         }
-        if (!conductedevents.isEmpty()) {
-            temp = temp / conductedevents.size();
-        } else {
-            temp = 0L;
-        }
+        // if (!conductedevents.isEmpty()) {
+        //     temp = temp / conductedevents.size();
+        // } else {
+        //     temp = 0L;
+        // }
 
         return temp;
     }

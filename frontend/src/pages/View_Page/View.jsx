@@ -85,11 +85,11 @@ const View = () => {
         }
       })
       .finally(() => setLoading(false));
-  }, [club]);
+  }, []);
 
   const handleDelete = (id) => {
     const token = localStorage.getItem("authToken");
-
+    
     axios
       .delete(`http://localhost:8765/api/events/event/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
