@@ -43,6 +43,46 @@ const DonutChart = ({ darkMode }) => {
     console.log(chartData);
   },[chartData])
 
+<<<<<<< HEAD
+      const desktopOS = [
+       {
+         label: 'workshop',
+         value: avg[0],
+       },
+       {
+         label: 'hackathon',
+         value: avg[1],
+       },
+       {
+         label: 'insights',
+         value: avg[2],
+       },
+       {
+         label: 'quiz',
+         value: avg[3],
+       },
+       {
+         label: 'entertainment',
+         value: avg[4],
+       },
+     ];
+    return <div className="py-6 bg-white rounded-lg p-5 flex dark:bg-gray-700 ">
+           <PieChart 
+      series={[
+        {
+          data: desktopOS,
+          highlightScope: { fade: 'global', highlight: 'item' },
+          faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
+          valueFormatter,
+        },
+      ]}
+      height={300}
+  width={490}
+    />
+        </div>;
+ };
+ export default DonutChart;
+=======
   return (
     <div className="py-6 bg-white rounded-lg p-5 flex dark:bg-gray-700">
       <PieChart
@@ -62,3 +102,4 @@ const DonutChart = ({ darkMode }) => {
 };
 
 export default DonutChart;
+>>>>>>> 50232dddf4b2b5b56e627bb2ba3413ddd33f6aae

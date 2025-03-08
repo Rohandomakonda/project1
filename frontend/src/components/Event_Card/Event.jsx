@@ -386,12 +386,14 @@ function Event(props) {
           >
             <h5 className="h2 mb-5 z-3">{props.title}</h5>
             <p className="body-2 mb-3 text-n-3 z-3">Description</p>
-            <p
-              className="body-2 mb-3 text-n-3 z-3 cursor-pointer"
-              onClick={() => navigate(`/event/${props.id}`)}
-            >
-              read more..
-            </p>
+
+
+                <p
+                  className="body-2 mb-3 text-n-3 z-3 cursor-pointer test-blue-400"
+                  onClick={() => navigate(`/event/${props.id}`)}
+                >
+                  Read more..
+                </p>
             <p className="body-2 mb-3 text-n-3 z-3">Date: {props.date}</p>
             <p className="body-2 mb-3 text-n-3 z-3">Time: {props.time}</p>
             <p className="body-2 text-n-3 z-3">
