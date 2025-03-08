@@ -39,7 +39,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                             String userId = jwtUtil.extractUserId(authHeader);
                             ServerHttpRequest modifiedRequest = exchange.getRequest()
                                     .mutate()
-                                    .header("X-User-ID", userId)
+                                    .header("X-User-ID", userId) //returning email
                                     .build();
 
                             return chain.filter(exchange.mutate().request(modifiedRequest).build());

@@ -99,26 +99,26 @@ console.log("localstorage set");
       setError(true);
     }
 
-    console.log("going to tokenClient");
-    tokenClient.callback = async (resp) => {
-      if (resp.error) {
-        throw (resp);
-      }
-      await listUpcomingEvents();
-      const { access_token, expires_in } = gapi.client.getToken();
-      console.log("got access_token "+access_token);
-      localStorage.setItem('access_token', access_token);
-      localStorage.setItem('expires_in', expires_in)
-    };
+    // console.log("going to tokenClient");
+    // tokenClient.callback = async (resp) => {
+    //   if (resp.error) {
+    //     throw (resp);
+    //   }
+    //   await listUpcomingEvents();
+    //   const { access_token, expires_in } = gapi.client.getToken();
+    //   console.log("got access_token "+access_token);
+    //   localStorage.setItem('access_token', access_token);
+    //   localStorage.setItem('expires_in', expires_in)
+    // };
 
-    if (!(access_token && expires_in)) {
-      // Prompt the user to select a Google Account and ask for consent to share their data
-      // when establishing a new session.
-      tokenClient.requestAccessToken({ prompt: 'consent' });
-    } else {
-      // Skip display of account chooser and consent dialog for an existing session.
-      tokenClient.requestAccessToken({ prompt: '' });
-    }
+    // if (!(access_token && expires_in)) {
+    //   // Prompt the user to select a Google Account and ask for consent to share their data
+    //   // when establishing a new session.
+    //   tokenClient.requestAccessToken({ prompt: 'consent' });
+    // } else {
+    //   // Skip display of account chooser and consent dialog for an existing session.
+    //   tokenClient.requestAccessToken({ prompt: '' });
+    // }
   };
 
   const handleGoogleError = () => {
