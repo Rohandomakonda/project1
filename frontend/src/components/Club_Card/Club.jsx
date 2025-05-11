@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-//import "./Club.style.css"; // Ensure the CSS file is correctly linked
+
 
 function Club({ id, name, description, image }) {
   const navigate = useNavigate(); // Hook for navigation

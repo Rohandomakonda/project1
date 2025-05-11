@@ -6,23 +6,20 @@ export const LoginSignout = (props) => {
   const [tokenClient, setTokenClient] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const CLIENT_ID = '916755134531-fvnijil1m46cfuu84fgfm9uionutvr66.apps.googleusercontent.com';
-  const API_KEY = 'AIzaSyDEE9dMPEqB-GZG-JFpUWznyLXAcePptOc';
-  const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
-  const SCOPES = 'https://www.googleapis.com/auth/calendar openid email profile';
 
   useEffect(() => {
     const initializeGapi = async () => {
       try {
         await window.gapi.client.init({
-          apiKey: API_KEY,
-          discoveryDocs: [DISCOVERY_DOC],
+          apiKey: `${process.env.API_KEY}`,
+          discoveryDocs: [`${process.env.DISCOVERY_DOC}`],
         });
 
         // Initialize the tokenClient
+        
         const client = window.google.accounts.oauth2.initTokenClient({
-          client_id: CLIENT_ID,
-          scope: SCOPES,
+          client_id: `${process.env.CLIENT_ID}`,
+          scope: `${process.env.SCOPES}`,
           callback: handleTokenResponse,
         });
         setTokenClient(client);

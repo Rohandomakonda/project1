@@ -1,24 +1,20 @@
 server:
-  port: 8086
+  port: ${SERVER_PORT:8086}
 
 spring:
   application:
     name: notification-service
-  cloud:
-    loadbalancer:
-        ribbon:
-          enabled: false
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     consumer:
-      group-id: notification-group
-      auto-offset-reset: earliest
+      group-id: ${SPRING_KAFKA_CONSUMER_GROUP_ID:notification-group}
+      auto-offset-reset: ${SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET:earliest}
 
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: abhiraj.dustakar@gmail.com
-    password: amqyybzvskmumkzm
+    host: ${SPRING_MAIL_HOST:smtp.gmail.com}
+    port: ${SPRING_MAIL_PORT:587}
+    username: ${SPRING_MAIL_USERNAME}
+    password: ${SPRING_MAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -26,15 +22,12 @@ spring:
           starttls:
             enable: true
 
-
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
-    fetch-registry: true
-    register-with-eureka: true
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
+    fetch-registry: ${EUREKA_CLIENT_FETCHREGISTRY:true}
+    register-with-eureka: ${EUREKA_CLIENT_REGISTERWITHEUREKA:true}
   instance:
-        prefer-ip-address: true
-        hostname: localhost
-
-
+    prefer-ip-address: ${EUREKA_INSTANCE_PREFERIPADDRESS:true}
+    hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}

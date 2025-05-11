@@ -31,7 +31,7 @@ const Login = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:8765/api/auth/login",
+        `${process.env.REACT_APP_API_URL}/api/auth/login`,
         credentials
       );
       console.log(response.data.roles);
@@ -75,7 +75,7 @@ console.log("localstorage set");
       
    
       const backendResponse = await axios.post(
-        "http://localhost:8765/api/auth/google",
+        `${process.env.REACT_APP_API_URL}/api/auth/google`,
         { token: response.credential }
       );
       console.log("sent to backend");

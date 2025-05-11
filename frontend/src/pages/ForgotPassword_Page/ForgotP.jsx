@@ -54,7 +54,7 @@ const ForgotP = () => {
   const handleVerifyOtp = async () => {
     try {
       console.log("this is " + email + " " + otp);
-      await axios.post("http://localhost:8080/api/auth/forgotPassword/verify", {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/forgotPassword/verify`, {
         email,
         otp,
       });
@@ -82,7 +82,7 @@ const ForgotP = () => {
     try {
       setLoading(true);
       await axios.post(
-        "http://localhost:8080/api/auth/forgotPassword/changePassword",
+        `${process.env.REACT_APP_API_URL}/api/auth/forgotPassword/changePassword`,
         null, // No request body
         {
           params: {
@@ -105,7 +105,7 @@ const ForgotP = () => {
     alert("hello");
     axios
       .post(
-        "http://localhost:8080/api/auth/forgotPassword",
+        `${process.env.REACT_APP_API_URL}/api/auth/forgotPassword`,
         { email: emailInput },
         {
           headers: {

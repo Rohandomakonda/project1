@@ -1,0 +1,141 @@
+services:
+  eureka-server:
+    image: eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - app-network
+    environment:
+      - eureka.client.fetch-registry=false
+      - eureka.client.register-with-eureka=false
+
+
+  event-postgres:
+    image: postgres:15
+    container_name: event-service-postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=event_service_db
+    volumes:
+      - event-postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  profile-postgres:
+    image: postgres:15
+    container_name: profile-service-postgres
+    restart: always
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=profile_service_db
+    volumes:
+      - profile-postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  auth-postgres:
+    image: postgres:15
+    container_name: auth-service-postgres
+    restart: always
+    ports:
+      - "5433:5432"  # Using different host port to avoid conflicts
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=auth_service_db
+    volumes:
+      - auth-postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  event-service:  # This is the correct service name
+    image: event-service-event-service
+    container_name: event-service
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://event-postgres:5432/event_service_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      - eureka-server
+      - event-postgres
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+  auth-service:
+    build: ./auth-service  # Path to your auth service
+    container_name: auth-service
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://auth-postgres:5432/auth_service_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      - eureka-server
+      - auth-postgres
+    ports:
+      - "8082:8082"
+    networks:
+      - app-network
+
+  api-gateway:
+    image: backend-api-gateway  # Using your existing image
+    container_name: api-gateway
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka/
+    depends_on:
+      - eureka-server
+      - event-service  # Fixed: matching the service name above
+      - auth-service
+    ports:
+      - "8081:8765"
+    networks:
+      - app-network
+
+  notification-service:
+    build: ./notification-service # Using your existing image
+    container_name: notification-service
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka/
+    depends_on:
+      - eureka-server
+    ports:
+      - "8099:8099"
+    networks:
+      - app-network
+
+  profile-service:
+    build: ./profile-service # Using your existing image
+    container_name: profile-service
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://profile-postgres:5432/profile_service_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      - eureka-server
+      - profile-postgres
+    ports:
+      - "8100:8089"
+    networks:
+      - app-network
+  
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  event-postgres-data:
+  auth-postgres-data:
+  profile-postgres-data:

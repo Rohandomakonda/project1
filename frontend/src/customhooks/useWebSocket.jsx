@@ -8,7 +8,7 @@ function useWebSocket() {
 
   useEffect(() => {
     // Create SockJS connection
-    const socket = new SockJS("http://localhost:8086/ws");
+    const socket = new SockJS(`${import.meta.env.REACT_WEBSOCKET_URL}`);
 
     // Create STOMP client and connect
     const stompClient = new Client({

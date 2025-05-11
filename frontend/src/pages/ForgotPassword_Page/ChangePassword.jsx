@@ -24,7 +24,7 @@ const ChangePassword = ({ email }) => {
     try {
       setLoading(true);
       await axios.post(
-        "http://localhost:8080/api/auth/forgotPassword/changePassword",
+        `${process.env.REACT_APP_API_URL}/api/auth/forgotPassword/changePassword`,
         null, // No request body
         {
           params: {

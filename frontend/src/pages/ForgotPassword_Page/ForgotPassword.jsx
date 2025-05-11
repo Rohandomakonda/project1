@@ -47,7 +47,7 @@ const ForgotPassword = ({ setEmail, setStep }) => {
   const handleSendOtp = () => {
     axios
       .post(
-        "http://localhost:8080/api/auth/forgotPassword",
+        `${process.env.REACT_APP_API_URL}/api/auth/forgotPassword`,
         { email: emailInput },
         {
           headers: {

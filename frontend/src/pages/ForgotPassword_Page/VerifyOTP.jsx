@@ -46,7 +46,7 @@ const VerifyOTP = ({ email, setStep }) => {
   const handleVerifyOtp = async () => {
     try {
         console.log("this is "+email+" "+otp);
-      await axios.post("http://localhost:8080/api/auth/forgotPassword/verify", { email, otp });
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/forgotPassword/verify`, { email, otp });
       setStep(3);
       navigate("/");
     } catch (error) {
@@ -55,11 +55,12 @@ const VerifyOTP = ({ email, setStep }) => {
   };
 
   return (
+    <>
       <div className="pt-[12rem] -mt-[5.25rem] flex items-center justify-center min-h-screen w-full">
          <div className="container relative w-full max-w-screen-lg flex justify-center items-center">
            <div className="relative z-1 text-center">
-             <
-               className="block relative p-0.5 bg-no-repeat bg-[length:100%_100%] w-full max-w-[50rem]" // Increased max-width to 50rem
+             <form
+               className= "block relative p-0.5 bg-no-repeat bg-[length:100%_100%] w-full max-w-[50rem]" 
                style={{
                  backgroundImage: `url(${benefits[2].backgroundUrl})`,
                  display: "flex",
@@ -121,6 +122,7 @@ const VerifyOTP = ({ email, setStep }) => {
          </div>
          <GradientLight className="z-1 opacity-20" />
        </div>
+      </>
   );
 };
 

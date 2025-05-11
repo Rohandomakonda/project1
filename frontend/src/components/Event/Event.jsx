@@ -12,7 +12,7 @@ const Event = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8765/api/profile/upcoming-events/${clubName}`, {
+      .get(`${process.env.REACT_APP_API_URL}/api/profile/upcoming-events/${clubName}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {

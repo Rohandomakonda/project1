@@ -43,7 +43,7 @@ const SavedEvents = () => {
 
     // Fetch saved events
     axios
-      .get("http://localhost:8765/api/profile/saved-events/getallsavedevents", {
+      .get(`${process.env.REACT_APP_API_URL}/api/profile/saved-events/getallsavedevents`, {
         headers: { Authorization: `Bearer ${token}` },
         params: { userId },
       })
@@ -68,7 +68,7 @@ const SavedEvents = () => {
     const token = localStorage.getItem("authToken");
 
     axios
-      .delete(`http://localhost:8765/api/profile/saved-events/unsave`, {
+      .delete(`${process.env.REACT_APP_API_URL}/api/profile/saved-events/unsave`, {
         headers: { Authorization: `Bearer ${token}` },
         params: { eventTitle: title }, 
       })

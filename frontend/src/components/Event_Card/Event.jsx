@@ -137,7 +137,7 @@ function Event(props) {
   useEffect(() => {
     // Fetch whether the event is liked by the user
     axios
-      .get(`http://localhost:8765/api/profile/isliked/${props.id}`, {
+      .get(`${process.env.REACT_APP_API_URL}/api/profile/isliked/${props.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -149,7 +149,7 @@ function Event(props) {
 
     // Fetch whether the event is saved/bookmarked by the user
     axios
-      .get(`http://localhost:8765/api/profile/saved-events/issaved`, {
+      .get(`${process.env.REACT_APP_API_URL}/api/profile/saved-events/issaved`, {
         headers: { Authorization: `Bearer ${token}` },
         params: { eventTitle: `${props.title}` },
       })
@@ -166,7 +166,7 @@ function Event(props) {
     e.stopPropagation();
     if (isLiked) {
       axios
-        .delete(`http://localhost:8765/api/profile/favourites/${props.id}`, {
+        .delete(`${process.env.REACT_APP_API_URL}/api/profile/favourites/${props.id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -182,7 +182,7 @@ function Event(props) {
     } else {
       axios
         .post(
-          `http://localhost:8765/api/profile/favourites/${props.id}`,
+          `${process.env.REACT_APP_API_URL}/api/profile/favourites/${props.id}`,
           null,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -204,7 +204,7 @@ function Event(props) {
     e.stopPropagation();
     if (isSaved) {
       axios
-        .delete(`http://localhost:8765/api/profile/saved-events/unsave`, {
+        .delete(`${process.env.REACT_APP_API_URL}/api/profile/saved-events/unsave`, {
           headers: { Authorization: `Bearer ${token}` },
           params: {
             eventTitle: props.title,
@@ -221,7 +221,7 @@ function Event(props) {
     } else {
       axios
         .post(
-          `http://localhost:8765/api/profile/saved-events/${props.id}`,
+          `${process.env.REACT_APP_API_URL}/api/profile/saved-events/${props.id}`,
           null,
           {
             headers: { Authorization: `Bearer ${token}` },

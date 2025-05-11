@@ -15,7 +15,7 @@ const Comments = (props) => {
     setLoading(true);
     console.log("token is "+token)
     axios
-      .get(`http://localhost:8765/api/events/getcomment/${eventId}`, {
+      .get(`${process.env.REACT_APP_API_URL}/api/events/getcomment/${eventId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((resp) => {
@@ -35,7 +35,7 @@ const Comments = (props) => {
     setLoading(true);
     console.log(userId);
     axios
-    .post("http://localhost:8765/api/events/postcomment", null, {
+    .post(`${process.env.REACT_APP_API_URL}/api/events/postcomment`, null, {
       params: {
         msg: newComment,
         user_id: userId,

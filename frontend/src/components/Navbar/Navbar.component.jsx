@@ -57,7 +57,7 @@ function Navbar() {
     try {
       if (token) {
         await axios.post(
-          'http://localhost:8080/api/auth/logout',
+          `${process.env.REACT_APP_API_URL}/api/auth/logout`,
           {},
           {
             headers: {

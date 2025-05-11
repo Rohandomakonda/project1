@@ -24,7 +24,7 @@ function EventPage() {
 
     // ✅ Fetch Event Details
     axios
-      .get(`http://localhost:8765/api/events/getById/${eventId}`, {
+      .get(`${process.env.REACT_APP_API_URL}/api/events/getById/${eventId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {

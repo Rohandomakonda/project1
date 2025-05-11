@@ -1,91 +1,21 @@
-
-
-# spring:
-#   application:
-#     name: api-gateway
-#   cloud:
-#     gateway:
-#       routes:
-#         - id: auth-service
-#           uri: lb://AUTH-SERVICE
-#           predicates:
-#             - Path=/api/auth/**
-
-#         - id: view-serivce
-#           uri: lb://view-serivce
-#           predicates:
-#             - Path=/api/events/public/**
-
-#         - id: view-serivce-protected
-#           uri: lb://view-serivce
-#           predicates:
-#             - Path=/api/events/**
-#           filters:
-#             - name: AuthenticationFilter
-#               args: {}
-
-#         - id: add_recruitments
-#           uri: lb://add_recruitments
-#           predicates:
-#             - Path=/api/add_recruitments/**
-#           filters:
-#             - name: AuthenticationFilter
-#               args: {}
-
-#         - id: add-serivce
-#           uri: lb://addevent-serivce
-#           predicates:
-#             - Path=/api/events/**
-#           filters:
-#             - name: AuthenticationFilter
-#               args: {}
-
-#         - id: profile-service
-#           uri: lb://profile-service
-#           predicates:
-#             - Path=/api/profile/**
-#           filters:
-#             - name: AuthenticationFilter
-#               args: {}
-
-#         - id: clubs
-#           uri: lb://CLUBS
-#           predicates:
-#             - Path=/api/clubs/public/**
-
-#         - id: clubs
-          # uri: lb://CLUBS
-          # predicates:
-          #   - Path=/api/clubs/**
-          # filters:
-          #   - name: AuthenticationFilter
-          #     args: {}
-
-
 spring:
   application:
-    name: api-gateway
+    name: ${SPRING_APPLICATION_NAME:api-gateway}
+
   cloud:
     gateway:
-      # Put CORS configuration before routes
       globalcors:
         add-to-simple-url-handler-mapping: true  # Add this line
         corsConfigurations:
           '[/**]':
             allowedOrigins:
-              - "http://localhost:5173"
+              - ${ALLOWED_ORIGINS:http://localhost:5173}
             allowedMethods:
-              - "GET"
-              - "POST"
-              - "PUT"
-              - "DELETE"
-              - "OPTIONS"
+              - ${ALLOWED_METHODS:GET,POST,PUT,DELETE,OPTIONS}
             allowedHeaders:
-              - "Authorization"
-              - "Content-Type"
-              - "Accept"
+              - ${ALLOWED_HEADERS:Authorization,Content-Type,Accept}
             allowCredentials: true
-            maxAge: 3600
+            maxAge: ${CORS_MAX_AGE:3600}
       routes:
         # Public routes first
         - id: auth-public
@@ -93,13 +23,12 @@ spring:
           predicates:
             - Path=/api/auth/**
           filters:
-            - DedupeResponseHeader=Access-Control-Allow-Origin  # Add this line
+            - DedupeResponseHeader=Access-Control-Allow-Origin
 
         - id: events-public
           uri: lb://event-service
           predicates:
             - Path=/api/events/public/**
-
 
         - id: clubs-public
           uri: lb://CLUBS
@@ -110,40 +39,37 @@ spring:
 
         # Protected routes after
 
-        - id: event-serivce
+        - id: event-service
           uri: lb://event-service
           predicates:
-                   - Path=/api/events/**
+            - Path=/api/events/**
           filters:
             - AuthenticationFilter
             - DedupeResponseHeader=Access-Control-Allow-Origin
 
-        - id: notification-serivce
+        - id: notification-service
           uri: lb://notification-service
           predicates:
-                   - Path=/api/notifications/**
+            - Path=/api/notifications/**
           filters:
             - AuthenticationFilter
-            - DedupeResponseHeader=Access-Control-Allow-Origin 
+            - DedupeResponseHeader=Access-Control-Allow-Origin
 
-        - id: profile-serivce
+        - id: profile-service
           uri: lb://profile-service
           predicates:
-                   - Path=/api/profile/**
+            - Path=/api/profile/**
           filters:
             - AuthenticationFilter
-            - DedupeResponseHeader=Access-Control-Allow-Origin               
-
+            - DedupeResponseHeader=Access-Control-Allow-Origin
 
 eureka:
   instance:
-    hostname: localhost
+    hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
     preferIpAddress: true
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://localhost:8761/eureka/}
 
 jwt:
-  secret: H8hS3jF5kL9qW7nE4zR6tU5yB2vM8pC1
-
-       
+  secret: ${JWT_SECRET:H8hS3jF5kL9qW7nE4zR6tU5yB2vM8pC1}

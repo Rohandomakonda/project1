@@ -10,7 +10,7 @@ const Team=()=>{
     const clubname = localStorage.getItem("club");
     useEffect(()=>{
       axios
-        .get(`http://localhost:8765/api/profile/get-club-total-members/${clubname}`, {
+        .get(`${process.env.REACT_APP_API_URL}/api/profile/get-club-total-members/${clubname}`, {
           headers: { Authorization: `Bearer ${token}` }
         })
         .then((response) => {

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
-//import './Club_Info.css';
 import Event from "../../components/Event_Card/Event.jsx";
 import useGet from "../../customhooks/useGet.jsx";
 

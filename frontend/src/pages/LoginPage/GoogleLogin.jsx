@@ -31,7 +31,7 @@ const GoogleSignIn = () => {
       console.log(response);
 
       const backendResponse = await axios.post(
-        "http://localhost:8765/api/auth/google",
+        `${process.env.REACT_APP_API_URL}/api/auth/google`,
         { 
           token: response.credential,
           // Request calendar access token

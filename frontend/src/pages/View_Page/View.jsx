@@ -53,14 +53,14 @@ const View = () => {
 
     // Fetch events and ongoing events in parallel
     const fetchEvents = axios.get(
-      "http://localhost:8765/api/events/viewevents",
+      `${process.env.REACT_APP_API_URL}/api/events/viewevents`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
 
     const fetchOngoingEvents = axios.get(
-      "http://localhost:8765/api/events/ongoingevents",
+      `${process.env.REACT_APP_API_URL}/api/events/ongoingevents`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -91,7 +91,7 @@ const View = () => {
     const token = localStorage.getItem("authToken");
     
     axios
-      .delete(`http://localhost:8765/api/events/event/${id}`, {
+      .delete(`${process.env.REACT_APP_API_URL}/api/events/event/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {

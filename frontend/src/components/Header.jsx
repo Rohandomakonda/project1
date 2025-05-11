@@ -43,7 +43,7 @@ const Header = () => {
   useEffect(() => {
 
       // Create SockJS connection
-      const socket = new SockJS("http://localhost:8086/ws");
+      const socket = new SockJS(`${import.meta.env.REACT_WEBSOCKET_URL}/ws`);
 
       // Create STOMP client and connect
       const stompClient = new Client({
@@ -140,7 +140,7 @@ const handleLogout = async () => {
     if (token) {
    // Indicate loading state
       await axios.post(
-        "http://localhost:8765/api/auth/logout",
+        `${import.meta.env.VITE_API_URL}/api/auth/logout`,
         {},
         {
           headers: {

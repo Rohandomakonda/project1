@@ -29,8 +29,6 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:5173")
 public class AuthController {
 
-    @Autowired
-    private GoogleTokenValidator googleTokenValidator;
 
     @Autowired
     private JwtTokenProvider tokenProvider;

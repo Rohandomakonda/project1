@@ -5,6 +5,9 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
+
+import jakarta.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +16,11 @@ import java.util.Collections;
 @Service
 public class GoogleTokenValidator {
 
-    @Value("${spring.secruity.oauth2.client.registration.google.client-id}")
-    private String googleClientId;
+    // @Value("${spring.security.oauth2.client.registration.google.client-id}")
+    private String googleClientId = "916755134531-fvnijil1m46cfuu84fgfm9uionutvr66.apps.googleusercontent.com";
+
+   
+
 
     public GoogleIdToken.Payload validateToken(String idToken) throws Exception {
         // Use GsonFactory instead of JacksonFactory

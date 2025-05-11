@@ -47,7 +47,7 @@ const Favourites = () => {
     }
 
     axios
-      .get("http://localhost:8765/api/profile/getFavouritesByUser", {
+      .get(`${process.env.REACT_APP_API_URL}/api/profile/getFavouritesByUser`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -72,7 +72,7 @@ const Favourites = () => {
     const token = localStorage.getItem("authToken");
 
     axios
-      .delete(`http://localhost:8765/api/profile/favourites/${id}`, {
+      .delete(`${process.env.REACT_APP_API_URL}/api/profile/favourites/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {

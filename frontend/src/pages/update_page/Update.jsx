@@ -65,7 +65,7 @@ function Update() {
     const token = localStorage.getItem("authToken");
     console.log(token);
     axios
-      .get(`http://localhost:8765/api/events/getEvent/${id}`, {
+      .get(`${process.env.REACT_APP_API_URL}/api/events/getEvent/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -101,7 +101,7 @@ function Update() {
     const token = localStorage.getItem("authToken");
 
     axios
-      .put(`http://localhost:8765/api/events/updateEvent/${id}`, details, {
+      .put(`${process.env.REACT_APP_API_URL}/api/events/updateEvent/${id}`, details, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((resp) => {

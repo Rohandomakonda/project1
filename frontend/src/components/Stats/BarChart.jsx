@@ -10,7 +10,7 @@ const BarChart = ({ darkMode }) => {
            if (!clubname || !token) return;
 
            axios
-             .get(`http://localhost:8765/api/profile/previous-ten/${clubname}`, {
+             .get(`${process.env.REACT_APP_API_URL}/api/profile/previous-ten/${clubname}`, {
                headers: { Authorization: `Bearer ${token}` },
              })
              .then((response) => {
