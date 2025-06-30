@@ -1,0 +1,43 @@
+{
+  "name": "project1_v2",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^5.15.10",
+    "@mui/material": "^5.16.14",
+    "@mui/x-charts": "^7.23.6",
+    "@react-oauth/google": "^0.12.1",
+    "@stomp/stompjs": "^7.0.0",
+    "apexcharts": "^4.3.0",
+    "axios": "^1.7.9",
+    "buffer": "^6.0.3",
+    "dotenv": "^16.4.7",
+    "lucide-react": "^0.344.0",
+    "react": "^18.3.1",
+    "react-apexcharts": "^1.7.0",
+    "react-dom": "^18.3.1",
+    "react-icons": "^5.4.0",
+    "react-just-parallax": "^3.1.16",
+    "react-router-dom": "^6.28.1",
+    "sockjs-client": "^1.6.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.18",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.2"
+  }
+}
