@@ -6,16 +6,18 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 @Component
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
-    private final WebClient.Builder webClientBuilder;
+
+    private final WebClient webClient;
     private final JwtUtil jwtUtil;
 
-    public AuthenticationFilter(WebClient.Builder webClientBuilder, JwtUtil jwtUtil) {
+    public AuthenticationFilter(JwtUtil jwtUtil) {
         super(Config.class);
-        this.webClientBuilder = webClientBuilder;
         this.jwtUtil = jwtUtil;
+        this.webClient = WebClient.builder().build(); // ✅ clean and safe
     }
 
     @Override
@@ -25,9 +27,9 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 throw new RuntimeException("Missing authorization header");
             }
 
-            String authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
+            String authHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
-            return webClientBuilder.build()
+            return webClient
                     .post()
                     .uri("https://auth-service-ivhs.onrender.com/api/auth/validate")
                     .header(HttpHeaders.AUTHORIZATION, authHeader)
@@ -35,17 +37,20 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     .bodyToMono(Boolean.class)
                     .flatMap(isValid -> {
                         if (isValid) {
-                            // Extract userId and add it to headers
                             String userId = jwtUtil.extractUserId(authHeader);
                             ServerHttpRequest modifiedRequest = exchange.getRequest()
                                     .mutate()
-                                    .header("X-User-ID", userId) //returning email
+                                    .header("X-User-ID", userId)
                                     .build();
 
                             return chain.filter(exchange.mutate().request(modifiedRequest).build());
                         } else {
                             throw new RuntimeException("Invalid token");
                         }
+                    })
+                    .onErrorResume(ex -> {
+                        System.err.println("Auth-service error: " + ex.getMessage());
+                        return Mono.error(new RuntimeException("Auth service unavailable"));
                     });
         };
     }
@@ -53,3 +58,4 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     public static class Config {
     }
 }
+
