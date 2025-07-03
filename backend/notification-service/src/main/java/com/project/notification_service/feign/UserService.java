@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
-@FeignClient(name = "AUTH-SERVICE",url="http://localhost:8090")
+@FeignClient(name = "AUTH-SERVICE",url="https://auth-service-ivhs.onrender.com")
 public interface UserService {
     @GetMapping("/api/auth/users")
     List<User> getAllUsers();

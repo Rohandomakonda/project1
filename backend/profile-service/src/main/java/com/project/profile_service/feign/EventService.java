@@ -12,7 +12,7 @@ import com.project.profile_service.model.ConductedEvent;
 
 import java.util.List;
 
-@FeignClient("event-service")
+@FeignClient(name = "event-service",url= "https://nitw-events.onrender.com")
 public interface EventService {
     @PostMapping("api/events/inclikes/{eventid}")
     public void inclikes(@PathVariable long eventid);
