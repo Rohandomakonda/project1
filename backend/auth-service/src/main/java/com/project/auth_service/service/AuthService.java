@@ -53,6 +53,9 @@ public class AuthService {
     @Autowired
     private GoogleTokenValidator googleTokenValidator;
 
+    @Autowired
+    private EmailService emailService;
+
 
     public AuthService(AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtTokenProvider tokenProvider, AuthRepo repo,OtpService otpservice) {
         this.authenticationManager = authenticationManager;
@@ -160,10 +163,10 @@ public class AuthService {
         user.setVerified(false);
         repo.save(user);
 
-//        String otp = otpservice.generateAndStoreOtp(email);
-//        NotificationRequest req = new NotificationRequest(email,otp);
+       String otp = otpservice.generateAndStoreOtp(email);
+       NotificationRequest req = new NotificationRequest(email,otp);
 
-       // notificationclient.sendEmail(req);
+       emailService.sendOtpEmail(req.getUserEmail(), req.getOtp());
 
 
         return user ;

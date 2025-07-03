@@ -1,6 +1,6 @@
 package com.project.auth_service.service;
 
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
