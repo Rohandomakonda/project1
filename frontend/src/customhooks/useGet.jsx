@@ -12,7 +12,7 @@ const useGet = (endpoint, token) => {
     setLoading(true);
     console.log(`${API_BASE_URL}/${endpoint}`);
     axios
-      .get(`http://localhost:8765/api/${endpoint}`, {
+      .get(`${API_BASE_URL}/${endpoint}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((resp) => {

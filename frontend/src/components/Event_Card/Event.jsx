@@ -151,7 +151,7 @@ function Event(props) {
 
     // Fetch whether the event is saved/bookmarked by the user
     axios
-      .get(`http://localhost:8765/api/profile/saved-events/issaved`, {
+      .get(`${API_BASE_URL}/profile/saved-events/issaved`, {
         headers: { Authorization: `Bearer ${token}` },
         params: { eventTitle: `${props.title}` },
       })
