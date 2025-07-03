@@ -82,7 +82,7 @@ function Form() {
 
     // Post request with axios
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/events/addevents`, formData, {
+      .post(`${import.meta.env.VITE_API_URL}/api/events/addevents`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`, // Authorization header
