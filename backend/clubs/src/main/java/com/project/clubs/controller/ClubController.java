@@ -21,7 +21,6 @@ public class ClubController {
     @GetMapping("/public/viewclubs")
     public ResponseEntity<List<Club>> getAllClubs(){
         List<Club> allClubs = clubService.getAllClubs();
-
         return new ResponseEntity<>(allClubs,HttpStatus.OK);
 
     }
