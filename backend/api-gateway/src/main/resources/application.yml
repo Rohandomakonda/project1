@@ -33,13 +33,13 @@ spring:
             - DedupeResponseHeader=Access-Control-Allow-Origin  # Add this line
 
         - id: events-public
-          uri: lb://event-service
+          uri: https://nitw-events.onrender.com
           predicates:
             - Path=/api/events/public/**
 
 
         - id: clubs-public
-          uri: lb://CLUBS
+          uri: https://club-service-mrv5.onrender.com
           predicates:
             - Path=/api/clubs/public/**
           filters:
@@ -48,7 +48,7 @@ spring:
         # Protected routes after
 
         - id: event-serivce
-          uri: lb://event-service
+          uri: https://nitw-events.onrender.com
           predicates:
                    - Path=/api/events/**
           filters:
@@ -56,7 +56,7 @@ spring:
             - DedupeResponseHeader=Access-Control-Allow-Origin
 
         - id: notification-serivce
-          uri: lb://notification-service
+          uri: https://notification-service-7dvl.onrender.com
           predicates:
                    - Path=/api/notifications/**
           filters:
@@ -64,7 +64,7 @@ spring:
             - DedupeResponseHeader=Access-Control-Allow-Origin 
 
         - id: profile-serivce
-          uri: lb://profile-service
+          uri: https://profile-service-vx93.onrender.com
           predicates:
                    - Path=/api/profile/**
           filters:
