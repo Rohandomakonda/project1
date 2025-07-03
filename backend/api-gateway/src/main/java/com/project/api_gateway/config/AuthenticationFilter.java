@@ -29,7 +29,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
             return webClientBuilder.build()
                     .post()
-                    .uri("lb://auth-service/api/auth/validate")
+                    .uri("https://auth-service-ivhs.onrender.com/api/auth/validate")
                     .header(HttpHeaders.AUTHORIZATION, authHeader)
                     .retrieve()
                     .bodyToMono(Boolean.class)

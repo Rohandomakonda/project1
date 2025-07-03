@@ -26,7 +26,7 @@ spring:
       routes:
         # Public routes first
         - id: auth-public
-          uri: lb://AUTH-SERVICE
+          uri:  https://auth-service-ivhs.onrender.com
           predicates:
             - Path=/api/auth/**
           filters:
