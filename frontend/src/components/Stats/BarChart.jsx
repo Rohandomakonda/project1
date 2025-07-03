@@ -6,11 +6,12 @@ const BarChart = ({ darkMode }) => {
     const clubname = localStorage.getItem("club");
      const token = localStorage.getItem("authToken");
      const [prevten, setPrevten] = useState([]);
+     const API_BASE_URL = import.meta.env.VITE_API
       useEffect(() => {
            if (!clubname || !token) return;
 
            axios
-             .get(`http://localhost:8765/api/profile/previous-ten/${clubname}`, {
+             .get(`${API_BASE_URL}/profile/previous-ten/${clubname}`, {
                headers: { Authorization: `Bearer ${token}` },
              })
              .then((response) => {

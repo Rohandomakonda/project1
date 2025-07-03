@@ -12,12 +12,13 @@ const Stats = ({ darkMode }) => {
   const [totalevents,setTotalevents]=useState();
   const clubname = localStorage.getItem("club");
   const token = localStorage.getItem("authToken");
+  const API_BASE_URL = import.meta.env.VITE_API
 
   useEffect(() => {
     if (!clubname || !token) return;
 
     axios
-      .get(`http://localhost:8765/api/profile/get-club-total-members/${clubname}`, {
+      .get(`${API_BASE_URL}/profile/get-club-total-members/${clubname}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -34,7 +35,7 @@ const Stats = ({ darkMode }) => {
       if (!clubname || !token) return;
 
       axios
-        .get(`http://localhost:8765/api/profile/get-club-total-events/${clubname}`, {
+        .get(`${API_BASE_URL}/profile/get-club-total-events/${clubname}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
@@ -51,7 +52,7 @@ const Stats = ({ darkMode }) => {
       if (!clubname || !token) return;
 
       axios
-        .get(`http://localhost:8765/api/profile/previous-ten/${clubname}`, {
+        .get(`${API_BASE_URL}/profile/previous-ten/${clubname}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {

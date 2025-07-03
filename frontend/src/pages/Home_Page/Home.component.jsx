@@ -17,6 +17,7 @@ function Home() {
   } = useGet("events/public/events", null);
   const parallaxRef = useRef(null);
   const navigate = useNavigate();
+  const API_BASE_URL = import.meta.env.VITE_API
 
   function handleDelete(e) {
     e.preventDefault();

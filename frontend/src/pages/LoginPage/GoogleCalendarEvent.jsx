@@ -5,9 +5,10 @@ export const LoginSignout = (props) => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [tokenClient, setTokenClient] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const API_BASE_URL = import.meta.env.VITE_API
 
-  const CLIENT_ID = '916755134531-fvnijil1m46cfuu84fgfm9uionutvr66.apps.googleusercontent.com';
-  const API_KEY = 'AIzaSyDEE9dMPEqB-GZG-JFpUWznyLXAcePptOc';
+  const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT;
+  const API_KEY = import.meta.env.VITE_GOOGLE_APIKEY;
   const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
   const SCOPES = 'https://www.googleapis.com/auth/calendar openid email profile';
 

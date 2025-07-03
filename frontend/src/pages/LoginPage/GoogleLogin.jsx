@@ -24,6 +24,8 @@ import {useNavigate} from "react-router-dom";
 
 const GoogleSignIn = () => {
     const navigate=useNavigate();
+    const API_BASE_URL = import.meta.env.VITE_API;
+    const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT;
   const handleGoogleSuccess = async (response) => {
     try {
       //setLoading(true);
@@ -31,7 +33,7 @@ const GoogleSignIn = () => {
       console.log(response);
 
       const backendResponse = await axios.post(
-        "http://localhost:8765/api/auth/google",
+        `${API_BASE_URL}/auth/google`,
         { 
           token: response.credential,
           // Request calendar access token
@@ -65,7 +67,7 @@ const GoogleSignIn = () => {
 
   return (
     <div>
-      <GoogleOAuthProvider clientId="916755134531-fvnijil1m46cfuu84fgfm9uionutvr66.apps.googleusercontent.com">
+      <GoogleOAuthProvider clientId={CLIENT_ID}>
         <GoogleLogin
           onSuccess={(credentialResponse) => {
             handleGoogleSuccess(credentialResponse);

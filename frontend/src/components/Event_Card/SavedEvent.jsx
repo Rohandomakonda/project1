@@ -61,6 +61,7 @@ function SavedEvent(props) {
   const userId = localStorage.getItem("userId");
   const storedRoles = localStorage.getItem("roles");
   const roles = storedRoles ? JSON.parse(storedRoles) : [];
+  const API_BASE_URL = import.meta.env.VITE_API
 
   console.log("event card lopala roles " + roles);
 

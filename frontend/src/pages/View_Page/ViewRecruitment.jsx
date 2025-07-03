@@ -32,6 +32,7 @@ const parallaxRef=useRef(null);
   const roles = storedRoles ? JSON.parse(storedRoles) : [];
   const club = localStorage.getItem("club");
    const token = localStorage.getItem("authToken");
+   const API_BASE_URL = import.meta.env.VITE_API;
 
   useEffect(() => {
     setLoading(true);
@@ -45,7 +46,7 @@ const parallaxRef=useRef(null);
     }
 
     axios
-      .get("http://localhost:8080/api/getAllRecruitments", {
+      .get(`${API_BASE_URL}/recruitments/getAllRecruitments`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((allRecruitmentsResp) => {
@@ -67,7 +68,7 @@ const parallaxRef=useRef(null);
 
 
     axios
-      .delete(`http://localhost:8080/deleteRecruitment/${id}`, {
+      .delete(`${API_BASE_URL}/recruitments/deleteRecruitment/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {

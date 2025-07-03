@@ -5,10 +5,11 @@ import { unstable_useEnhancedEffect } from '@mui/material';
 
 function useWebSocket() {
   const [unseenEventsCount, setUnseenEventsCount] = useState(0);
+  const API_BASE_URL = import.meta.env.VITE_API_WS
 
   useEffect(() => {
     // Create SockJS connection
-    const socket = new SockJS("http://localhost:8086/ws");
+    const socket = new SockJS(`${API_BASE_URL}`);
 
     // Create STOMP client and connect
     const stompClient = new Client({

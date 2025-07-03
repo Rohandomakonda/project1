@@ -34,6 +34,7 @@ const Favourites = () => {
   const userId = localStorage.getItem("userId");
   //const club = localStorage.getItem("club");
   const parallaxRef = useRef(null);
+  const API_BASE_URL = import.meta.env.VITE_API;
 
   useEffect(() => {
     setLoading(true);
@@ -47,7 +48,7 @@ const Favourites = () => {
     }
 
     axios
-      .get("http://localhost:8765/api/profile/getFavouritesByUser", {
+      .get(`${API_BASE_URL}/profile/getFavouritesByUser`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -72,7 +73,7 @@ const Favourites = () => {
     const token = localStorage.getItem("authToken");
 
     axios
-      .delete(`http://localhost:8765/api/profile/favourites/${id}`, {
+      .delete(`${API_BASE_URL}/profile/favourites/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {

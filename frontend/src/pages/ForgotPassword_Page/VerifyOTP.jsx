@@ -41,12 +41,13 @@ const VerifyOTP = ({ email, setStep }) => {
     const [snackbarOpen,setSnackbarOpen] = useState(false);
     const [error,setError] = useState(false);
        const parallaxRef=useRef(null);
+       const API_BASE_URL = import.meta.env.VITE_API
 
 
   const handleVerifyOtp = async () => {
     try {
         console.log("this is "+email+" "+otp);
-      await axios.post("http://localhost:8080/api/auth/forgotPassword/verify", { email, otp });
+      await axios.post(`${API_BASE_URL}/auth/forgotPassword/verify`, { email, otp });
       setStep(3);
       navigate("/");
     } catch (error) {
@@ -55,10 +56,11 @@ const VerifyOTP = ({ email, setStep }) => {
   };
 
   return (
+    
       <div className="pt-[12rem] -mt-[5.25rem] flex items-center justify-center min-h-screen w-full">
          <div className="container relative w-full max-w-screen-lg flex justify-center items-center">
            <div className="relative z-1 text-center">
-             <
+             < form
                className="block relative p-0.5 bg-no-repeat bg-[length:100%_100%] w-full max-w-[50rem]" // Increased max-width to 50rem
                style={{
                  backgroundImage: `url(${benefits[2].backgroundUrl})`,
@@ -121,6 +123,7 @@ const VerifyOTP = ({ email, setStep }) => {
          </div>
          <GradientLight className="z-1 opacity-20" />
        </div>
+       
   );
 };
 

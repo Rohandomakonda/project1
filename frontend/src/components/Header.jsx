@@ -39,6 +39,7 @@ const Header = () => {
   const [error, setError] = useState(false); // Add this
  const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const API_BASE_URL = import.meta.env.VITE_API
 
   useEffect(() => {
 
@@ -140,7 +141,7 @@ const handleLogout = async () => {
     if (token) {
    // Indicate loading state
       await axios.post(
-        "http://localhost:8765/api/auth/logout",
+        `${API_BASE_URL}/auth/logout`,
         {},
         {
           headers: {

@@ -8,6 +8,7 @@ const DonutChart = ({ darkMode }) => {
   const [avg, setAvg] = useState({});
   const clubname = localStorage.getItem("club");
   const token = localStorage.getItem("authToken");
+  const API_BASE_URL = import.meta.env.VITE_API
 
   useEffect(() => {
     if (!clubname || !token) return;
@@ -15,7 +16,7 @@ const DonutChart = ({ darkMode }) => {
     const categories = ["workshop", "hackathon", "insights", "quiz", "entertainment"];
     const requests = categories.map((category) =>
       axios
-        .get(`http://localhost:8765/api/profile/average-like-category/${clubname}/${category}`, {
+        .get(`${API_BASE_URL}/profile/average-like-category/${clubname}/${category}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => ({ [category]: response.data }))

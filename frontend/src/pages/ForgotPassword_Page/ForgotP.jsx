@@ -50,11 +50,12 @@ const ForgotP = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
+  const API_BASE_URL = import.meta.env.VITE_API
 
   const handleVerifyOtp = async () => {
     try {
       console.log("this is " + email + " " + otp);
-      await axios.post("http://localhost:8080/api/auth/forgotPassword/verify", {
+      await axios.post(`${API_BASE_URL}/auth/forgotPassword/verify`, {
         email,
         otp,
       });
@@ -82,7 +83,7 @@ const ForgotP = () => {
     try {
       setLoading(true);
       await axios.post(
-        "http://localhost:8080/api/auth/forgotPassword/changePassword",
+        `${API_BASE_URL}/auth/forgotPassword/changePassword`,
         null, // No request body
         {
           params: {
@@ -105,7 +106,7 @@ const ForgotP = () => {
     alert("hello");
     axios
       .post(
-        "http://localhost:8080/api/auth/forgotPassword",
+        `${API_BASE_URL}/auth/forgotPassword`,
         { email: emailInput },
         {
           headers: {

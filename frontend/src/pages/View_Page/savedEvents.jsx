@@ -28,6 +28,7 @@ const SavedEvents = () => {
   const [searchTerm, setSearchTerm] = useState(""); // Search term
   const [roles, setRoles] = useState([]); // User roles
   const parallaxRef = useRef(null);
+  const API_BASE_URL = import.meta.env.VITE_API;
 
   const userId = localStorage.getItem("userId");
 
@@ -43,7 +44,7 @@ const SavedEvents = () => {
 
     // Fetch saved events
     axios
-      .get("http://localhost:8765/api/profile/saved-events/getallsavedevents", {
+      .get(`${API_BASE_URL}/profile/saved-events/getallsavedevents`, {
         headers: { Authorization: `Bearer ${token}` },
         params: { userId },
       })
@@ -68,7 +69,7 @@ const SavedEvents = () => {
     const token = localStorage.getItem("authToken");
 
     axios
-      .delete(`http://localhost:8765/api/profile/saved-events/unsave`, {
+      .delete(`${API_BASE_URL}/profile/saved-events/unsave`, {
         headers: { Authorization: `Bearer ${token}` },
         params: { eventTitle: title }, 
       })

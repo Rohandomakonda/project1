@@ -43,11 +43,12 @@ const ForgotPassword = ({ setEmail, setStep }) => {
   const [error, setError] = useState(false);
   const parallaxRef = useRef(null);
   const [otp, setOtp] = useState("");
+  const API_BASE_URL = import.meta.env.VITE_API
 
   const handleSendOtp = () => {
     axios
       .post(
-        "http://localhost:8080/api/auth/forgotPassword",
+        `${API_BASE_URL}/auth/forgotPassword`,
         { email: emailInput },
         {
           headers: {

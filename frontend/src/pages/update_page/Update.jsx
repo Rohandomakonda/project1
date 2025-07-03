@@ -46,7 +46,7 @@ function Update() {
   const navigate = useNavigate(); // For navigation after update
   const [loading, setLoading] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false); // Manage Snackbar visibility
-
+  const API_BASE_URL = import.meta.env.VITE_API;
     const [error,setError] = useState(false);
 
   const [details, setDetails] = useState({
@@ -65,7 +65,7 @@ function Update() {
     const token = localStorage.getItem("authToken");
     console.log(token);
     axios
-      .get(`http://localhost:8765/api/events/getEvent/${id}`, {
+      .get(`${API_BASE_URL}/events/getEvent/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -101,7 +101,7 @@ function Update() {
     const token = localStorage.getItem("authToken");
 
     axios
-      .put(`http://localhost:8765/api/events/updateEvent/${id}`, details, {
+      .put(`${API_BASE_URL}/events/updateEvent/${id}`, details, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((resp) => {
