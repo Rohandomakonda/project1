@@ -14,13 +14,21 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
+        </processorPath>
+        <module name="notification-service" />
+        <module name="auth-service" />
+      </profile>
+      <profile name="Annotation profile for profile-service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
         <module name="clubs" />
         <module name="add_recruitments" />
-        <module name="auth-service" />
         <module name="profile-service" />
-        <module name="notification-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -36,8 +44,8 @@
       <module name="auth-service" options="-parameters" />
       <module name="clubs" options="-parameters" />
       <module name="notification-service" options="-parameters" />
-      <module name="profile-service" options="" />
-      <module name="service-registry" options="" />
+      <module name="profile-service" options="-parameters" />
+      <module name="service-registry" options="-parameters" />
       <module name="view-serivce" options="-parameters" />
     </option>
   </component>
