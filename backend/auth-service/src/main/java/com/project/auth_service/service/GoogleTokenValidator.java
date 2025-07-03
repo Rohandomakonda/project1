@@ -13,7 +13,7 @@ import java.util.Collections;
 @Service
 public class GoogleTokenValidator {
 
-    @Value("${spring.secruity.oauth2.client.registration.google.client-id}")
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String googleClientId;
 
     public GoogleIdToken.Payload validateToken(String idToken) throws Exception {
