@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.project.profile_service.dto.Users;
 
-@FeignClient(name="AUTH-SERVICE")
+@FeignClient(name="AUTH-SERVICE",url="https://auth-service-ivhs.onrender.com")
 public interface UserContext {
     @GetMapping("api/auth/getUserId/{username}")
     public ResponseEntity<Long> getUserId(@PathVariable String username);

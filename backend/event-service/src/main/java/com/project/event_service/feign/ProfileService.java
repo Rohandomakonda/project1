@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.project.event_service.dto.ConductedEvent;
 
-@FeignClient(name = "PROFILE-SERVICE")
+@FeignClient(name = "PROFILE-SERVICE",url="https://profile-service-vx93.onrender.com")
 public interface ProfileService {
     @DeleteMapping("api/profile/favourites/remove/{eventId}")
     public ResponseEntity<Void> removeFavoriteForAll(@PathVariable Long eventId);
