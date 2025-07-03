@@ -16,7 +16,6 @@ import com.project.event_service.model.Event;
 import com.project.event_service.service.FormService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("api/events")
 public class FormController {
 

@@ -14,7 +14,6 @@ import com.project.auth_service.service.GoogleCalendarService;
 
 @RestController
 @RequestMapping("/api/auth/calendar")
-@CrossOrigin(origins = "http://localhost:5173")
 public class CalendarController {
     
     @Autowired
