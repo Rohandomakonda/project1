@@ -63,4 +63,4 @@ const DonutChart = ({ darkMode }) => {
 };
 
 export default DonutChart;
->>>>>>> 50232dddf4b2b5b56e627bb2ba3413ddd33f6aae
+
