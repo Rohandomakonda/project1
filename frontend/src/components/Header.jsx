@@ -40,11 +40,12 @@ const Header = () => {
  const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const API_BASE_URL = import.meta.env.VITE_API
+  const WEBSOCK = import.meta.env.VITE_API_WS
 
   useEffect(() => {
 
       // Create SockJS connection
-      const socket = new SockJS("http://localhost:8086/ws");
+      const socket = new SockJS(`${WEBSOCK}`);
 
       // Create STOMP client and connect
       const stompClient = new Client({
