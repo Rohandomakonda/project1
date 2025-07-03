@@ -32,6 +32,7 @@ const View = () => {
   const roles = storedRoles ? JSON.parse(storedRoles) : [];
   const club = localStorage.getItem("club");
   const parallaxRef = useRef(null);
+  const API_BASE_URL = import.meta.env.VITE_API;
   // const [isBlurred, setIsBlurred] = useState(false);
   //   useEffect(() => {
   //     if (window.location.pathname === '/addEvent') {
@@ -53,14 +54,14 @@ const View = () => {
 
     // Fetch events and ongoing events in parallel
     const fetchEvents = axios.get(
-      "http://localhost:8765/api/events/viewevents",
+      `${API_BASE_URL}/events/viewevents`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
 
     const fetchOngoingEvents = axios.get(
-      "http://localhost:8765/api/events/ongoingevents",
+      `${API_BASE_URL}/events/ongoingevents`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -91,7 +92,7 @@ const View = () => {
     const token = localStorage.getItem("authToken");
     
     axios
-      .delete(`http://localhost:8765/api/events/event/${id}`, {
+      .delete(`${API_BASE_URL}/events/event/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {

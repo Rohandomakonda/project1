@@ -10,6 +10,7 @@ export default function FadeMenu({setIsAuthenticated,setRoles}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
+  const API_BASE_URL = import.meta.env.VITE_API
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -23,7 +24,7 @@ export default function FadeMenu({setIsAuthenticated,setRoles}) {
       try {
         if (token) {
           await axios.post(
-            'http://localhost:8080/api/auth/logout',
+            `${API_BASE_URL}/auth/logout`,
             {},
             {
               headers: {

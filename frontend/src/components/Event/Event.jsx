@@ -9,10 +9,11 @@ const Event = () => {
   const [error, setError] = useState(null);
   const token = localStorage.getItem("authToken");
   const clubName = localStorage.getItem("club");
+  const API_BASE_URL = import.meta.env.VITE_API
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8765/api/profile/upcoming-events/${clubName}`, {
+      .get(`${API_BASE_URL}/profile/upcoming-events/${clubName}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {

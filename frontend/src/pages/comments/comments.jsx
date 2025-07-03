@@ -11,11 +11,12 @@ const Comments = (props) => {
   const token = localStorage.getItem("authToken");
   const userId = localStorage.getItem("userId");
   const name = localStorage.getItem("name");
+  const API_BASE_URL = import.meta.env.VITE_API
   useEffect(() => {
     setLoading(true);
     console.log("token is "+token)
     axios
-      .get(`http://localhost:8765/api/events/getcomment/${eventId}`, {
+      .get(`${API_BASE_URL}/events/getcomment/${eventId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((resp) => {
@@ -35,7 +36,7 @@ const Comments = (props) => {
     setLoading(true);
     console.log(userId);
     axios
-    .post("http://localhost:8765/api/events/postcomment", null, {
+    .post(`${API_BASE_URL}/events/postcomment`, null, {
       params: {
         msg: newComment,
         user_id: userId,

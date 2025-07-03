@@ -8,7 +8,8 @@ import AlertTitle from '@mui/material/AlertTitle';
 function UpdateRec() {
   const { id } = useParams(); // Extract id from URL
   const navigate = useNavigate(); // For navigation after update
-
+  const API_BASE_URL = import.meta.env.VITE_API;
+ 
   // State to hold form details
   const [details, setDetails] = useState({
     title: '',
@@ -24,7 +25,7 @@ function UpdateRec() {
   // Fetch event details on component mount
   useEffect(() => {
     const token = localStorage.getItem("authToken");
-    axios.get(`http://localhost:8080/getRecruitment/${id}`, {
+    axios.get(`${API_BASE_URL}/recruitments/getRecruitment/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((response) => {
@@ -50,7 +51,7 @@ function UpdateRec() {
     e.preventDefault(); // Prevents default form submit behavior
     const token = localStorage.getItem("authToken");
 
-    axios.put(`http://localhost:8080/updateRecruitment/${id}`, details, {
+    axios.put(`${API_BASE_URL}/recruitments/updateRecruitment/${id}`, details, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((resp) => {

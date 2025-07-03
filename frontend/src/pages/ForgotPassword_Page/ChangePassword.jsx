@@ -8,6 +8,7 @@ const ChangePassword = ({ email }) => {
   const [error, setError] = useState(""); // Track error message
   const [loading, setLoading] = useState(false); // Track loading state
   const navigate = useNavigate();
+  const API_BASE_URL = import.meta.env.VITE_API
 
   const handleChangePassword = async () => {
     setError(""); // Reset error on every submit attempt
@@ -24,7 +25,7 @@ const ChangePassword = ({ email }) => {
     try {
       setLoading(true);
       await axios.post(
-        "http://localhost:8080/api/auth/forgotPassword/changePassword",
+        `${API_BASE_URL}/auth/forgotPassword/changePassword`,
         null, // No request body
         {
           params: {

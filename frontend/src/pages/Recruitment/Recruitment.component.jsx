@@ -52,6 +52,8 @@ function Recruitment() {
   const [snackbarOpen,setSnackbarOpen] = useState(false);
     const [error,setError] = useState(false);
      const token = localStorage.getItem("authToken");
+     const API_BASE_URL = import.meta.env.VITE_API;
+   
   useEffect(() => {
     // Retrieve roles and set the current role
     const storedRoles = localStorage.getItem("roles");
@@ -88,7 +90,7 @@ console.log(details);
     }
 
     axios
-      .post("http://localhost:8080/api/postRecruitment", formData, {
+      .post(`${API_BASE_URL}/recruitments/postRecruitment`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,

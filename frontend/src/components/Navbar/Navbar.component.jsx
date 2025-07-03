@@ -14,6 +14,7 @@ function Navbar() {
   const [error,setError] = useState(false);
   const [loading,setLoading] = useState(false);
   const [snackbarOpen,setSnackbarOpen] = useState(false);
+  const API_BASE_URL = import.meta.env.VITE_API
 
   const token = localStorage.getItem('authToken');
   const name = localStorage.getItem('name');
@@ -57,7 +58,7 @@ function Navbar() {
     try {
       if (token) {
         await axios.post(
-          'http://localhost:8080/api/auth/logout',
+          `${API_BASE_URL}/api/auth/logout`,
           {},
           {
             headers: {

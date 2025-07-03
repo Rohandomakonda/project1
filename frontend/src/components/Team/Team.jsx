@@ -8,9 +8,10 @@ const Team=()=>{
     const [users,setUsers] = useState([]);
     const token = localStorage.getItem("authToken");
     const clubname = localStorage.getItem("club");
+    const API_BASE_URL = import.meta.env.VITE_API
     useEffect(()=>{
       axios
-        .get(`http://localhost:8765/api/profile/get-club-total-members/${clubname}`, {
+        .get(`${API_BASE_URL}/profile/get-club-total-members/${clubname}`, {
           headers: { Authorization: `Bearer ${token}` }
         })
         .then((response) => {

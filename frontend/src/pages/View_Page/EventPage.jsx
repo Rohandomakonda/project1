@@ -13,7 +13,7 @@ function EventPage() {
   console.log("eventid is "+eventId);
   const [details, setDetails] = useState({}); // ✅ Fix: Initialize as an object
   const token = localStorage.getItem("authToken");
-
+  const API_BASE_URL = import.meta.env.VITE_API;
  
 
   useEffect(() => {
@@ -24,7 +24,7 @@ function EventPage() {
 
     // ✅ Fetch Event Details
     axios
-      .get(`http://localhost:8765/api/events/getById/${eventId}`, {
+      .get(`${API_BASE_URL}/events/getById/${eventId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {

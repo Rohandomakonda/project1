@@ -24,6 +24,8 @@ const Login = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [error, setError] = useState(false);
   const parallaxRef = useRef(null);
+  const API_BASE_URL = import.meta.env.VITE_API;
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,7 +33,7 @@ const Login = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:8765/api/auth/login",
+        `${API_BASE_URL}/auth/login`,
         credentials
       );
       console.log(response.data.roles);
@@ -75,7 +77,7 @@ console.log("localstorage set");
       
    
       const backendResponse = await axios.post(
-        "http://localhost:8765/api/auth/google",
+        `${API_BASE_URL}/auth/google`,
         { token: response.credential }
       );
       console.log("sent to backend");

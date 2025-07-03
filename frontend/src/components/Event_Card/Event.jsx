@@ -66,13 +66,15 @@ function Event(props) {
   const roles = storedRoles ? JSON.parse(storedRoles) : [];
 
   const token = localStorage.getItem("authToken");
+  const API_BASE_URL = import.meta.env.VITE_API
+  
 
   const gapi = window.gapi;
   const google = window.google;
 
   const CLIENT_ID =
-    "916755134531-fvnijil1m46cfuu84fgfm9uionutvr66.apps.googleusercontent.com";
-  const API_KEY = "AIzaSyDEE9dMPEqB-GZG-JFpUWznyLXAcePptOc";
+  import.meta.env.VITE_GOOGLE_CLIENT;
+  const API_KEY = import.meta.env.VITE_GOOGLE_APIKEY;
   const DISCOVERY_DOC =
     "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest";
   const SCOPES =
@@ -137,7 +139,7 @@ function Event(props) {
   useEffect(() => {
     // Fetch whether the event is liked by the user
     axios
-      .get(`http://localhost:8765/api/profile/isliked/${props.id}`, {
+      .get(`${API_BASE_URL}/profile/isliked/${props.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -166,7 +168,7 @@ function Event(props) {
     e.stopPropagation();
     if (isLiked) {
       axios
-        .delete(`http://localhost:8765/api/profile/favourites/${props.id}`, {
+        .delete(`${API_BASE_URL}/profile/favourites/${props.id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -182,7 +184,7 @@ function Event(props) {
     } else {
       axios
         .post(
-          `http://localhost:8765/api/profile/favourites/${props.id}`,
+          `${API_BASE_URL}/profile/favourites/${props.id}`,
           null,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -204,7 +206,7 @@ function Event(props) {
     e.stopPropagation();
     if (isSaved) {
       axios
-        .delete(`http://localhost:8765/api/profile/saved-events/unsave`, {
+        .delete(`${API_BASE_URL}/profile/saved-events/unsave`, {
           headers: { Authorization: `Bearer ${token}` },
           params: {
             eventTitle: props.title,
@@ -221,7 +223,7 @@ function Event(props) {
     } else {
       axios
         .post(
-          `http://localhost:8765/api/profile/saved-events/${props.id}`,
+          `${API_BASE_URL}/profile/saved-events/${props.id}`,
           null,
           {
             headers: { Authorization: `Bearer ${token}` },

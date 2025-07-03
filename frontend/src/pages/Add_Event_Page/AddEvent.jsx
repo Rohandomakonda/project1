@@ -44,6 +44,7 @@ function Form() {
       [name]: name === "isPublic" ? value === "true" : value,
     }));
   };
+  const API_BASE_URL = import.meta.env.VITE_API
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]); // Store the selected file
@@ -82,7 +83,7 @@ function Form() {
 
     // Post request with axios
     axios
-      .post("http://localhost:8765/api/events/addevents", formData, {
+      .post(`${API_BASE_URL}/events/addevents`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`, // Authorization header
