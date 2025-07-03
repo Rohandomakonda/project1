@@ -40,6 +40,10 @@ const DonutChart = ({ darkMode }) => {
     { label: "entertainment", value: avg.entertainment || 0 },
   ];
 
+  useEffect(()=>{
+    console.log(chartData);
+  },[chartData])
+
   return (
     <div className="py-6 bg-white rounded-lg p-5 flex dark:bg-gray-700">
       <PieChart
@@ -59,3 +63,4 @@ const DonutChart = ({ darkMode }) => {
 };
 
 export default DonutChart;
+>>>>>>> 50232dddf4b2b5b56e627bb2ba3413ddd33f6aae

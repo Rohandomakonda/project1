@@ -1,67 +1,4 @@
 
-
-# spring:
-#   application:
-#     name: api-gateway
-#   cloud:
-#     gateway:
-#       routes:
-#         - id: auth-service
-#           uri: lb://AUTH-SERVICE
-#           predicates:
-#             - Path=/api/auth/**
-
-#         - id: view-serivce
-#           uri: lb://view-serivce
-#           predicates:
-#             - Path=/api/events/public/**
-
-#         - id: view-serivce-protected
-#           uri: lb://view-serivce
-#           predicates:
-#             - Path=/api/events/**
-#           filters:
-#             - name: AuthenticationFilter
-#               args: {}
-
-#         - id: add_recruitments
-#           uri: lb://add_recruitments
-#           predicates:
-#             - Path=/api/add_recruitments/**
-#           filters:
-#             - name: AuthenticationFilter
-#               args: {}
-
-#         - id: add-serivce
-#           uri: lb://addevent-serivce
-#           predicates:
-#             - Path=/api/events/**
-#           filters:
-#             - name: AuthenticationFilter
-#               args: {}
-
-#         - id: profile-service
-#           uri: lb://profile-service
-#           predicates:
-#             - Path=/api/profile/**
-#           filters:
-#             - name: AuthenticationFilter
-#               args: {}
-
-#         - id: clubs
-#           uri: lb://CLUBS
-#           predicates:
-#             - Path=/api/clubs/public/**
-
-#         - id: clubs
-          # uri: lb://CLUBS
-          # predicates:
-          #   - Path=/api/clubs/**
-          # filters:
-          #   - name: AuthenticationFilter
-          #     args: {}
-
-
 spring:
   application:
     name: api-gateway
@@ -144,6 +81,6 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
 
 jwt:
-  secret: H8hS3jF5kL9qW7nE4zR6tU5yB2vM8pC1
+  secret: ${JWT_SECRET}
 
        

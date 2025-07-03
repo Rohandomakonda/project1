@@ -1,0 +1,126 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - springboot-network
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - springboot-network
+
+  service-registry:
+    build: ./service-registry
+    container_name: service-registry
+    ports:
+      - "8761:8761"
+    networks:
+      - springboot-network
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - service-registry
+    env_file:
+      - ./api-gateway/.env
+    networks:
+      - springboot-network
+
+  auth-service:
+    build: ./auth-service
+    container_name: auth-service
+    ports:
+      - "8090:8090"
+    depends_on:
+      - postgres
+      - redis
+      - service-registry
+    env_file:
+      - ./auth-service/.env
+    networks:
+      - springboot-network
+
+  profile-service:
+    build: ./profile-service
+    container_name: profile-service
+    ports:
+      - "8089:8089"
+    depends_on:
+      - postgres
+      - service-registry
+    env_file:
+      - ./profile-service/.env
+    networks:
+      - springboot-network
+
+  event-service:
+    build: ./event-service
+    container_name: event-service
+    ports:
+      - "8088:8088"
+    depends_on:
+      - postgres
+      - service-registry
+    env_file:
+      - ./event-service/.env
+    networks:
+      - springboot-network
+
+  clubs:
+    build: ./clubs
+    container_name: clubs
+    ports:
+      - "8092:8092"
+    depends_on:
+      - postgres
+      - service-registry
+    env_file:
+      - ./clubs/.env
+    networks:
+      - springboot-network
+
+  notification-service:
+    build: ./notification-service
+    container_name: notification-service
+    ports:
+      - "8086:8086"
+    depends_on:
+      - service-registry
+    env_file:
+      - ./notification-service/.env
+    networks:
+      - springboot-network
+
+  add_recruitments:
+    build: ./add_recruitments
+    container_name: add_recruitments
+    ports:
+      - "8093:8093"
+    depends_on:
+      - postgres
+      - service-registry
+    env_file:
+      - ./add_recruitments/.env
+    networks:
+      - springboot-network
+
+volumes:
+  pgdata:
+
+networks:
+  springboot-network:
+    driver: bridge
