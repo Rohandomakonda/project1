@@ -11,7 +11,7 @@ spring:
           '[/**]':
             allowedOrigins:
               - "http://localhost:5173"
-              - "https://nitw-events-if64.vercel.app"
+              - "https://nitw-events.vercel.app"
             allowedMethods:
               - "GET"
               - "POST"
