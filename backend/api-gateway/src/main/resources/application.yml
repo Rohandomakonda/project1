@@ -69,7 +69,17 @@ spring:
                    - Path=/api/profile/**
           filters:
             - AuthenticationFilter
-            - DedupeResponseHeader=Access-Control-Allow-Origin               
+            - DedupeResponseHeader=Access-Control-Allow-Origin
+
+        - id: recruitment-serivce
+          uri: https://recruitment-service-vx93.onrender.com
+          predicates:
+            - Path=/api/recruitments/**
+          filters:
+            - AuthenticationFilter
+            - DedupeResponseHeader=Access-Control-Allow-Origin
+
+
 
 
 eureka:
