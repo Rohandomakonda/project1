@@ -32,7 +32,7 @@ function EventPage() {
       .then((response) => {
         setDetails(response.data);
         console.log("image");
-        console.log(details.backgroundImage);
+        console.log(details.image);
         console.log(response.data);
        
       })
@@ -86,7 +86,7 @@ function EventPage() {
           <div className="relative mb-16 overflow-hidden rounded-3xl shadow-2xl shadow-purple-500/20">
             <div className="relative h-[60vh] md:h-[70vh]">
               <img 
-                src= {`data:image/jpeg;base64,${details.backgroundImage}`} 
+                src= {`data:image/jpeg;base64,${details.image}`} 
                 alt="Event"
                 className="w-full h-full object-cover"
               />
