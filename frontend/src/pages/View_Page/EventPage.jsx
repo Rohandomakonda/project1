@@ -155,41 +155,26 @@ function EventPage() {
                     {details.description}
                   </p>
                 </div>
-
-                {/* Event Highlights */}
-                <div className="grid md:grid-cols-2 gap-6 mb-12">
-                  <div className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/20">
-                    <h3 className="text-xl font-semibold text-white mb-4">What to Expect</h3>
-                    <ul className="space-y-2 text-purple-200">
-                      <li className="flex items-center">
-                        <div className="w-2 h-2 bg-purple-400 rounded-full mr-3"></div>
-                        Interactive sessions and networking
-                      </li>
-                      <li className="flex items-center">
-                        <div className="w-2 h-2 bg-purple-400 rounded-full mr-3"></div>
-                        Expert speakers and industry insights
-                      </li>
-                      <li className="flex items-center">
-                        <div className="w-2 h-2 bg-purple-400 rounded-full mr-3"></div>
-                        Hands-on workshops and activities
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/20">
-                    <h3 className="text-xl font-semibold text-white mb-4">Event Stats</h3>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="text-center">
-                        <div className="text-2xl font-bold text-white">250+</div>
-                        <div className="text-sm text-purple-300">Expected Attendees</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-2xl font-bold text-white">5</div>
-                        <div className="text-sm text-purple-300">Hours Duration</div>
-                      </div>
+                <div className="bg-gradient-to-br from-purple-600/10 to-pink-600/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/20">
+                  <h4 className="text-lg font-semibold text-white mb-4">Quick Info</h4>
+                  <div className="space-y-3 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-purple-300">Category</span>
+                      <span className="text-white">Technology</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-purple-300">Language</span>
+                      <span className="text-white">English</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-purple-300">Price</span>
+                      <span className="text-green-400 font-medium">Free</span>
                     </div>
                   </div>
+                  
                 </div>
+                {/* Event Highlights */}
+               
               </div>
             </div>
 
@@ -247,23 +232,7 @@ function EventPage() {
                 </div>
 
                 {/* Quick Info */}
-                <div className="bg-gradient-to-br from-purple-600/10 to-pink-600/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/20">
-                  <h4 className="text-lg font-semibold text-white mb-4">Quick Info</h4>
-                  <div className="space-y-3 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-purple-300">Category</span>
-                      <span className="text-white">Technology</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-purple-300">Language</span>
-                      <span className="text-white">English</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-purple-300">Price</span>
-                      <span className="text-green-400 font-medium">Free</span>
-                    </div>
-                  </div>
-                </div>
+               
               </div>
             </div>
           </div>
