@@ -5,10 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 
 @RestController
 @RequestMapping("/api/notifications")
+@Slf4j
 public class NotificationController {
     
     private final SimpMessagingTemplate messagingTemplate;
@@ -20,7 +23,7 @@ public class NotificationController {
     
    @PostMapping("/event/{eventTitle}")
    public ResponseEntity<String> createEventNotification(@PathVariable String eventTitle) {
-       System.out.println("going to notify");
+       log.info("going to notify");
        messagingTemplate.convertAndSend("/topic/notifications", eventTitle);
        return ResponseEntity.ok("sent to ws");
    }
