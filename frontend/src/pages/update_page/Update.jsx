@@ -1,9 +1,9 @@
 
 import { useParams, useNavigate,Link } from "react-router-dom";
 import axios from "axios";
-//import "./Update.styles.css";
+
 import CircularProgress from "@mui/material/CircularProgress";
-import CustomizedSnackbars from "../../components/SnackBarCustom.jsx";
+
 import TextField from '@mui/material/TextField';
 
 
@@ -11,35 +11,25 @@ import React, { useState, useEffect,useRef } from "react";
 
 
 
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+
 import Typography from '@mui/material/Typography';
 
-import Alert from '@mui/material/Alert';
+
 
 
 import "../LoginPage/Login.css"
 import { benefits } from "../../constants";
-import { curve, heroBackground, robot } from "../../assets";
+
 
 import { Box } from "@mui/material"; // Import Box and Button from MUI
-import Section from "../../components/Section.jsx";
+
 import Button from"../../components/Button";
-import { BackgroundCircles, BottomLine, Gradient } from "../../components/design/Hero";
-import { heroIcons } from "../../constants";
-import { ScrollParallax } from "react-just-parallax";
+
 
 import { GradientLight } from "../../components/design/Benefits";
-import ClipPath from "../../assets/svg/ClipPath";
 
-import cardImage from "../../assets/benefits/card-6.svg";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from '@mui/icons-material/Edit';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import Fab from '@mui/material/Fab';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+
+
 
 function Update() {
   const { id } = useParams(); // Extract id from URL
@@ -331,111 +321,7 @@ function Update() {
 
 
 
-//
-//
-//
-//
-//     <div className="form-container">
-//       <h1 className="form-title">Update Event</h1>
-//       <form onSubmit={handleSubmit} className="event-form">
-//         <input
-//           type="text"
-//           onChange={handleChange}
-//           placeholder="Title"
-//           name="title"
-//           value={details.title}
-//           required
-//           className="form-input"
-//         />
-//         <textarea
-//           type="text"
-//           onChange={handleChange}
-//           placeholder="Description"
-//           name="description"
-//           value={details.description}
-//           required
-//           className="form-textarea"
-//         />
-//         <input
-//           type="date"
-//           onChange={handleChange}
-//           name="date"
-//           value={details.date}
-//           required
-//           className="form-input"
-//         />
-//         <input
-//           type="time"
-//           onChange={handleChange}
-//           name="time"
-//           value={details.time}
-//           required
-//           className="form-input"
-//         />
-//         <input
-//           type="text"
-//           onChange={handleChange}
-//           placeholder="Venue Description"
-//           name="venueDescription"
-//           value={details.venueDescription}
-//           required
-//           className="form-input"
-//         />
-//         <select
-//           className="form-select"
-//           onChange={handleChange}
-//           name="venue"
-//           value={details.venue}
-//         >
-//           <option value="">Select Venue</option>
-//           <option value="Department of Computer Science and Engineering">
-//             CSE dept
-//           </option>
-//           <option value="New Academic Building (NAB)">NAB</option>
-//           <option value="Electronic & ICT Academy">E&ICT Building</option>
-//           <option value="Department Of Electrical & Electronic Engineering">
-//             Electrical Dept
-//           </option>
-//           <option value="Dr. B.R. Ambedkar Learning centre">ALC</option>
-//         </select>
-//
-//         <select
-//           className="form-select"
-//           onChange={handleChange}
-//           name="isPublic"
-//           value={details.isPublic !== undefined ? details.isPublic.toString() : ""}
-//         >
-//           <option value="">Select Event Type</option>
-//           <option value="false">Private</option>
-//           <option value="true">Public</option>
-//         </select>
-//
-//         <input
-//           type="text"
-//           onChange={handleChange}
-//           placeholder="Club"
-//           name="club"
-//           value={details.club}
-//           required
-//           className="form-input"
-//         />
-//
-//         {loading ? (
-//           <CircularProgress disableShrink />
-//         ) : (
-//           <button type="submit" className="submit-button">
-//             Update Event
-//           </button>
-//         )}
-//       </form>
-//       {/* Snackbar Component */}
-//       <CustomizedSnackbars
-//         open={snackbarOpen}
-//         onClose={() => setSnackbarOpen(false)}
-//         alertM={"Event updated successfully"}
-//         type={"success"}
-//       />
-//     </div>
+
   );
 }
 
