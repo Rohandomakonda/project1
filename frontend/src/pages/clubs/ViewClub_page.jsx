@@ -5,7 +5,6 @@ import Club from "../../components/Club_Card/Club.jsx";
 import useGet from "../../customhooks/useGet.jsx";
 
 function ViewClub() {
-  
   const { data: clubs, loading, error } = useGet('/clubs/public/viewclubs', null);
   const [selectedClub, setSelectedClub] = useState(null);
   const [showEventModal, setShowEventModal] = useState(false);
@@ -15,7 +14,7 @@ function ViewClub() {
     data: events, 
     loading: eventsLoading, 
     error: eventsError 
-  } = useGet(selectedClub ? `/api/events/getclubevents/${selectedClub.className}` : null, null);
+  } = useGet(selectedClub ? `/events/getclubevents/${selectedClub.clubname}` : null, null);
 
   const handleClubClick = (club) => {
     setSelectedClub(club);

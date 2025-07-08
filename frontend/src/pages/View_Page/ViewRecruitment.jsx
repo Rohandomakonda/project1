@@ -31,7 +31,8 @@ const ViewRecruitments = () => {
       window.location.href = "/login";
       return;
     }
-
+    console.log(token);
+    console.log(`${API_BASE_URL}/recruitments/getAllRecruitments`)
     axios
       .get(`${API_BASE_URL}/recruitments/getAllRecruitments`, {
         headers: { Authorization: `Bearer ${token}` },
