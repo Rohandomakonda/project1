@@ -7,6 +7,7 @@ import Section from "../../components/Section.jsx";
 import Button from "../../components/Button.jsx";
 import { BackgroundCircles } from "../../components/design/Hero.jsx";
 import useGet from "../../customhooks/useGet.jsx";
+import CircularProgress from "@mui/material/CircularProgress"; // Import loader
 
 function Home() {
   const token = localStorage.getItem("authToken");
@@ -17,24 +18,10 @@ function Home() {
   } = useGet("events/public/events", null);
   const parallaxRef = useRef(null);
   const navigate = useNavigate();
-  const API_BASE_URL = import.meta.env.VITE_API
+  const API_BASE_URL = import.meta.env.VITE_API;
 
   function handleDelete(e) {
     e.preventDefault();
-    // axios
-    //   .delete(`http://localhost:8765/api/events/event/${id}`, {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   })
-    //   .then(() => {
-    //     alert("event deleted successfully");
-    //     console.log("Event deleted successfully");
-    //     // publicEvents((prevEvents) =>
-    //     //   prevEvents.filter((event) => event.id !== id)
-    //     // );
-    //   })
-    //   .catch((error) => console.error("Error deleting event:", error));
   }
 
   return (
@@ -72,7 +59,9 @@ function Home() {
       </div>
       <div className="container relative z-2">
         {loading ? (
-          <p>Loading events...</p>
+          <div className="flex justify-center items-center h-64">
+            <CircularProgress sx={{ color: "#00ffff" }} size={60} thickness={4} />
+          </div>
         ) : error ? (
           <p>Error: {error}</p>
         ) : (
