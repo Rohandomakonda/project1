@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface SavedEventRepository extends JpaRepository<SavedEvent,Long> {
-    @Query("SELECT s.eventId FROM SavedEvent s WHERE s.userId = :userId AND s.title = :title")
+    @Query("SELECT s.id FROM SavedEvent s WHERE s.userId = :userId AND s.title = :title")
     Optional<Long> findEventIdByUserIdAndTitle(@Param("userId") Long userId, @Param("title") String title);
     List<SavedEvent> findByUserId(Long userId);
 }
