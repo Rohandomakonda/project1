@@ -20,7 +20,7 @@ const ClubCard = ({ club, onClick }) => {
       {/* Image container */}
       <div className="relative h-56 overflow-hidden">
         <img 
-          src={club.image} 
+          src={`data:image/jpeg;base64,${club.image}`} 
           alt={club.clubname}
           className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 group-hover:brightness-110"
         />
