@@ -17,7 +17,7 @@ const LoadingSpinner = (props) => {
           <div className="absolute inset-4 rounded-full h-12 w-12 bg-gradient-to-r from-purple-600/30 to-pink-600/30 mx-auto animate-pulse"></div>
         </div>
         
-        <h2 className="text-2xl font-bold text-white mb-2">${props.msg}</h2>
+        <h2 className="text-2xl font-bold text-white mb-2">{props.msg}</h2>
         
         <div className="flex items-center justify-center mt-6 space-x-1">
           <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"></div>

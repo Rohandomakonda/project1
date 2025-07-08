@@ -2,6 +2,7 @@ import React from 'react';
 import { X, Calendar, Users, MapPin, Clock } from 'lucide-react';
 
 const EventCard = ({ event }) => {
+    console.log(event);
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -18,7 +19,7 @@ const EventCard = ({ event }) => {
     <div className="bg-gradient-to-br from-[#130b3b]/80 to-[#1a0f4a]/80 backdrop-blur-sm rounded-2xl overflow-hidden border border-purple-500/20 hover:border-purple-400/40 transition-all duration-500 group hover:shadow-lg hover:shadow-purple-500/20">
       <div className="relative h-48 overflow-hidden">
         <img 
-          src={event.image} 
+         src={`data:image/jpeg;base64,${event.image}`} 
           alt={event.title}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 group-hover:brightness-110"
         />
@@ -48,14 +49,11 @@ const EventCard = ({ event }) => {
         </p>
         
         <div className="grid grid-cols-2 gap-4 text-sm">
-          <div className="flex items-center text-purple-300 bg-purple-500/10 rounded-lg p-2">
-            <Users className="w-4 h-4 mr-2 text-purple-400" />
-            <span>{event.attendees} attendees</span>
-          </div>
+          
           
           <div className="flex items-center text-purple-300 bg-purple-500/10 rounded-lg p-2">
             <MapPin className="w-4 h-4 mr-2 text-purple-400" />
-            <span className="truncate">{event.location}</span>
+            <span className="truncate">{event.venue}</span>
           </div>
         </div>
       </div>

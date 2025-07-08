@@ -10,6 +10,7 @@ function ViewClub() {
   const [clubs, setClubs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const token = localStorage.getItem("authToken");
 
   const [selectedClub, setSelectedClub] = useState(null);
   const [showEventModal, setShowEventModal] = useState(false);
@@ -38,7 +39,10 @@ function ViewClub() {
 
   const handleClubClick = (club) => {
     setSelectedClub(club);
-    setShowEventModal(true);
+    if(token){
+      setShowEventModal(true);
+    }
+    
     fetchClubEvents(club.clubname);
   };
 
@@ -55,7 +59,10 @@ function ViewClub() {
     setEventsLoading(true);
 
     axios
-      .get(`${API_BASE_URL}/events/getclubevents/${clubName}`)
+      .get(`${API_BASE_URL}/events/getclubevents/${clubName}`,{
+        headers: { Authorization: `Bearer ${token}` },
+      }
+      )
       .then((res) => {
         setEvents(res.data);
       })
@@ -161,7 +168,7 @@ function ViewClub() {
     </div>
 
     {/* Event Modal */}
-    {showEventModal && (
+    {showEventModal && token &&(
       <EventModal
         club={selectedClub}
         events={events}
