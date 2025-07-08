@@ -25,15 +25,15 @@ const ViewRecruitments = () => {
 
   useEffect(() => {
     setLoading(true);
-
+    console.log("Fetching recruitments for club with token: ",token);
+    console.log(token);
+    console.log(`${API_BASE_URL}/recruitments/getAllRecruitments`)
     if (!token) {
       alert("Session expired. Please login again.");
       window.location.href = "/login";
       return;
     }
-    console.log("Fetching recruitments for club with token: ",token);
-    console.log(token);
-    console.log(`${API_BASE_URL}/recruitments/getAllRecruitments`)
+
     axios
       .get(`${API_BASE_URL}/recruitments/getAllRecruitments`, {
         headers: { Authorization: `Bearer ${token}` },
