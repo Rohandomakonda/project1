@@ -348,12 +348,14 @@ function Event(props) {
 
   return (
     <div
-      style={{
-        perspective: "1000px",
-        width: "300px",
-        height: "400px",
-        margin: "auto",
-      }}
+    style={{
+      perspective: "1000px",
+      width: "300px",
+      height: "400px",
+      margin: "auto",
+      border: "2px solid #1e0039", // darkest purple
+      borderRadius: "12px", // optional
+    }}
       onClick={handleFlip}
     >
       <div
