@@ -381,7 +381,7 @@ function Event(props) {
             style={{
               width: "100%",
               height: "100%",
-              backgroundImage: `url(${benefits[2].backgroundUrl})`,
+              backgroundImage: `url(${import.meta.env.BASE_URL + benefits[2].backgroundUrl})`,
               display: "flex",
               flexDirection: "column",
               padding: "1rem",
