@@ -12,13 +12,13 @@ import java.io.IOException;
 import java.util.*;
 
 @RestController
-@RequestMapping("api/clubs")
+@RequestMapping("api/clubs/public")
 public class ClubController {
 
     @Autowired
     ClubService clubService;
 
-    @GetMapping("/public/viewclubs")
+    @GetMapping("/viewclubs")
     public ResponseEntity<List<Club>> getAllClubs(){
         List<Club> allClubs = clubService.getAllClubs();
         return new ResponseEntity<>(allClubs,HttpStatus.OK);

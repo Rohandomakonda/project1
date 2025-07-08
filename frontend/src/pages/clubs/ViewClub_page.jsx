@@ -22,13 +22,6 @@ function ViewClub() {
 
   return (
     <div className="public-events">
-      <div className="top-image-container">
-        <img
-          src="https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg"
-          alt="Top Image"
-          className="top-image"
-        />
-      </div>
 
       <div className="clubs-container">
         {clubs.map((club) => (
