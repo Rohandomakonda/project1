@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import SavedEvent from "../../components/Event_Card/SavedEvent"; // Component for individual event cards
+import Event from "../../components/Event_Card/Event.jsx";
 import axios from "axios";
-import SearchIcon from "@mui/icons-material/Search";
-import Skeleton from "@mui/material/Skeleton"; // Import MUI Skeleton
-import Grid from "@mui/material/Grid"; // Import MUI Grid
-import Box from "@mui/material/Box"; // Import MUI Box
-import TextField from "@mui/material/TextField";
+import { Search, Bookmark, Heart, Calendar } from "lucide-react";
+import Skeleton from "@mui/material/Skeleton";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 import { curve, heroBackground, robot } from "../../assets";
 import { useNavigate } from "react-router-dom";
 import Section from "../../components/Section.jsx";
@@ -23,10 +22,10 @@ import ClipPath from "../../assets/svg/ClipPath";
 import cardImage from "../../assets/benefits/card-6.svg";
 
 const SavedEvents = () => {
-  const [events, setEvents] = useState([]); // All events
-  const [loading, setLoading] = useState(false); // Loading state
-  const [searchTerm, setSearchTerm] = useState(""); // Search term
-  const [roles, setRoles] = useState([]); // User roles
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [roles, setRoles] = useState([]);
   const parallaxRef = useRef(null);
   const API_BASE_URL = import.meta.env.VITE_API;
 
@@ -49,7 +48,7 @@ const SavedEvents = () => {
         params: { userId },
       })
       .then((response) => {
-        setEvents(response.data); // Update events list
+        setEvents(response.data);
       })
       .catch((error) => {
         console.error("Error fetching events:", error);
@@ -96,100 +95,141 @@ const SavedEvents = () => {
   const renderSkeletons = (count) =>
     Array.from(new Array(count)).map((_, index) => (
       <Grid item xs={12} sm={6} md={4} key={index}>
-        <Skeleton variant="rectangular" width="100%" height={150} />
+        <div className="bg-gradient-to-br from-purple-600/10 to-pink-600/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/20 animate-pulse">
+          <div className="h-48 bg-purple-500/20 rounded-xl mb-4"></div>
+          <div className="h-6 bg-purple-500/20 rounded mb-2"></div>
+          <div className="h-4 bg-purple-500/20 rounded mb-2"></div>
+          <div className="h-4 bg-purple-500/20 rounded w-3/4"></div>
+        </div>
       </Grid>
     ));
 
-  // Render event cards
-  const renderEvents = (eventList) =>
-    eventList.length > 0 ? (
-      eventList.map((event) => (
-        <Grid item xs={12} sm={6} md={4} key={event.id}>
-          <SavedEvent
-            {...event}
-            image={`data:image/jpeg;base64,${event.image}`} // Image rendering
-            unsave={handleunsave} // Delete handler
-          />
-        </Grid>
-      ))
-    ) : (
-      <p>No events found</p>
-    );
-
-  // Dynamic marginTop calculation based on the number of rows
-  const calculateMarginTop = (eventList) => {
-    const numberOfColumns = 3; // Assuming you want 3 columns
-    const numberOfRows = Math.ceil(eventList.length / numberOfColumns);
-    return (numberOfRows - 1) * 48; // Increase mt by 48 for each additional row
-  };
-
   if (roles.includes("USER")) {
     return (
-      <Section
-        className="pt-[12rem] -mt-[5.25rem]"
-        crosses
-        crossesOffset="lg:translate-y-[5.25rem]"
-        customPaddings
-        id="hero"
-      >
-        <div className="container relative mt-20" ref={parallaxRef}>
-          <div className="relative z-1 max-w-[62rem] mx-auto text-center mb-[3.875rem] md:mb-20 lg:mb-[6.25rem]">
-            <h1 className="h1 mb-6">
-              {` `}
-              <span className="inline-block relative">
-                Saved Events{" "}
-                <img
-                  src={curve}
-                  className="absolute top-full left-0 w-full xl:-mt-2"
-                  width={624}
-                  height={28}
-                  alt="Curve"
-                />
-              </span>
-            </h1>
-            <Box sx={{ mb: 4 }} className="search-container">
-              <SearchIcon className="search-icon" />
-              <input
-                type="text"
-                placeholder="Search events"
-                className="search-bar"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                style={{
-                  border: "2px solid white", // White border
-                  borderRadius: "8px", // Optional: rounded corners
-                  padding: "0.5rem 1rem", // Optional: spacing inside the input
-                  color: "white", // White text
-                  backgroundColor: "transparent", // Transparent background
-                }}
-              />
-            </Box>
+      <div className="min-h-screen bg-gradient-to-br from-[#130b3b] via-[#1a0f4a] to-[#0f0829]">
+        {/* Background decoration */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }} />
+        </div>
+
+        <Section
+          className="pt-[12rem] -mt-[5.25rem]"
+          crosses
+          crossesOffset="lg:translate-y-[5.25rem]"
+          customPaddings
+          id="hero"
+        >
+          <div className="container relative" ref={parallaxRef}>
+            {/* Header Section */}
+            <div className="relative z-1 max-w-[62rem] mx-auto text-center mb-[3.875rem] md:mb-20 lg:mb-[6.25rem]">
+              <div className="mb-8">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-600/30 to-pink-600/30 rounded-2xl mb-6 backdrop-blur-sm border border-purple-500/20">
+                  <Bookmark className="w-8 h-8 text-purple-300" />
+                </div>
+              </div>
+              
+              <h1 className="text-4xl md:text-6xl font-bold text-white mb-8 leading-tight">
+                <span className="inline-block relative">
+                  Saved Events
+                  <img
+                    src={curve}
+                    className="absolute top-full left-0 w-full xl:-mt-2 opacity-60"
+                    width={624}
+                    height={28}
+                    alt="Curve"
+                  />
+                </span>
+              </h1>
+              
+              <p className="text-xl text-purple-200 mb-12 max-w-2xl mx-auto">
+                Your curated collection of events you've saved for later
+              </p>
+
+              {/* Modern Search Bar */}
+              <div className="relative max-w-md mx-auto mb-8">
+                <div className="relative">
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-purple-300 w-5 h-5" />
+                  <input
+                    type="text"
+                    placeholder="Search your saved events..."
+                    className="w-full pl-12 pr-4 py-4 bg-gradient-to-r from-purple-600/10 to-pink-600/10 backdrop-blur-sm border border-purple-500/30 rounded-2xl text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-400/50 transition-all duration-300"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              {/* Stats */}
+              <div className="flex justify-center space-x-8 mb-8">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-white">{events.length}</div>
+                  <div className="text-sm text-purple-300">Total Saved</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-white">{filteredEvents.length}</div>
+                  <div className="text-sm text-purple-300">Showing</div>
+                </div>
+              </div>
+            </div>
+
+            <BackgroundCircles />
           </div>
 
-          <BackgroundCircles />
-        </div>
-        <div className="container relative z-2">
-          <div className="flex flex-wrap gap-10 mb-10">
-            {filteredEvents.map((event) => (
-              <SavedEvent
-                key={event.id}
-                id={event.id}
-                title={event.title}
-                description={event.description}
-                date={event.date}
-                time={event.time}
-                venue={event.venue}
-                image={`data:image/jpeg;base64,${event.image}`} // Fix here: Use template literal properly
-                club={event.club}
-                unsave={handleunsave}
-              />
-            ))}
+          {/* Events Grid */}
+          <div className="container relative z-2">
+            {loading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
+                {renderSkeletons(6)}
+              </div>
+            ) : filteredEvents.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
+                {filteredEvents.map((event) => (
+                  <div key={event.id} className="transform hover:scale-105 transition-all duration-300">
+                    <Event
+                      id={event.id}
+                      title={event.title}
+                      description={event.description}
+                      date={event.date}
+                      time={event.time}
+                      venue={event.venue}
+                      image={`data:image/jpeg;base64,${event.image}`}
+                      club={event.club}
+                      unsave={handleunsave}
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-20">
+                <div className="bg-gradient-to-br from-purple-600/10 to-pink-600/10 backdrop-blur-sm rounded-3xl p-12 border border-purple-500/20 max-w-md mx-auto">
+                  <div className="w-20 h-20 bg-gradient-to-r from-purple-600/30 to-pink-600/30 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <Calendar className="w-10 h-10 text-purple-300" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-4">
+                    {searchTerm ? "No events found" : "No saved events yet"}
+                  </h3>
+                  <p className="text-purple-200 mb-6">
+                    {searchTerm 
+                      ? "Try adjusting your search terms" 
+                      : "Start exploring events and save the ones you're interested in"
+                    }
+                  </p>
+                  {!searchTerm && (
+                    <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium px-8 py-3 rounded-xl transition-all duration-300">
+                      Browse Events
+                    </Button>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
-        </div>
-      </Section>
+        </Section>
+      </div>
     );
   } else {
-    return null; // Render nothing for unauthorized users
+    return null;
   }
 };
 

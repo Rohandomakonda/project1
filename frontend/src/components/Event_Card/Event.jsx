@@ -13,12 +13,13 @@ import {
   ExternalLink,
   MoreHorizontal
 } from "lucide-react";
-import { benefits } from "../../constants";
+
 import Button from "../../components/Button";
 import { GradientLight } from "../design/Benefits";
 import ClipPath from "../../assets/svg/ClipPath";
 import { LoginSignout } from "../../pages/LoginPage/GoogleCalendarEvent";
-import { benefitImage2 } from "../../assets";
+
+
 
 function Event(props) {
   const navigate = useNavigate();
