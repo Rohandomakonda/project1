@@ -1,35 +1,23 @@
 import axios from "axios";
 import React, { useState, useEffect,useRef } from "react";
 import { useNavigate, Link } from "react-router-dom"; // Added Link for navigation
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import Typography from '@mui/material/Typography';
+
 import TextField from '@mui/material/TextField';
-import Alert from '@mui/material/Alert';
+
 import CircularProgress from '@mui/material/CircularProgress';
-import CustomizedSnackbars from "../../components/SnackBarCustom.jsx";
+
 import "../LoginPage/Login.css"
 import { benefits } from "../../constants";
-import { curve, heroBackground, robot } from "../../assets";
+
 
 import { Box } from "@mui/material"; // Import Box and Button from MUI
-import Section from "../../components/Section.jsx";
+
 import Button from"../../components/Button";
-import { BackgroundCircles, BottomLine, Gradient } from "../../components/design/Hero";
-import { heroIcons } from "../../constants";
-import { ScrollParallax } from "react-just-parallax";
+
 
 import { GradientLight } from "../../components/design/Benefits";
-import ClipPath from "../../assets/svg/ClipPath";
 
-import cardImage from "../../assets/benefits/card-6.svg";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from '@mui/icons-material/Edit';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import Fab from '@mui/material/Fab';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+
 
 
 function Recruitment() {

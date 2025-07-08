@@ -1,50 +1,31 @@
 import React, { useState, useEffect } from "react";
-import Event from "../../components/Event_Card/Event"; // Component for individual event cards
+import Event from "../../components/Event_Card/Event";
 import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
-import Skeleton from "@mui/material/Skeleton"; // Import MUI Skeleton
-import Grid from "@mui/material/Grid"; // Import MUI Grid
-import Box from "@mui/material/Box"; // Import MUI Box
-import TextField from "@mui/material/TextField";
-import { curve, heroBackground, robot } from "../../assets";
-import { useNavigate } from "react-router-dom";
+import Skeleton from "@mui/material/Skeleton";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+
+import { curve } from "../../assets";
 import Section from "../../components/Section.jsx";
-import Button from "../../components/Button";
-import {
-  BackgroundCircles,
-  BottomLine,
-  Gradient,
-} from "../../components/design/Hero";
-import { heroIcons } from "../../constants";
-import { ScrollParallax } from "react-just-parallax";
+import { BackgroundCircles } from "../../components/design/Hero";
 import { useRef } from "react";
-import { GradientLight } from "../../components/design/Benefits";
-import ClipPath from "../../assets/svg/ClipPath";
-import cardImage from "../../assets/benefits/card-6.svg";
 
 const View = () => {
-  const [events, setEvents] = useState([]); // All events
-  const [myClubEvents, setMyClubEvents] = useState([]); // Events specific to the club
-  const [searchTerm, setSearchTerm] = useState(""); // Search term for filtering
-  const [onGoEvents, setOnGoEvents] = useState([]); // Ongoing events
-  const [loading, setLoading] = useState(true); // Loading state
+  const [events, setEvents] = useState([]);
+  const [myClubEvents, setMyClubEvents] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [onGoEvents, setOnGoEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
   const storedRoles = localStorage.getItem("roles");
   const roles = storedRoles ? JSON.parse(storedRoles) : [];
   const club = localStorage.getItem("club");
   const parallaxRef = useRef(null);
   const API_BASE_URL = import.meta.env.VITE_API;
-  // const [isBlurred, setIsBlurred] = useState(false);
-  //   useEffect(() => {
-  //     if (window.location.pathname === '/addEvent') {
-  //       setIsBlurred(true);
-  //     } else {
-  //       setIsBlurred(false);
-  //     }
-  //   }, [window.location.pathname]);
 
   useEffect(() => {
     setLoading(true);
-
     const token = localStorage.getItem("authToken");
     if (!token) {
       alert("Session expired. Please log in again.");
@@ -52,30 +33,19 @@ const View = () => {
       return;
     }
 
-    // Fetch events and ongoing events in parallel
-    const fetchEvents = axios.get(
-      `${API_BASE_URL}/events/viewevents`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const fetchEvents = axios.get(`${API_BASE_URL}/events/viewevents`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-    const fetchOngoingEvents = axios.get(
-      `${API_BASE_URL}/events/ongoingevents`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const fetchOngoingEvents = axios.get(`${API_BASE_URL}/events/ongoingevents`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     Promise.all([fetchEvents, fetchOngoingEvents])
       .then(([allEventsResp, ongoingEventsResp]) => {
-        setEvents(allEventsResp.data); // Update all events
-        setOnGoEvents(ongoingEventsResp.data); // Update ongoing events
-
-        // Filter events by club after fetching all data
-        const mcEvents = allEventsResp.data.filter(
-          (event) => event.club === club
-        );
+        setEvents(allEventsResp.data);
+        setOnGoEvents(ongoingEventsResp.data);
+        const mcEvents = allEventsResp.data.filter((event) => event.club === club);
         setMyClubEvents(mcEvents);
       })
       .catch((error) => {
@@ -90,21 +60,14 @@ const View = () => {
 
   const handleDelete = (id) => {
     const token = localStorage.getItem("authToken");
-    
     axios
       .delete(`${API_BASE_URL}/events/event/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
-        setEvents((prevEvents) =>
-          prevEvents.filter((event) => event.id !== id)
-        );
-        setMyClubEvents((prevEvents) =>
-          prevEvents.filter((event) => event.id !== id)
-        );
-        setOnGoEvents((prevEvents) =>
-          prevEvents.filter((event) => event.id !== id)
-        );
+        setEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
+        setMyClubEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
+        setOnGoEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
       })
       .catch((error) => {
         console.error("Error deleting event:", error);
@@ -132,12 +95,17 @@ const View = () => {
       customPaddings
       id="hero"
     >
+      {loading && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+          <CircularProgress size={60} thickness={5} style={{ color: "#00ffff" }} />
+        </div>
+      )}
+
       <div className="container relative mt-20" ref={parallaxRef}>
         <div className="relative z-1 max-w-[62rem] mx-auto text-center mb-[3.875rem] md:mb-20 lg:mb-[6.25rem]">
           <h1 className="h1 mb-6">
-            {` `}
             <span className="inline-block relative">
-              All Events{" "}
+              All Events {" "}
               <img
                 src={curve}
                 className="absolute top-full left-0 w-full xl:-mt-2"
@@ -156,11 +124,11 @@ const View = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               style={{
-                border: "2px solid white", // White border
-                borderRadius: "8px", // Optional: rounded corners
-                padding: "0.5rem 1rem", // Optional: spacing inside the input
-                color: "white", // White text
-                backgroundColor: "transparent", // Transparent background
+                border: "2px solid white",
+                borderRadius: "8px",
+                padding: "0.5rem 1rem",
+                color: "white",
+                backgroundColor: "transparent",
               }}
             />
           </Box>
@@ -168,6 +136,7 @@ const View = () => {
 
         <BackgroundCircles />
       </div>
+
       <div className="container relative z-2">
         <div className="flex flex-wrap gap-10 mb-10">
           {filteredEvents.map((event) => (
@@ -179,7 +148,7 @@ const View = () => {
               date={event.date}
               time={event.time}
               venue={event.venue}
-              image={`data:image/jpeg;base64,${event.image}`} // Fix here: Use template literal properly
+              image={`data:image/jpeg;base64,${event.image}`}
               club={event.club}
               delete={handleDelete}
             />
@@ -193,7 +162,7 @@ const View = () => {
             <div className="relative z-1 max-w-[62rem] mx-auto text-center mb-[3.875rem] md:mb-20 lg:mb-[6.25rem]">
               <h1 className="h1 mb-6">
                 <span className="inline-block relative">
-                  My Club Events{" "}
+                  My Club Events {" "}
                   <img
                     src={curve}
                     className="absolute top-full left-0 w-full xl:-mt-2"
@@ -231,7 +200,7 @@ const View = () => {
           <div className="relative z-1 max-w-[62rem] mx-auto text-center mb-[3.875rem] md:mb-20 lg:mb-[6.25rem]">
             <h1 className="h1 mb-6">
               <span className="inline-block relative">
-                Ongoing Events{" "}
+                Ongoing Events {" "}
                 <img
                   src={curve}
                   className="absolute top-full left-0 w-full xl:-mt-2"
@@ -265,65 +234,6 @@ const View = () => {
         </div>
       ) : null}
     </Section>
-
-    //     <Box sx={{ mt: calculateMarginTop(filteredEvents, myClubEvents), position: "relative" }}>
-    //
-    //       {roles.includes("CLUB_SEC") ? (
-    //         <>
-    //           <Box sx={{ mt: 2 }}>
-    //             <h2 className="center-text" style={{ color: "white" }}>My Club Events</h2>
-    //             <Grid container spacing={2}>
-    //               {loading ? renderSkeletons(3) : renderEvents(myClubEvents)}
-    //             </Grid>
-    //           </Box>
-    //
-    //           <Box sx={{ mb: 4 }} className="search-container">
-    //             <SearchIcon className="search-icon" />
-    //             <input
-    //               type="text"
-    //               placeholder="Search events"
-    //               className="search-bar"
-    //               value={searchTerm}
-    //               onChange={(e) => setSearchTerm(e.target.value)}
-    //             />
-    //           </Box>
-    //
-    //           <Box>
-    //             <h2 className="center-text" style={{ color: "white" }}>All Events</h2>
-    //             <Grid container spacing={2}>
-    //               {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
-    //             </Grid>
-    //           </Box>
-    //         </>
-    //       ) : (
-    //         <>
-    //           <Box sx={{ mt: 2 }}>
-    //             <h2 className="center-text" style={{ color: "white" }}>Ongoing Events</h2>
-    //             <Grid container spacing={2}>
-    //               {loading ? renderSkeletons(3) : renderEvents(onGoEvents)}
-    //             </Grid>
-    //           </Box>
-    //
-    //           <Box sx={{ mb: 4 }} className="search-container">
-    //             <SearchIcon className="search-icon" />
-    //             <input
-    //               type="text"
-    //               placeholder="Search events"
-    //               className="search-bar"
-    //               value={searchTerm}
-    //               onChange={(e) => setSearchTerm(e.target.value)}
-    //             />
-    //           </Box>
-    //
-    //           <Box>
-    //             <h2 className="center-text" style={{ color: "white" }}>All Events</h2>
-    //             <Grid container spacing={2}>
-    //               {loading ? renderSkeletons(6) : renderEvents(filteredEvents)}
-    //             </Grid>
-    //           </Box>
-    //         </>
-    //       )}
-    //     </Box>
   );
 };
 
