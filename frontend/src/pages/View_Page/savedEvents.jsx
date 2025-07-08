@@ -1,35 +1,66 @@
 import { useState, useEffect } from "react";
 import Event from "../../components/Event_Card/Event.jsx";
 import axios from "axios";
-import { Search, Bookmark, Heart, Calendar } from "lucide-react";
+import { Search, Bookmark, Heart, Calendar, AlertCircle, CheckCircle, XCircle } from "lucide-react";
 import Grid from "@mui/material/Grid";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import Slide from "@mui/material/Slide";
 import { curve } from "../../assets";
 import Section from "../../components/Section.jsx";
 import Button from "../../components/Button";
 import {
   BackgroundCircles,
 } from "../../components/design/Hero";
-
 import { useRef } from "react";
 
+const SlideTransition = (props) => {
+  return <Slide {...props} direction="up" />;
+};
 
 const SavedEvents = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [roles, setRoles] = useState([]);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "info", // success, error, warning, info
+    title: ""
+  });
   const parallaxRef = useRef(null);
   const API_BASE_URL = import.meta.env.VITE_API;
 
   const userId = localStorage.getItem("userId");
+
+  // Enhanced alert function
+  const showAlert = (message, severity = "info", title = "") => {
+    setSnackbar({
+      open: true,
+      message,
+      severity,
+      title
+    });
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbar(prev => ({ ...prev, open: false }));
+  };
 
   useEffect(() => {
     setLoading(true);
     const token = localStorage.getItem("authToken");
 
     if (!token) {
-      alert("Session expired. Please log in again.");
-      window.location.href = "/login";
+      showAlert("Your session has expired. Please log in again to continue.", "error", "Authentication Required");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 3000);
       return;
     }
 
@@ -41,12 +72,25 @@ const SavedEvents = () => {
       })
       .then((response) => {
         setEvents(response.data);
+        if (response.data.length === 0) {
+          showAlert("You haven't saved any events yet. Start exploring to build your collection!", "info", "No Saved Events");
+        } else {
+          showAlert(`Successfully loaded ${response.data.length} saved events`, "success", "Events Loaded");
+        }
       })
       .catch((error) => {
         console.error("Error fetching events:", error);
         if (error.response?.status === 401) {
-          alert("Session expired. Please log in again.");
-          window.location.href = "/login";
+          showAlert("Your session has expired. Redirecting to login...", "error", "Session Expired");
+          setTimeout(() => {
+            window.location.href = "/login";
+          }, 3000);
+        } else {
+          showAlert(
+            error.response?.data?.message || "Failed to load your saved events. Please try again.",
+            "error",
+            "Loading Failed"
+          );
         }
       })
       .finally(() => setLoading(false));
@@ -59,6 +103,9 @@ const SavedEvents = () => {
   const handleunsave = (title) => {
     const token = localStorage.getItem("authToken");
 
+    // Show loading state
+    showAlert(`Removing "${title}" from your saved events...`, "info", "Processing");
+
     axios
       .delete(`${API_BASE_URL}/profile/saved-events/unsave`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -68,11 +115,15 @@ const SavedEvents = () => {
         setEvents((prevEvents) =>
           prevEvents.filter((event) => event.title !== title)
         );
-        alert("Event unsaved successfully");
+        showAlert(`"${title}" has been successfully removed from your saved events`, "success", "Event Removed");
       })
       .catch((error) => {
         console.error("Error unsaving event:", error);
-        alert("Error unsaving event: " + error.message);
+        showAlert(
+          error.response?.data?.message || `Failed to remove "${title}". Please try again.`,
+          "error",
+          "Removal Failed"
+        );
       });
   };
 
@@ -95,6 +146,20 @@ const SavedEvents = () => {
         </div>
       </Grid>
     ));
+
+  // Custom Alert Icon Component
+  const getAlertIcon = (severity) => {
+    switch (severity) {
+      case 'success':
+        return <CheckCircle className="w-5 h-5" />;
+      case 'error':
+        return <XCircle className="w-5 h-5" />;
+      case 'warning':
+        return <AlertCircle className="w-5 h-5" />;
+      default:
+        return <AlertCircle className="w-5 h-5" />;
+    }
+  };
 
   if (roles.includes("USER")) {
     return (
@@ -218,6 +283,73 @@ const SavedEvents = () => {
             )}
           </div>
         </Section>
+
+        {/* Enhanced MUI Snackbar with Custom Styling */}
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={6000}
+          onClose={handleCloseSnackbar}
+          TransitionComponent={SlideTransition}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          sx={{
+            '& .MuiSnackbarContent-root': {
+              background: 'transparent',
+              boxShadow: 'none',
+              padding: 0,
+            }
+          }}
+        >
+          <Alert
+            onClose={handleCloseSnackbar}
+            severity={snackbar.severity}
+            variant="filled"
+            icon={getAlertIcon(snackbar.severity)}
+            sx={{
+              background: snackbar.severity === 'success' 
+                ? 'linear-gradient(135deg, rgba(34, 197, 94, 0.9) 0%, rgba(21, 128, 61, 0.9) 100%)'
+                : snackbar.severity === 'error'
+                ? 'linear-gradient(135deg, rgba(239, 68, 68, 0.9) 0%, rgba(185, 28, 28, 0.9) 100%)'
+                : snackbar.severity === 'warning'
+                ? 'linear-gradient(135deg, rgba(245, 158, 11, 0.9) 0%, rgba(180, 83, 9, 0.9) 100%)'
+                : 'linear-gradient(135deg, rgba(147, 51, 234, 0.9) 0%, rgba(126, 34, 206, 0.9) 100%)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              borderRadius: '16px',
+              color: 'white',
+              minWidth: '350px',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+              '& .MuiAlert-icon': {
+                color: 'white',
+              },
+              '& .MuiAlert-action': {
+                color: 'white',
+                '& .MuiIconButton-root': {
+                  color: 'white',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  }
+                }
+              }
+            }}
+          >
+            {snackbar.title && (
+              <AlertTitle sx={{ 
+                fontWeight: 'bold', 
+                marginBottom: '4px',
+                color: 'white'
+              }}>
+                {snackbar.title}
+              </AlertTitle>
+            )}
+            <div style={{ 
+              fontSize: '14px', 
+              lineHeight: '1.4',
+              color: 'rgba(255, 255, 255, 0.95)'
+            }}>
+              {snackbar.message}
+            </div>
+          </Alert>
+        </Snackbar>
       </div>
     );
   } else {
