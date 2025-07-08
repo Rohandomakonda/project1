@@ -1,36 +1,20 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import React, { useState, useEffect,useRef } from "react";
-import { useNavigate, Link } from "react-router-dom"; // Added Link for navigation
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Alert from '@mui/material/Alert';
-import CircularProgress from '@mui/material/CircularProgress';
-import CustomizedSnackbars from "../../components/SnackBarCustom.jsx";
-import "../LoginPage/Login.css"
-import { benefits } from "../../constants";
-import { curve, heroBackground, robot } from "../../assets";
-
-import { Box } from "@mui/material"; // Import Box and Button from MUI
-import Section from "../../components/Section.jsx";
-import Button from"../../components/Button";
-import { BackgroundCircles, BottomLine, Gradient } from "../../components/design/Hero";
-import { heroIcons } from "../../constants";
-import { ScrollParallax } from "react-just-parallax";
-
-import { GradientLight } from "../../components/design/Benefits";
-import ClipPath from "../../assets/svg/ClipPath";
-
-import cardImage from "../../assets/benefits/card-6.svg";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from '@mui/icons-material/Edit';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import Fab from '@mui/material/Fab';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-
+import { 
+  Users, 
+  Clock, 
+  MapPin, 
+  FileText, 
+  Image as ImageIcon, 
+  Building, 
+  Calendar,
+  Link as LinkIcon,
+  Upload,
+  Loader2,
+  CheckCircle,
+  AlertCircle
+} from "lucide-react";
 
 function Recruitment() {
   const [details, setDetails] = useState({
@@ -45,32 +29,33 @@ function Recruitment() {
   });
 
   const navigate = useNavigate();
-  const [role, setRole] = useState(null); // State for role
-  const club = localStorage.getItem("club"); // Retrieve the club from localStorage
+  const [role, setRole] = useState(null);
+  const club = localStorage.getItem("club");
   const [image, setImage] = useState(null);
- const [loading,setLoading] = useState(false);
-  const [snackbarOpen,setSnackbarOpen] = useState(false);
-    const [error,setError] = useState(false);
-     const token = localStorage.getItem("authToken");
-     const API_BASE_URL = import.meta.env.VITE_API;
-   
+  const [loading, setLoading] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [error, setError] = useState(false);
+  const [message, setMessage] = useState("");
+  const token = localStorage.getItem("authToken");
+  const API_BASE_URL = import.meta.env.VITE_API;
+
   useEffect(() => {
-    // Retrieve roles and set the current role
     const storedRoles = localStorage.getItem("roles");
     if (storedRoles) {
-      setRole(JSON.parse(storedRoles)); // Parse roles from localStorage
+      setRole(JSON.parse(storedRoles));
     }
 
     if (role === "CLUB_SEC") {
       setDetails((prevDetails) => ({
         ...prevDetails,
-        club: club, // Prefill the club field
+        club: club,
       }));
     }
-  }, [role, club]); // Depend on role and club
+  }, [role, club]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const formData = new FormData();
     Object.entries(details).forEach(([key, value]) => {
@@ -80,12 +65,16 @@ function Recruitment() {
     if (image) {
       formData.append("image", image);
     }
-console.log(details);
+
+    console.log(details);
 
     const token = localStorage.getItem("authToken");
     if (!token) {
-      alert("Session expired. Please login again.");
-      window.location.href = "/login";
+      setError(true);
+      setMessage("Session expired. Please login again.");
+      setSnackbarOpen(true);
+      setLoading(false);
+      setTimeout(() => navigate("/login"), 2000);
       return;
     }
 
@@ -98,22 +87,28 @@ console.log(details);
       })
       .then((response) => {
         console.log("Response:", response.data);
-        alert("Added Recruitment successfully");
-        navigate("/viewRecruitments");
+        setError(false);
+        setMessage("Added Recruitment successfully");
+        setSnackbarOpen(true);
+        setLoading(false);
+        setTimeout(() => navigate("/viewRecruitments"), 2000);
       })
       .catch((error) => {
         console.error("Error sending recruitment details:", error);
-        alert("Recruitment not added");
+        setError(true);
+        setMessage("Recruitment not added");
+        setSnackbarOpen(true);
+        setLoading(false);
       });
   };
 
   const change = (e) => {
     const { name, value } = e.target;
     console.log(name);
-        setDetails((prevDetails) => ({
-          ...prevDetails,
-          [name]: value,
-        }));
+    setDetails((prevDetails) => ({
+      ...prevDetails,
+      [name]: value,
+    }));
     console.log(details);
   };
 
@@ -121,303 +116,232 @@ console.log(details);
     setImage(e.target.files[0]);
   };
 
+  const venueOptions = [
+    { value: "CSE Dept", label: "CSE Department" },
+    { value: "NAB", label: "New Academic Building" },
+    { value: "EICT", label: "EICT Building" },
+    { value: "ALC", label: "Learning Centre" }
+  ];
+
   return (
-      <div className="pt-[12rem] -mt-[5.25rem] flex items-center justify-center min-h-screen w-full">
-                 <div className="container relative w-full max-w-screen-lg flex justify-center items-center">
-                   <div className="relative z-1 text-center">
-                     <form
-                       className="block relative p-0.5 bg-no-repeat bg-[length:100%_100%] w-full max-w-[50rem]"
-                       style={{
-                         backgroundImage: `url(${benefits[2].backgroundUrl})`,
-                         display: "flex",
-                         flexDirection: "column",
-                         padding: "1rem",
-                         boxSizing: "border-box",
-                         borderRadius: "8px",
-                         backgroundColor: "rgba(0, 0, 0, 0.5)",
-                       }}
-                       onSubmit={handleSubmit}
-                     >
-                    <h2 className="text-white text-4xl font-bold transform translate-x-[-30px]">Add Recruitment</h2>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-4">
+      <div className="w-full max-w-2xl">
+        {/* Notification */}
+        {snackbarOpen && (
+          <div className={`fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-3 rounded-lg shadow-lg transition-all duration-300 ${
+            error ? 'bg-red-500 text-white' : 'bg-green-500 text-white'
+          }`}>
+            {error ? <AlertCircle size={20} /> : <CheckCircle size={20} />}
+            <span className="text-sm font-medium">{message}</span>
+            <button 
+              onClick={() => setSnackbarOpen(false)}
+              className="ml-2 text-white hover:text-gray-200 transition-colors"
+            >
+              ×
+            </button>
+          </div>
+        )}
 
+        {/* Main Form Container */}
+        <div className="bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 overflow-hidden">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-purple-600 to-pink-600 p-6 text-center">
+            <h1 className="text-3xl font-bold text-white flex items-center justify-center gap-3">
+              <Users className="w-8 h-8" />
+              Add Recruitment
+            </h1>
+            <p className="text-purple-100 mt-2">Create a recruitment opportunity for your club</p>
+          </div>
 
+          <div className="p-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Title */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-300 flex items-center gap-2">
+                  <FileText size={16} />
+                  Recruitment Title
+                </label>
+                <input
+                  type="text"
+                  name="title"
+                  required
+                  value={details.title}
+                  onChange={change}
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                  placeholder="Enter recruitment title"
+                />
+              </div>
 
-                       <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                         <TextField
-                           label="Title"
-                           name="title"
-                           required
-                           variant="outlined"
-                           onChange={change}
-                           sx={{
-                               mt:4,
-                             "& .MuiOutlinedInput-root": {
-                               "& fieldset": { borderColor: "white" },
-                               "&:hover fieldset": { borderColor: "white" },
-                               "&.Mui-focused fieldset": { borderColor: "white" },
-                               "& input": { color: "white" },
-                             },
-                             "& .MuiInputLabel-root": { color: "#ADD8E6" },
-                             "& .MuiInputLabel-root.Mui-focused": { color: "#87CEEB" },
-                           }}
-                         />
+              {/* Description */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-300 flex items-center gap-2">
+                  <FileText size={16} />
+                  Description
+                </label>
+                <textarea
+                  name="description"
+                  required
+                  value={details.description}
+                  onChange={change}
+                  rows={4}
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 resize-none"
+                  placeholder="Describe the recruitment opportunity in detail"
+                />
+              </div>
 
-                        <TextField
-                          label="Description"
-                          name="Description"
-                          multiline
-                          rows={4} // Set the number of rows for the text area
-                          onChange={change}
-                          required
-                          variant="outlined"
-                          sx={{
-                            "& .MuiOutlinedInput-root": {
-                              "& fieldset": { borderColor: "white" },
-                              "&:hover fieldset": { borderColor: "white" },
-                              "&.Mui-focused fieldset": { borderColor: "white" },
-                              "& textarea": { color: "white" }, // Text color for textarea
-                            },
-                            "& .MuiInputLabel-root": { color: "#ADD8E6" },
-                            "& .MuiInputLabel-root.Mui-focused": { color: "#87CEEB" },
-                          }}
-                        />
+              {/* Date and Time Row */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-300 flex items-center gap-2">
+                    <Calendar size={16} />
+                    Date
+                  </label>
+                  <input
+                    type="date"
+                    name="date"
+                    required
+                    value={details.date}
+                    onChange={change}
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                  />
+                </div>
 
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-300 flex items-center gap-2">
+                    <Clock size={16} />
+                    Time
+                  </label>
+                  <input
+                    type="time"
+                    name="time"
+                    required
+                    value={details.time}
+                    onChange={change}
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                  />
+                </div>
+              </div>
 
-                         <TextField
-                           type="date"
-                           name="date"
-                           value={details.date}
-                           onChange={change}
-                           required
-                           label="Date"
-                           InputLabelProps={{ shrink: true }}
-                           sx={{
-                             "& .MuiOutlinedInput-root": {
-                               "& fieldset": { borderColor: "white" },
-                               "&:hover fieldset": { borderColor: "white" },
-                               "&.Mui-focused fieldset": { borderColor: "white" },
-                               "& input": { color: "white" },
-                             },
-                             "& .MuiInputLabel-root": { color: "#ADD8E6" },
-                             "& .MuiInputLabel-root.Mui-focused": { color: "#87CEEB" },
-                           }}
-                         />
+              {/* Venue Selection */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-300 flex items-center gap-2">
+                  <Building size={16} />
+                  Venue
+                </label>
+                <select
+                  name="venue"
+                  value={details.venue}
+                  onChange={change}
+                  required
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                >
+                  <option value="" disabled>Select Venue</option>
+                  {venueOptions.map((venue) => (
+                    <option key={venue.value} value={venue.value}>
+                      {venue.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-                         <TextField
-                           type="time"
-                           name="time"
-                           value={details.time}
-                           onChange={change}
-                           required
-                           label="Time"
-                           InputLabelProps={{ shrink: true }}
-                           sx={{
-                             "& .MuiOutlinedInput-root": {
-                               "& fieldset": { borderColor: "white" },
-                               "&:hover fieldset": { borderColor: "white" },
-                               "&.Mui-focused fieldset": { borderColor: "white" },
-                               "& input": { color: "white" },
-                             },
-                             "& .MuiInputLabel-root": { color: "#ADD8E6" },
-                             "& .MuiInputLabel-root.Mui-focused": { color: "#87CEEB" },
-                           }}
-                         />
+              {/* Venue Description */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-300 flex items-center gap-2">
+                  <MapPin size={16} />
+                  Venue Description
+                </label>
+                <input
+                  type="text"
+                  name="venueDescription"
+                  required
+                  value={details.venueDescription}
+                  onChange={change}
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                  placeholder="Provide specific venue details"
+                />
+              </div>
 
-                         <TextField
-                           label="Venue Description"
-                           required
-                           variant="outlined"
-                            name="venueDescription"
-                           onChange={change}
-                           sx={{
-                             "& .MuiOutlinedInput-root": {
-                               "& fieldset": { borderColor: "white" },
-                               "&:hover fieldset": { borderColor: "white" },
-                               "&.Mui-focused fieldset": { borderColor: "white" },
-                               "& input": { color: "white" },
-                             },
-                             "& .MuiInputLabel-root": { color: "#ADD8E6" },
-                             "& .MuiInputLabel-root.Mui-focused": { color: "#87CEEB" },
-                           }}
-                         />
+              {/* Club */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-300 flex items-center gap-2">
+                  <Users size={16} />
+                  Club
+                </label>
+                <input
+                  type="text"
+                  name="club"
+                  required
+                  value={details.club || club}
+                  onChange={change}
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                  placeholder="Club name"
+                />
+              </div>
 
-                         <select
-                           name="venue"
-                           value={details.venue}
-                           onChange={change}
-                           required
-                           style={{
-                             padding: "0.5rem",
-                             borderRadius: "4px",
-                             border: "1px solid white",
-                             backgroundColor: "rgba(255, 255, 255, 0.1)",
-                             color: "white",
-                           }}
-                         >
-                           <option value="" hidden>Select Venue</option>
-                           <option value="CSE Dept">CSE Dept</option>
-                           <option value="NAB">New Academic Building</option>
-                           <option value="EICT">EICT Building</option>
-                           <option value="ALC">Learning Centre</option>
-                         </select>
+              {/* Google Form Link */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-300 flex items-center gap-2">
+                  <LinkIcon size={16} />
+                  Application Form Link
+                </label>
+                <input
+                  type="url"
+                  name="formLink"
+                  required
+                  value={details.formLink}
+                  onChange={change}
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                  placeholder="https://forms.google.com/..."
+                />
+              </div>
 
-                         <TextField
-                                              label="Club"
-                                              variant="outlined"
-                                              value={details.club || club}
-                                              required
-                                              name="club"
-                                              onChange={change}
-                                              sx={{
-                                                "& .MuiOutlinedInput-root": {
-                                                  "& fieldset": { borderColor: "white" },
-                                                  "&:hover fieldset": { borderColor: "white" },
-                                                  "&.Mui-focused fieldset": { borderColor: "white" },
-                                                  "& input": { color: "white" },
-                                                },
-                                                "& .MuiInputLabel-root": { color: "#ADD8E6" },
-                                                "& .MuiInputLabel-root.Mui-focused": { color: "#87CEEB" },
-                                              }}
-                                            />
+              {/* Image Upload */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-300 flex items-center gap-2">
+                  <ImageIcon size={16} />
+                  Recruitment Image
+                </label>
+                <div className="relative">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    required
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-purple-600 file:text-white hover:file:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                  />
+                  <Upload className="absolute right-3 top-3 w-5 h-5 text-gray-400 pointer-events-none" />
+                </div>
+                {image && (
+                  <p className="text-sm text-green-400 flex items-center gap-2">
+                    <CheckCircle size={16} />
+                    Selected: {image.name}
+                  </p>
+                )}
+              </div>
 
-                           <TextField
-                            label="google link"
-                            variant="outlined"
-                            required
-                            name="formLink"
-                            onChange={change}
-                            sx={{
-                              "& .MuiOutlinedInput-root": {
-                                "& fieldset": { borderColor: "white" },
-                                "&:hover fieldset": { borderColor: "white" },
-                                "&.Mui-focused fieldset": { borderColor: "white" },
-                                "& input": { color: "white" },
-                              },
-                              "& .MuiInputLabel-root": { color: "#ADD8E6" },
-                              "& .MuiInputLabel-root.Mui-focused": { color: "#87CEEB" },
-                            }}
-                          />
-                         <input
-                           type="file"
-                           accept="image/*"
-                           onChange={handleImageChange}
-                           required
-                           style={{ color: "white" }}
-                         />
-                       </Box>
-
-
-                       {loading ? (
-                         <CircularProgress color="inherit" />
-                       ) : (
-                         <Button className="submit w-full mt-5" type="submit">
-                           Add Recruitment
-                         </Button>
-                       )}
-                     </form>
-                   </div>
-                 </div>
-                 <GradientLight/>
-               </div>
-
-
-//
-//
-//
-//
-//
-//
-//
-//     <div className="form-container">
-//       <h1 className="form-title">Add Recruitment</h1>
-//       <form onSubmit={handleSubmit} className="event-form">
-//         <input
-//           type="text"
-//           onChange={change}
-//           placeholder="Title"
-//           name="title"
-//           value={details.title}
-//           required
-//           className="form-input"
-//         />
-//         <textarea
-//           onChange={change}
-//           placeholder="Description"
-//           name="description"
-//           value={details.description}
-//           required
-//           className="form-textarea"
-//         />
-//         <input
-//           type="date"
-//           onChange={change}
-//           name="date"
-//           value={details.date}
-//           required
-//           className="form-input"
-//         />
-//         <input
-//           type="time"
-//           onChange={change}
-//           name="time"
-//           value={details.time}
-//           required
-//           className="form-calendar"
-//         />
-//         <input
-//           type="text"
-//           onChange={change}
-//           placeholder="Venue-description"
-//           name="venueDescription"
-//           value={details.venueDescription}
-//           required
-//           className="form-input"
-//         />
-//         <select
-//           className="form-select"
-//           onChange={change}
-//           name="venue"
-//           id="venue"
-//         >
-//           <option value="" hidden>
-//             Select Venue
-//           </option>
-//           <option value="Department of Computer Science and Engineering">CSE dept</option>
-//           <option value="New Academic Building (NAB)">NAB</option>
-//           <option value="Electronic & ICT Academy">E&ICT Building</option>
-//           <option value="Department Of Electrical & Electronic Engineering">Electrical Dept</option>
-//           <option value="Dr. B.R. Ambedkar Learning centre">ALC</option>
-//         </select>
-//         <input
-//           type="text"
-//           onChange={change}
-//           placeholder="Club presenting"
-//           name="club"
-//           value={details.club || club}
-//           required
-//           className="form-input"
-//           readOnly={role === "CLUB_SEC"} // Disable the input if the role is CLUB_SEC
-//         />
-//         <input
-//           type="file"
-//           accept="image/*"
-//           onChange={handleImageChange}
-//           required
-//         />
-//         <input
-//           type="text"
-//           onChange={change}
-//           placeholder="Paste the google form link"
-//           name="formLink"
-//           value={details.formLink}
-//           required
-//           className="form-input"
-//         />
-//         <button type="submit" className="submit-button">
-//           Add Recruitment
-//         </button>
-//       </form>
-//     </div>
+              {/* Submit Button */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="animate-spin" size={20} />
+                    <span>Adding Recruitment...</span>
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle size={20} />
+                    <span>Add Recruitment</span>
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
