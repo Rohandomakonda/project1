@@ -22,7 +22,7 @@ import { LoginSignout } from "./pages/LoginPage/GoogleCalendarEvent.jsx";
 import {useState} from "react";
 import DashBoard from "./DashBoard.jsx";
 import EventPage from "./pages/View_Page/EventPage.jsx";
-
+import About from "./pages/About/About.jsx";
 function App() {
    
   return (
@@ -35,6 +35,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<SignUp />} />
           <Route path="/viewclubs" element={<ViewClub />} />
+          <Route path="/about" element={<About />} />
 
           <Route
             path="/addevent"
