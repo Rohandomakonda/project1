@@ -7,7 +7,6 @@ import com.project.profile_service.dto.Event;
 import com.project.profile_service.feign.EventService;
 import com.project.profile_service.model.SavedEvent;
 import com.project.profile_service.repo.SavedEventRepository;
-import jakarta.persistence.Lob;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -59,13 +58,13 @@ public class SavedEventService {
     public void unsaveEvent(String eventTitle, Long userId) {
         System.out.println("Attempting to unsave event with title: " + eventTitle + " for user ID: " + userId);
 
-        Optional<SavedEvent> savedEvent = savedEventRepository.findByUserIdAndTitle(userId, eventTitle);
-        SavedEvent se1= savedEvent.get();
+        Optional<Long> savedEvent = savedEventRepository.findEventIdByUserIdAndTitle(userId, eventTitle);
+        Long se1= savedEvent.get();
 
-        System.out.println("SavedEvent found: " + se1.getTitle());
+       // System.out.println("SavedEvent found: " + se1.getTitle());
 
         // Delete the event from the saved events list
-        savedEventRepository.delete(se1);
+        savedEventRepository.deleteById(se1);
         eventService.decsaves(eventTitle);
 
         System.out.println("Event unsaved successfully!");
@@ -97,7 +96,7 @@ public class SavedEventService {
 
     public Boolean isSaved(Long userId, String eventTitle) {
 
-        Optional<SavedEvent> savedEvent = savedEventRepository.findByUserIdAndTitle(userId,eventTitle);
+        Optional<Long> savedEvent = savedEventRepository.findEventIdByUserIdAndTitle(userId,eventTitle);
 
         return savedEvent.isPresent();
 
