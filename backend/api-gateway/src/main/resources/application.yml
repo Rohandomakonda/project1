@@ -73,7 +73,7 @@ spring:
             - DedupeResponseHeader=Access-Control-Allow-Origin
 
         - id: recruitment-serivce
-          uri: https://recruitment-service-vx93.onrender.com
+          uri: https://recruitment-service.onrender.com
           predicates:
             - Path=/api/recruitments/**
           filters:
