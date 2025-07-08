@@ -1,296 +1,192 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom"; // Added Link for navigation
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import TextField from "@mui/material/TextField";
-import CircularProgress from "@mui/material/CircularProgress";
+import { Eye, EyeOff, Loader2, Mail, Lock, CheckCircle, AlertCircle } from "lucide-react";
 import CustomizedSnackbars from "../../components/SnackBarCustom.jsx";
-import "./Login.css";
-import { benefits } from "../../constants";
-import Button from "../../components/Button";
-import { GradientLight } from "../../components/design/Benefits";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import GoogleLoginButton from "../../components/GoogleLoginButton/GoogleLoginButton.jsx";
 import GoogleSignIn from "./GoogleLogin.jsx";
-import { LoginSignout } from "./GoogleCalendarEvent.jsx";
 
 const Login = () => {
-
   const [credentials, setCredentials] = useState({ email: "", password: "" });
-  const navigate = useNavigate();
-  const [pwd, setPwd] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [error, setError] = useState(false);
-  const parallaxRef = useRef(null);
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
   const API_BASE_URL = import.meta.env.VITE_API;
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("hi");
+    setLoading(true);
     try {
-      setLoading(true);
-      const response = await axios.post(
-        `${API_BASE_URL}/auth/login`,
-        credentials
-      );
-      console.log(response.data.roles);
-      const token = response.data.access_token;
-      const roles = response.data.roles;
-      const name = response.data.name;
-      const club = response.data.club;
- console.log(response.data);
- console.log(roles);
+      const response = await axios.post(`${API_BASE_URL}/auth/login`, credentials);
+      const { access_token, roles, name, club, id } = response.data;
 
-      const userId = response.data.id;
-
-      if (token && roles) {
-        localStorage.setItem("roles", JSON.stringify(roles)); // Convert roles array to string
-        console.log("json stringify " + JSON.stringify(roles));
-        localStorage.setItem("authToken", token);
-        localStorage.setItem("name", name);
-        localStorage.setItem("club", club);
-        localStorage.setItem("userId", userId);
-console.log("localstorage set");
+      localStorage.setItem("roles", JSON.stringify(roles));
+      localStorage.setItem("authToken", access_token);
+      localStorage.setItem("name", name);
+      localStorage.setItem("club", club);
+      localStorage.setItem("userId", id);
 
       setSnackbarOpen(true);
-      setLoading(false);
       setError(false);
+      setMessage("Login successful");
       setTimeout(() => navigate("/"), 1500);
-
-      }
     } catch (error) {
       console.error("Login failed:", error);
-      setLoading(false);
       setSnackbarOpen(true);
       setError(true);
+      setMessage("Login unsuccessful, please try again");
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleGoogleSuccess = async (response) => {
     try {
       setLoading(true);
-      // Send the token to your backend
-      console.log("token is "+response.credential);
-      
-   
-      const backendResponse = await axios.post(
-        `${API_BASE_URL}/auth/google`,
-        { token: response.credential }
-      );
-      console.log("sent to backend");
-
-      const { access_token, roles, name, club,id } = backendResponse.data;
+      const backendResponse = await axios.post(`${API_BASE_URL}/auth/google`, { token: response.credential });
+      const { access_token, roles, name, club, id } = backendResponse.data;
 
       localStorage.setItem("roles", JSON.stringify(roles));
       localStorage.setItem("authToken", access_token);
       localStorage.setItem("name", name);
       localStorage.setItem("club", club);
-      localStorage.setItem("googleAccessToken", response.credential); // Store Google token for Calendar API
-      localStorage.setItem("userId",id);
+      localStorage.setItem("googleAccessToken", response.credential);
+      localStorage.setItem("userId", id);
+
       setSnackbarOpen(true);
-      setLoading(false);
       setError(false);
-     // setTimeout(() => navigate("/"), 1500);
+      setMessage("Login successful");
+      setTimeout(() => navigate("/"), 1500);
     } catch (error) {
       console.error("Google login failed:", error);
-      setLoading(false);
       setSnackbarOpen(true);
       setError(true);
+      setMessage("Google login failed");
+    } finally {
+      setLoading(false);
     }
-
-    // console.log("going to tokenClient");
-    // tokenClient.callback = async (resp) => {
-    //   if (resp.error) {
-    //     throw (resp);
-    //   }
-    //   await listUpcomingEvents();
-    //   const { access_token, expires_in } = gapi.client.getToken();
-    //   console.log("got access_token "+access_token);
-    //   localStorage.setItem('access_token', access_token);
-    //   localStorage.setItem('expires_in', expires_in)
-    // };
-
-    // if (!(access_token && expires_in)) {
-    //   // Prompt the user to select a Google Account and ask for consent to share their data
-    //   // when establishing a new session.
-    //   tokenClient.requestAccessToken({ prompt: 'consent' });
-    // } else {
-    //   // Skip display of account chooser and consent dialog for an existing session.
-    //   tokenClient.requestAccessToken({ prompt: '' });
-    // }
   };
 
   const handleGoogleError = () => {
     setSnackbarOpen(true);
     setError(true);
+    setMessage("Google login failed");
   };
 
   return (
-
-      <GoogleOAuthProvider clientId="916755134531-fvnijil1m46cfuu84fgfm9uionutvr66.apps.googleusercontent.com">
-      <div className="pt-[12rem] -mt-[5.25rem] flex items-center justify-center min-h-screen w-full">
-        <div className="container relative w-full max-w-screen-lg flex justify-center items-center">
-          <div className="relative z-1 text-center">
-            <form
-              className="block relative p-0.5 bg-no-repeat bg-[length:100%_100%] w-full max-w-[50rem]"
-              style={{
-                backgroundImage: `url(${benefits[2].backgroundUrl})`,
-                display: "flex",
-                flexDirection: "column",
-                padding: "1rem",
-                boxSizing: "border-box",
-                borderRadius: "8px",
-                backgroundColor: "rgba(0, 0, 0, 0.5)",
-              }}
-
+    <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+      <div className="min-h-screen bg-[#130b3b] flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          {snackbarOpen && (
+            <div
+              className={`fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-3 rounded-lg shadow-lg transition-all duration-300 ${
+                error ? "bg-red-500 text-white" : "bg-green-500 text-white"
+              }`}
             >
-              <h2 className="text-white text-xl font-bold mb-5">Login</h2>
+              {error ? <AlertCircle size={20} /> : <CheckCircle size={20} />}
+              <span className="text-sm font-medium">{message}</span>
+              <button
+                onClick={() => setSnackbarOpen(false)}
+                className="ml-2 text-white hover:text-gray-200 transition-colors"
+              >
+                ×
+              </button>
+            </div>
+          )}
 
-              <div className="pt-[6rem] -mt-[5rem] flex items-center justify-center w-full">
-                <div className="container relative w-full max-w-screen-lg flex justify-center items-center">
-                  <div className="relative z-1 text-center">
-                    <form
-                      className="block relative p-0.5 bg-no-repeat bg-[length:100%_100%] w-full max-w-[50rem]" // Increased max-width to 50rem
-                      onSubmit={handleSubmit}
-                    >
-                      <TextField
-                        id="outlined-email"
-                        className="MuiTextField-root pb-5"
-                        label="Email"
-                        required
-                        variant="outlined"
-                        onChange={(e) =>
-                          setCredentials({
-                            ...credentials,
-                            email: e.target.value,
-                          })
-                        }
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            "& fieldset": {
-                              borderColor: "white", // White outline
-                            },
-                            "&:hover fieldset": {
-                              borderColor: "white", // White outline on hover
-                            },
-                            "&.Mui-focused fieldset": {
-                              borderColor: "white", // White outline when focused
-                            },
-                            "& input": {
-                              color: "white", // White text for input
-                            },
-                          },
-                          "& .MuiInputLabel-root": {
-                            color: "#ADD8E6", // Bluish color for the label
-                          },
-                          "& .MuiInputLabel-root.Mui-focused": {
-                            color: "#87CEEB", // Bluish color when focused
-                          },
-                        }}
-                      />
+          <div className="bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 overflow-hidden">
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-center">
+              <h1 className="text-2xl font-bold text-white">Login</h1>
+              <p className="text-blue-100 mt-2 text-sm">Welcome back! Please sign in.</p>
+            </div>
 
-                      {/* Add gap between the fields by giving margin bottom to email */}
-                      <div className="mt-5 relative">
-                        <TextField
-                          id="outlined-password"
-                          className="MuiTextField-root"
-                          label="Password"
-                          variant="outlined"
-                          type={pwd ? "password" : "text"}
-                          placeholder="Password"
-                          required
-                          onChange={(e) =>
-                            setCredentials({
-                              ...credentials,
-                              password: e.target.value,
-                            })
-                          }
-                          sx={{
-                            "& .MuiOutlinedInput-root": {
-                              "& fieldset": {
-                                borderColor: "white", // White outline
-                              },
-                              "&:hover fieldset": {
-                                borderColor: "white", // White outline on hover
-                              },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "white", // White outline when focused
-                              },
-                              "& input": {
-                                color: "white", // White text color inside the input
-                              },
-                            },
-                            "& .MuiInputLabel-root": {
-                              color: "#ADD8E6", // Light bluish color for the label
-                            },
-                            "& .MuiInputLabel-root.Mui-focused": {
-                              color: "#87CEEB", // Slightly darker bluish color when focused
-                            },
-                          }}
-                        />
-                        {/* Password visibility toggle button */}
-                        <button
-                          type="button"
-                          className="toggle-visibility absolute right-2 top-2"
-                          onClick={() => setPwd(!pwd)}
-                        >
-                          {pwd ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                        </button>
-                      </div>
-
-                      {loading ? (
-                        <CircularProgress color="inherit" />
-                      ) : (
-                        <>
-                          <Button className="submit w-full mt-5" onClick={handleSubmit}>
-                            Login
-                          </Button>
-                        </>
-                      )}
-                      <div className="my-4 flex items-center">
-                        <div className="flex-1 border-t border-gray-300"></div>
-                        <span className="mx-4 text-white">or</span>
-                        <div className="flex-1 border-t border-gray-300"></div>
-                      </div>
-                     {/* <GoogleSignIn/> */}
-                     <GoogleSignIn
-                     handleGoogleSuccess={handleGoogleSuccess}
-                     handleGoogleError={handleGoogleError}
-                     />
-                     
-                      <CustomizedSnackbars
-                        open={snackbarOpen}
-                        onClose={() => setSnackbarOpen(false)}
-                        alertM={
-                          error
-                            ? "Login unsuccessful, please try again"
-                            : "Login successful"
-                        }
-                        type={error ? "error" : "success"}
-                      />
-
-                      <div className="register-link mt-5">
-                        Don't have an account?{" "}
-                        <Link to="/register">Register</Link>
-                      </div>
-                      <div className="register-link">
-                        <Link to="/forgotPassword">Forgot Password?</Link>
-                      </div>
-                    </form>
+            <div className="p-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-300">Email</label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-3 text-gray-400" size={20} />
+                    <input
+                      type="email"
+                      required
+                      value={credentials.email}
+                      onChange={(e) =>
+                        setCredentials({ ...credentials, email: e.target.value })
+                      }
+                      className="w-full pl-10 pr-3 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="Enter your email"
+                    />
                   </div>
                 </div>
-                <GradientLight className="z-1 opacity-20" />
-              </div>
-            </form>
+
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-300">Password</label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-3 text-gray-400" size={20} />
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      required
+                      value={credentials.password}
+                      onChange={(e) =>
+                        setCredentials({ ...credentials, password: e.target.value })
+                      }
+                      className="w-full pl-10 pr-10 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="Enter your password"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-3 text-gray-400 hover:text-gray-200"
+                    >
+                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="animate-spin" size={20} />
+                      <span>Logging in...</span>
+                    </>
+                  ) : (
+                    <span>Login</span>
+                  )}
+                </button>
+
+                <div className="text-center">
+                  <span className="text-gray-400">or</span>
+                </div>
+
+                <GoogleSignIn
+                  handleGoogleSuccess={handleGoogleSuccess}
+                  handleGoogleError={handleGoogleError}
+                />
+
+                <div className="text-sm text-center text-gray-400">
+                  Don&apos;t have an account?{' '}
+                  <Link to="/register" className="text-blue-400 hover:underline">
+                    Register
+                  </Link>
+                </div>
+                <div className="text-sm text-center text-gray-400">
+                  <Link to="/forgotPassword" className="text-blue-400 hover:underline">
+                    Forgot Password?
+                  </Link>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-        <GradientLight className="z-1 opacity-20" />
       </div>
-      </ GoogleOAuthProvider>
-
+    </GoogleOAuthProvider>
   );
 };
 
