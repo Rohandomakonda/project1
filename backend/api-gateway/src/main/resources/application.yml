@@ -11,7 +11,7 @@ spring:
           '[/**]':
             allowedOrigins:
               - "http://localhost:5173"
-              - "https://friendly-marigold-74f21d.netlify.app"
+              - "https://wonderful-platypus-97c882.netlify.app"
             allowedMethods:
               - "GET"
               - "POST"
