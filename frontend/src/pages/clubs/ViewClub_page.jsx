@@ -3,8 +3,8 @@ import axios from "axios";
 
 import ClubCard from "../clubs/ClubCard"; // Assuming you have this
 import EventModal from "../clubs/EventModal"; // Assuming you have this
-import LoadingSpinner from "../../components/LoadingSpinner"; // Spinner component
-import ErrorMessage from "../../components/ErrorMessage"; // Error retry component
+import LoadingSpinner from "../clubs/LoadingSpinner"; // Spinner component
+import ErrorMessage from "../clubs/ErrorMessage"; // Error retry component
 
 function ViewClub() {
   const [clubs, setClubs] = useState([]);
