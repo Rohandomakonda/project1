@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
-import LikedEvent from "../../components/Event_Card/LikedEvent"; // Component for individual event cards
+import { useState, useEffect, useRef } from "react";
 import Event from "../../components/Event_Card/Event"; // Component for individual event cards
 import axios from "axios";
 import { curve } from "../../assets";
