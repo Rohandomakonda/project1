@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import Event from "../../components/Event_Card/Event.jsx";
 import axios from "axios";
-import { Search, Bookmark, Heart, Calendar, AlertCircle, CheckCircle, XCircle, Filter, Sparkles, Star, BookmarkHeart as BookmarkHeartIcon, Smile } from "lucide-react";
+import { Search, Bookmark, Heart, Calendar, AlertCircle, CheckCircle, XCircle, Filter, Sparkles, Star, BookHeart as BookmarkHeartIcon, Smile } from "lucide-react";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
@@ -161,7 +161,7 @@ const SavedEvents = () => {
           <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-indigo-600/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
         </div>
 
-        {/* Loading Overlay */}
+        {/* Loading Overlay - Same as Favourites */}
         {loading && (
           <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50">
             <div className="text-center">
