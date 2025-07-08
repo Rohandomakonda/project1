@@ -248,7 +248,7 @@ useEffect(() => {
                       : "lg:text-n-1/50"
                   }  lg:leading-5 lg:hover:text-n-1 xl:px-12 `}
             >
-              about
+              about3
             </button>
             {token && (
 
