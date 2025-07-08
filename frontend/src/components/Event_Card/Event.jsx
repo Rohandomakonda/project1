@@ -167,6 +167,7 @@ function Event(props) {
   function handleLike(e) {
     e.stopPropagation();
     console.log(props);
+    console.log(token);
     if (isLiked) {
       axios
         .delete(`${API_BASE_URL}/profile/favourites/${props.id}`, {
