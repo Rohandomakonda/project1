@@ -2,6 +2,7 @@ import React from 'react';
 import { X, Calendar, Users, MapPin, Clock } from 'lucide-react';
 
 const EventCard = ({ event }) => {
+    console.log(event);
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
