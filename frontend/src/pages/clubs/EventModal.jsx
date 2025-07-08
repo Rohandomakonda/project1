@@ -48,14 +48,11 @@ const EventCard = ({ event }) => {
         </p>
         
         <div className="grid grid-cols-2 gap-4 text-sm">
-          <div className="flex items-center text-purple-300 bg-purple-500/10 rounded-lg p-2">
-            <Users className="w-4 h-4 mr-2 text-purple-400" />
-            <span>{event.attendees} attendees</span>
-          </div>
+          
           
           <div className="flex items-center text-purple-300 bg-purple-500/10 rounded-lg p-2">
             <MapPin className="w-4 h-4 mr-2 text-purple-400" />
-            <span className="truncate">{event.location}</span>
+            <span className="truncate">{event.venue}</span>
           </div>
         </div>
       </div>
