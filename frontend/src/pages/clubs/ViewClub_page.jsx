@@ -5,44 +5,85 @@ import Club from "../../components/Club_Card/Club.jsx";
 import useGet from "../../customhooks/useGet.jsx";
 
 function ViewClub() {
-  // const [clubs, setClubs] = useState([]);
+  
+  const { data: clubs, loading, error } = useGet('/clubs/public/viewclubs', null);
+  const [selectedClub, setSelectedClub] = useState(null);
+  const [showEventModal, setShowEventModal] = useState(false);
+  
+  // Get events for selected club
+  const { 
+    data: events, 
+    loading: eventsLoading, 
+    error: eventsError 
+  } = useGet(selectedClub ? `/api/events/getclubevents/${selectedClub.className}` : null, null);
 
-  // useEffect(() => {
-  //   axios
-  //     .get("http://localhost:8080/viewclubs")
-  //     .then((resp) => {
-  //       setClubs(resp.data);
-  //     })
-  //     .catch((err) => {
-  //       alert("getError " + err);
-  //     });
-  // }, []);
-  const{data: clubs,loading,error}  = useGet("/viewclubs",null);
-  console.log("details is " + clubs);
+  const handleClubClick = (club) => {
+    setSelectedClub(club);
+    setShowEventModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowEventModal(false);
+    setSelectedClub(null);
+  };
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  if (error) {
+    return <ErrorMessage error={error} onRetry={() => window.location.reload()} />;
+  }
 
   return (
-    <div className="public-events">
-      <div className="top-image-container">
-        <img
-          src="https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg"
-          alt="Top Image"
-          className="top-image"
-        />
+    <div className="min-h-screen bg-gradient-to-br from-violet-950 via-purple-950 to-indigo-950">
+      {/* Header */}
+      <div className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-violet-600/20 to-purple-600/20" />
+        <div className="relative container mx-auto px-4 py-16">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
+              Campus <span className="text-violet-400">Clubs</span>
+            </h1>
+            <p className="text-xl text-violet-200 max-w-2xl mx-auto">
+              Discover amazing clubs, connect with like-minded people, and explore exciting events
+            </p>
+          </div>
+        </div>
       </div>
 
-      <div className="clubs-container">
-        {clubs.map((club) => (
-          <Club
-            key={club.id}
-            id={club.id}
-            name={club.clubname}
-            description={club.description}
-            image={`data:image/jpeg;base64,${club.image}`} // Assuming club.image is base64
-          />
-        ))}
+      {/* Clubs Grid */}
+      <div className="container mx-auto px-4 py-16">
+        {clubs && clubs.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {clubs.map(club => (
+              <ClubCard
+                key={club.id}
+                club={club}
+                onClick={handleClubClick}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16">
+            <p className="text-violet-200 text-lg">No clubs found</p>
+          </div>
+        )}
       </div>
+
+      {/* Event Modal */}
+      {showEventModal && (
+        <EventModal
+          club={selectedClub}
+          events={events}
+          onClose={handleCloseModal}
+          loading={eventsLoading}
+        />
+      )}
     </div>
   );
 }
+
+
 
 export default ViewClub;
