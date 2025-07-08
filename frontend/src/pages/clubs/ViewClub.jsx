@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-import ClubCard from "../clubs/ClubCard"; // Assuming you have this
-import EventModal from "../clubs/EventModal"; // Assuming you have this
-import LoadingSpinner from "../clubs/LoadingSpinner"; // Spinner component
-import ErrorMessage from "../clubs/ErrorMessage"; // Error retry component
+import ClubCard from "./ClubCard"; // Assuming you have this
+import EventModal from "./EventModal"; // Assuming you have this
+import LoadingSpinner from "./LoadingSpinner"; // Spinner component
+import ErrorMessage from "./ErrorMessage"; // Error retry component
 
 function ViewClub() {
   const [clubs, setClubs] = useState([]);

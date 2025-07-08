@@ -9,7 +9,7 @@ import SignUp from "./pages/SignUp_Page/signup.component.jsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Recruitment from "./pages/Recruitment/Recruitment.component.jsx";
 import ViewRecruitment from "./pages/View_Page/ViewRecruitment.jsx";
-import ViewClub from "./pages/clubs/ViewClub_page.jsx";
+import ViewClub from "./pages/clubs/ViewClub.jsx";
 import Club_info from "./pages/Club_Details/Club_Info.jsx";
 import ForgotP from "./pages/ForgotPassword_Page/ForgotP.jsx";
 import UpdateRec from "./pages/Recruitment/updateRecruitment.jsx";
