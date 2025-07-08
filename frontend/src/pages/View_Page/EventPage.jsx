@@ -83,7 +83,7 @@ function EventPage() {
           <div className="relative mb-16 overflow-hidden rounded-3xl shadow-2xl shadow-purple-500/20">
             <div className="relative h-[60vh] md:h-[70vh]">
               <img 
-                src="https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                src= {`data:image/jpeg;base64,${details.backgroundImage}`} 
                 alt="Event"
                 className="w-full h-full object-cover"
               />
