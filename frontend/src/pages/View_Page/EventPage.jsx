@@ -31,7 +31,9 @@ function EventPage() {
       })
       .then((response) => {
         setDetails(response.data);
-        console.log(response.data);
+        console.log("image");
+        console.log(details.backgroundImage);
+       
       })
       .catch((error) => {
         console.error("Error fetching event:", error);
