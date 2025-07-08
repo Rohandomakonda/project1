@@ -30,8 +30,8 @@ function App() {
       {/* Header Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20"></div>
-        <div className="relative container mx-auto px-6 py-20">
-          <div className="text-center">
+        <div className="relative container mx-10 my-20 px-6 py-15">
+          <div className="text-center" style={{ marginTop: "20px" }}>
             <div className="flex items-center justify-center mb-6">
               <GraduationCap className="w-12 h-12 text-blue-400 mr-3" />
               <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
