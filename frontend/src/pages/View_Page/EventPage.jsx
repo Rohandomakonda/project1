@@ -33,6 +33,7 @@ function EventPage() {
         setDetails(response.data);
         console.log("image");
         console.log(details.backgroundImage);
+        console.log(response.data);
        
       })
       .catch((error) => {
