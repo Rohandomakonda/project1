@@ -31,6 +31,7 @@ const ViewRecruitments = () => {
       window.location.href = "/login";
       return;
     }
+    console.log("Fetching recruitments for club with token: ",token);
     console.log(token);
     console.log(`${API_BASE_URL}/recruitments/getAllRecruitments`)
     axios
