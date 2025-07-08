@@ -1,25 +1,17 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Event from "../../components/Event_Card/Event.jsx";
 import axios from "axios";
 import { Search, Bookmark, Heart, Calendar } from "lucide-react";
-import Skeleton from "@mui/material/Skeleton";
 import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import { curve, heroBackground, robot } from "../../assets";
-import { useNavigate } from "react-router-dom";
+import { curve } from "../../assets";
 import Section from "../../components/Section.jsx";
 import Button from "../../components/Button";
 import {
   BackgroundCircles,
-  BottomLine,
-  Gradient,
 } from "../../components/design/Hero";
-import { heroIcons } from "../../constants";
-import { ScrollParallax } from "react-just-parallax";
+
 import { useRef } from "react";
-import { GradientLight } from "../../components/design/Benefits";
-import ClipPath from "../../assets/svg/ClipPath";
-import cardImage from "../../assets/benefits/card-6.svg";
+
 
 const SavedEvents = () => {
   const [events, setEvents] = useState([]);
